@@ -1,7 +1,11 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import authSlice from './authSlice';
+import authenticationSlice from './authenticationSlice';
+import completeSlice from './completeSlice';
+import termsAndPoliciesSlice from './termsAndPoliciesSlice';
 
 export const rootReducer = combineReducers({
-  user: authSlice
+  user: authenticationSlice,
+  termsAndPolicies: termsAndPoliciesSlice,
+  complete: completeSlice
 });
