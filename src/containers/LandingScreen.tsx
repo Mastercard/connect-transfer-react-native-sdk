@@ -1,5 +1,4 @@
-import React from 'react';
-import { Button, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Button, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -8,7 +7,7 @@ import { RootState } from '../redux/store';
 import { authenticateUser } from '../services/api/authenticateApi';
 import { apiKeys } from '../services/api/apiKeys';
 
-function LandingScreen(): React.JSX.Element {
+const LandingScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
   const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
 
@@ -41,20 +40,33 @@ function LandingScreen(): React.JSX.Element {
     );
   };
 
+  const Navigation = () => {
+    return (
+      <View style={{ flex: 0, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={styles.text}>Welcome to Landing Screen!</Text>
+        <Button title="Start Loading" onPress={() => navigation.navigate('Loading')} />
+        <Button title="Show Error" onPress={() => navigation.navigate('Error')} />
+      </View>
+    );
+  };
+
   return (
-    <SafeAreaView>
-      <Text style={styles.sectionTitle}>Landing Screen</Text>
-      <Text style={styles.sectionTitle}>{name}</Text>
-      <Button title="Set User" onPress={handleSetUser} />
-      <Button title="Clear User" onPress={handleClearUser} />
-      <Button title="Authenticate API" onPress={handleAuthenticate} />
-      {testTranslation()}
+    <SafeAreaView style={styles.safeAreaView}>
+      <ScrollView bounces={false}>
+        <Navigation />
+        <Text style={styles.text}>{name}</Text>
+        <Button title="Set User" onPress={handleSetUser} />
+        <Button title="Clear User" onPress={handleClearUser} />
+        <Button title="Authenticate API" onPress={handleAuthenticate} />
+        {testTranslation()}
+      </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionTitle: {
+  safeAreaView: { flex: 1, backgroundColor: 'white' },
+  text: {
     fontSize: 24,
     fontWeight: '600',
     alignSelf: 'center',
