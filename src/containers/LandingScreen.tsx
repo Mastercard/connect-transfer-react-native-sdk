@@ -1,64 +1,29 @@
-import { Button, SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
+import React, { useEffect } from 'react';
+import { SafeAreaView, ScrollView, StyleSheet, Text } from 'react-native';
+import { useDispatch } from 'react-redux';
 
-import { setUser, clearUser } from '../redux/slices/authSlice';
-import { RootState } from '../redux/store';
-import { authenticateUser } from '../services/api/authenticateApi';
-import { apiKeys } from '../services/api/apiKeys';
+import { setUrlData } from '../redux/slices/authenticationSlice';
+import { extractUrlData } from '../utility/utils';
 
-const LandingScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
+interface ConnectTransferProps {
+  url: string; // Partner-sent URL
+  navigation: any;
+}
+
+const LandingScreen: React.FC<ConnectTransferProps> = ({ url, navigation }) => {
   const dispatch = useDispatch();
-  const { t, i18n } = useTranslation();
 
-  const name = useSelector((state: RootState) => state.user.name);
-
-  const handleSetUser = () => {
-    dispatch(setUser('Name changed'));
-  };
-
-  const handleClearUser = () => {
-    dispatch(clearUser());
-  };
-
-  const handleAuthenticate = () => {
-    dispatch(authenticateUser(apiKeys.authenticateUser));
-  };
-
-  const testTranslation = () => {
-    const changeLanguage = language => {
-      i18n.changeLanguage(language);
-    };
-
-    return (
-      <View style={{ padding: 20 }}>
-        <Text style={{ fontSize: 20, paddingBottom: 50 }}>First {t('ErrorTitle')}</Text>
-        <Text style={{ fontSize: 20 }}>Second {t('ErrorSubtitle')}</Text>
-        <Button title="English" onPress={() => changeLanguage('en')} />
-        <Button title="Español" onPress={() => changeLanguage('es')} />
-      </View>
-    );
-  };
-
-  const Navigation = () => {
-    return (
-      <View style={{ flex: 0, justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={styles.text}>Welcome to Landing Screen!</Text>
-        <Button title="Start Loading" onPress={() => navigation.navigate('Loading')} />
-        <Button title="Show Error" onPress={() => navigation.navigate('Error')} />
-      </View>
-    );
-  };
+  useEffect(() => {
+    if (url) {
+      const extractedData = extractUrlData(url);
+      dispatch(setUrlData(extractedData));
+    }
+  }, [url]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <ScrollView bounces={false}>
-        <Navigation />
-        <Text style={styles.text}>{name}</Text>
-        <Button title="Set User" onPress={handleSetUser} />
-        <Button title="Clear User" onPress={handleClearUser} />
-        <Button title="Authenticate API" onPress={handleAuthenticate} />
-        {testTranslation()}
+        <Text style={styles.text}>Landing Screen</Text>
       </ScrollView>
     </SafeAreaView>
   );

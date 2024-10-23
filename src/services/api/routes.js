@@ -1,21 +1,37 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { apiKeys } from './apiKeys';
+import { apiKeys, webViewApiKeys } from './apiKeys';
 
-const BASE_URL = 'https://connect-feature.finicitystg.com/'; //  TO DO : BASE_URL stag to be replaced with Prod Later
-const TEMP_BASE_URL = 'https://randomuser.me'; // TO DO : TEMP_BASE_URL to be removed with api integration story
+const FINICITY_BASE_URL = 'https://www.finicity.com/';
+const CONNECT_BASE_URL = 'https://connect2.finicity.com';
 const API_VERSION = 'v2';
-const ENDPOINTS = 'deposit-switch';
 
-// /server/connect/generate/transfer/deposit-switch //(called by partner)
-// /server/authenticate/v2/transfer/deposit-switch //(called on next pressed)
-
-// get route as per provided key from parent
+// Generate route based on the provided key
 export const generateRoute = (key, state) => {
+  const { baseURL, queryParams } = state.user;
+
   switch (key) {
     case apiKeys.authenticateUser:
-      //   return `${BASE_URL}/server/authenticate/${API_VERSION}/${ENDPOINTS}`;
-      return `${TEMP_BASE_URL}/api/`;
+      return `${baseURL}/server/authenticate/${API_VERSION}/transfer/deposit-switch${queryParams}`;
+
+    case apiKeys.termsAndPolicies:
+      return `${baseURL}/server/terms-and-policies`;
+
+    case apiKeys.complete:
+      return `${baseURL}/server/auto/${API_VERSION}/complete`;
+
+    case webViewApiKeys.privacy_EN:
+      return `${FINICITY_BASE_URL}/privacy`;
+
+    case webViewApiKeys.privacy_ES:
+      return `${FINICITY_BASE_URL}/privacy/es/`;
+
+    case webViewApiKeys.termsOfUse_EN:
+      return `${CONNECT_BASE_URL}/assets/html/connect-eula.html`;
+
+    case webViewApiKeys.termsOfUse_ES:
+      return `${CONNECT_BASE_URL}/assets/html/connect-eula_es.html`;
+
     default:
       return null;
   }
@@ -29,13 +45,19 @@ const DEFAULT_HEADERS = {
 export const requestHeaders = (key, state) => {
   let headers = { ...DEFAULT_HEADERS };
 
-  if (key === apiKeys.authenticateUser) {
-    headers = {
-      ...headers,
-      'Finicity-App-Key': state.user?.data?.appKey, // temp changes
-      'Finicity-App-Token': state.user?.data?.appToken // temp changes
-    };
+  switch (key) {
+    case apiKeys.termsAndPolicies:
+    case apiKeys.complete:
+      headers = {
+        ...headers,
+        authorization: `Bearer ${state.user?.data?.token}`
+      };
+      break;
+
+    default:
+      break;
   }
+
   return headers;
 };
 
