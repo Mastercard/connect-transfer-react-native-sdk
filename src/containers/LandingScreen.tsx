@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { setUrlData } from '../redux/slices/authenticationSlice';
 import { extractUrlData } from '../utility/utils';
+import SecuredBy from '../components/SecuredBy';
 
 interface ConnectTransferProps {
   url: string; // Partner-sent URL
@@ -25,6 +26,7 @@ const LandingScreen: React.FC<ConnectTransferProps> = ({ url, navigation }) => {
       <ScrollView bounces={false}>
         <Text style={styles.text}>Landing Screen</Text>
       </ScrollView>
+      <SecuredBy />
     </SafeAreaView>
   );
 };
