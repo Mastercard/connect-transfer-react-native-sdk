@@ -2,7 +2,7 @@ import { Text, TouchableOpacity } from 'react-native';
 
 import { MCButtonStyle as styles } from './Styles';
 
-const MCButton = props => {
+const MAButton = props => {
   const { text, onPress, style, textStyle } = props;
 
   return (
@@ -12,4 +12,4 @@ const MCButton = props => {
   );
 };
 
-export default MCButton;
+export default MAButton;
