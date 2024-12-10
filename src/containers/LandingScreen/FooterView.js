@@ -1,0 +1,42 @@
+import { Image, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+
+import SecuredBy from '../../components/SecuredBy';
+import MAButton from '../../components/MAButton';
+import LinkIcon from '../../assets/linkIcon.png';
+import MAAttributedText from '../../components/MAAttributedText';
+import { LandingScreenFooterStyle as styles } from './Styles';
+
+const FooterView = ({ navigation }) => {
+  const { t } = useTranslation();
+
+  return (
+    <View style={styles.footerContainer}>
+      <MAAttributedText
+        text={`${t('LandingPageTermsAndConditionsInfoText')} `}
+        textStyle={styles.footerText}
+        styledTexts={[
+          {
+            text: t('NextText'),
+            style: styles.footerHighlight
+          },
+          {
+            text: t('TermsAndConditionsText'),
+            style: styles.footerLink,
+            onPress: () => navigation.navigate('TermsScreen')
+          },
+          {
+            text: t('PrivacyNoticeText'),
+            style: styles.footerLink,
+            onPress: () => navigation.navigate('PrivacyScreen')
+          }
+        ]}
+        component={<Image source={LinkIcon} style={styles.linkIcon} />}
+      />
+      <MAButton text={t('NextText')} style={styles.button} onPress={() => {}} />
+      <SecuredBy />
+    </View>
+  );
+};
+
+export default FooterView;

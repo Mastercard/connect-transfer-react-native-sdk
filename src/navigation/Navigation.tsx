@@ -1,7 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import LandingScreen from '../containers/LandingScreen';
+import LandingScreen from '../containers/LandingScreen/LandingScreen';
 import LoadingScreen from '../containers/LoadingScreen';
 import ErrorScreen from '../containers/ErrorScreen';
 
