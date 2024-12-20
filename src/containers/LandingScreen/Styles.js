@@ -32,8 +32,8 @@ export const LandingScreenScrollableViewStyle = StyleSheet.create({
   title: {
     fontSize: 23,
     fontWeight: 'bold',
-    alignSelf: 'center',
-    marginTop: 60,
+    textAlign: 'left',
+    marginTop: 50,
     lineHeight: 32,
     color: '#141413'
   },
@@ -88,7 +88,8 @@ export const LandingScreenScrollableViewStyle = StyleSheet.create({
   disclaimerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 16
+    marginHorizontal: 16,
+    justifyContent: 'center'
   },
   disclaimerText: {
     fontSize: 11,

@@ -7,12 +7,18 @@ import store from './src/redux/store';
 import i18next from './src/locale/i18n';
 import Navigation from './src/navigation/Navigation';
 
-const App: React.FC = () => (
-  <I18nextProvider i18n={i18next}>
-    <Provider store={store}>
-      <Navigation />
-    </Provider>
-  </I18nextProvider>
-);
+interface ConnectTransferProps {
+  url: string; // Partner-provided URL
+}
 
-AppRegistry.registerComponent('ConnectTransferReactNativeSdk', () => App);
+const ConnectTransfer: React.FC<ConnectTransferProps> = ({ url }) => {
+  return (
+    <I18nextProvider i18n={i18next}>
+      <Provider store={store}>
+        <Navigation url={url} />
+      </Provider>
+    </I18nextProvider>
+  );
+};
+
+AppRegistry.registerComponent('ConnectTransferReactNativeSdk', () => ConnectTransfer);
