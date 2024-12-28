@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { apiKeys, webViewApiKeys } from './apiKeys';
+import { API_KEYS, WEBPAGE_API_KEYS } from './apiKeys';
 
 const FINICITY_BASE_URL = 'https://www.finicity.com/';
 const CONNECT_BASE_URL = 'https://connect2.finicity.com';
@@ -8,28 +8,28 @@ const API_VERSION = 'v2';
 
 // Generate route based on the provided key
 export const generateRoute = (key, state) => {
-  const { baseURL, queryParams } = state.user;
+  const { baseURL = '', queryParams = '' } = state?.user || {};
 
   switch (key) {
-    case apiKeys.authenticateUser:
+    case API_KEYS.authenticateUser:
       return `${baseURL}/server/authenticate/${API_VERSION}/transfer/deposit-switch${queryParams}`;
 
-    case apiKeys.termsAndPolicies:
+    case API_KEYS.termsAndPolicies:
       return `${baseURL}/server/terms-and-policies`;
 
-    case apiKeys.complete:
+    case API_KEYS.complete:
       return `${baseURL}/server/auto/${API_VERSION}/complete`;
 
-    case webViewApiKeys.privacy_EN:
+    case WEBPAGE_API_KEYS.privacy_EN:
       return `${FINICITY_BASE_URL}/privacy`;
 
-    case webViewApiKeys.privacy_ES:
+    case WEBPAGE_API_KEYS.privacy_ES:
       return `${FINICITY_BASE_URL}/privacy/es/`;
 
-    case webViewApiKeys.termsOfUse_EN:
+    case WEBPAGE_API_KEYS.termsOfUse_EN:
       return `${CONNECT_BASE_URL}/assets/html/connect-eula.html`;
 
-    case webViewApiKeys.termsOfUse_ES:
+    case WEBPAGE_API_KEYS.termsOfUse_ES:
       return `${CONNECT_BASE_URL}/assets/html/connect-eula_es.html`;
 
     default:
@@ -46,8 +46,8 @@ export const requestHeaders = (key, state) => {
   let headers = { ...DEFAULT_HEADERS };
 
   switch (key) {
-    case apiKeys.termsAndPolicies:
-    case apiKeys.complete:
+    case API_KEYS.termsAndPolicies:
+    case API_KEYS.complete:
       headers = {
         ...headers,
         authorization: `Bearer ${state.user?.data?.token}`

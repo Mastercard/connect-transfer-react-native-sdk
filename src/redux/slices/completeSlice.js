@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { createApiActions } from '../../services/api/routes';
-import { apiKeys } from '../../services/api/apiKeys';
+import { API_KEYS } from '../../services/api/apiKeys';
 import { handleAsyncActions } from './asyncHelper';
 
 const initialState = {
@@ -10,7 +10,7 @@ const initialState = {
   error: null
 };
 
-export const complete = createApiActions(apiKeys.complete);
+export const complete = createApiActions(API_KEYS.complete);
 
 const completeSlice = createSlice({
   name: 'complete',
