@@ -39,8 +39,13 @@ export const MCButtonStyle = StyleSheet.create({
     fontSize: 18,
     color: '#FFFFFF',
     fontWeight: 'bold',
-
     lineHeight: 24,
     letterSpacing: 0.32
+  }
+});
+
+export const CrossDismissStyle = StyleSheet.create({
+  crossIcon: {
+    alignSelf: 'flex-end'
   }
 });

@@ -1,21 +1,18 @@
 import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { setUrlData } from '../../redux/slices/authenticationSlice';
 import { extractUrlData } from '../../utility/utils';
 import { LandingScreenStyle as styles } from './Styles';
 import ScrollableView from './ScrollableView';
 import FooterView from './FooterView';
+import { LandingScreenProps } from '../../navigation/types';
+import { RootState } from '../../redux/store';
 
-interface ConnectTransferProps {
-  url: string; // Partner-sent URL
-  navigation: any;
-}
-
-const LandingScreen: React.FC<ConnectTransferProps> = ({ url, navigation }) => {
+const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch();
+  const url = useSelector((state: RootState) => state.user.url);
 
   useEffect(() => {
     if (url) {

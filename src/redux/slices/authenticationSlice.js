@@ -7,6 +7,7 @@ import { handleAsyncActions } from './asyncHelper';
 const EN_US = 'en-US';
 
 const initialState = {
+  url: '',
   baseURL: '',
   queryParams: '',
   queryParamsObject: {},
@@ -22,6 +23,9 @@ const authenticationSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setUrl: (state, action) => {
+      state.url = action.payload;
+    },
     setUrlData: (state, action) => {
       const { baseURL, queryParams, queryParamsObject } = action.payload;
 
@@ -36,5 +40,5 @@ const authenticationSlice = createSlice({
   }
 });
 
-export const { setUrlData } = authenticationSlice.actions;
+export const { setUrl, setUrlData } = authenticationSlice.actions;
 export default authenticationSlice.reducer;

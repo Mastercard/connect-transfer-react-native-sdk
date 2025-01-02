@@ -5,6 +5,7 @@ import MAAttributedText from '../../components/MAAttributedText';
 import { LandingScreenScrollableViewStyle as styles } from './Styles';
 
 import Lock from '../../assets/lock.png';
+import CrossDismiss from '../../components/CrossDismiss';
 
 const ScrollableView = () => {
   const { t } = useTranslation();
@@ -13,6 +14,17 @@ const ScrollableView = () => {
     { number: '1', text: t('LandingPageInstructionFirstStepText') },
     { number: '2', text: t('LandingPageInstructionSecondStepText') },
     { number: '3', text: t('LandingPageInstructionThirdStepText') }
+  ];
+
+  const STYLED_TEXT = [
+    {
+      text: t('FinicityMastercardCompanyText'),
+      style: styles.boldText
+    },
+    {
+      text: t('Atomic'),
+      style: styles.boldText
+    }
   ];
 
   const StepItem = ({ number, text }) => (
@@ -45,22 +57,16 @@ const ScrollableView = () => {
     </View>
   );
 
+  const onCrossPress = () => {};
+
   return (
     <ScrollView bounces={false} style={styles.scrollView}>
+      <CrossDismiss onCrossPress={onCrossPress} />
       <Text style={styles.title}>{t('LandingPageTitle')}</Text>
       <MAAttributedText
         text={t('LandingPageSubtitle')}
         textStyle={styles.subtitle}
-        styledTexts={[
-          {
-            text: t('FinicityMastercardCompanyText'),
-            style: styles.boldText
-          },
-          {
-            text: t('Atomic'),
-            style: styles.boldText
-          }
-        ]}
+        styledTexts={STYLED_TEXT}
       />
       <DirectDepositInfo />
     </ScrollView>
