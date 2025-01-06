@@ -1,4 +1,8 @@
 import 'react-native-url-polyfill/auto';
+import { InAppBrowser } from 'react-native-inappbrowser-reborn';
+
+import { generateRoute } from '../services/api/routes';
+import { WEBPAGE_API_KEYS } from '../services/api/apiKeys';
 
 /**
  * Extracts base URL, query parameters string, and query parameters as an object from a given partner URL.
@@ -61,4 +65,29 @@ export const formatCurrentDateTime = (): string => {
   const formattedDate = date.toISOString().replace(/\.\d{3}Z$/, 'Z');
 
   return formattedDate;
+};
+
+/**
+ * Generate the URL based on the current app language and the type of webpage (Terms or Privacy).
+ * @param {string} language - The current app language ('en' or 'es').
+ * @param {string} type - The type of page ('termsOfUse' or 'privacyPolicy').
+ * @returns {string} - The URL for the specified page.
+ */
+export const getURL = (language: string, type: 'termsOfUse' | 'privacy'): string | null => {
+  const key = language === 'es' ? WEBPAGE_API_KEYS[`${type}_ES`] : WEBPAGE_API_KEYS[`${type}_EN`];
+  return generateRoute(key);
+};
+
+/**
+ * Open a URL in the InAppBrowser or fallback to the default browser.
+ * @param {string} url - The URL to open.
+ */
+export const openLink = async (url: string): Promise<void> => {
+  try {
+    if (await InAppBrowser.isAvailable()) {
+      await InAppBrowser.open(url);
+    }
+  } catch (error) {
+    console.error('Failed to open link:', error);
+  }
 };

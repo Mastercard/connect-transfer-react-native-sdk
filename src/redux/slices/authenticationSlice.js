@@ -1,23 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { createApiActions } from '../../services/api/routes';
-import { apiKeys } from '../../services/api/apiKeys';
+import { API_KEYS } from '../../services/api/apiKeys';
 import { handleAsyncActions } from './asyncHelper';
 
-const EN_US = 'en-US';
+const EN = 'en';
 
 const initialState = {
   url: '',
   baseURL: '',
   queryParams: '',
   queryParamsObject: {},
-  language: EN_US, // Default language
+  language: EN, // Default language
   loading: false,
   data: null,
   error: null
 };
 
-export const authenticateUser = createApiActions(apiKeys.authenticateUser);
+export const authenticateUser = createApiActions(API_KEYS.authenticateUser);
 
 const authenticationSlice = createSlice({
   name: 'user',
@@ -32,7 +32,7 @@ const authenticationSlice = createSlice({
       state.baseURL = baseURL;
       state.queryParams = queryParams;
       state.queryParamsObject = queryParamsObject;
-      state.language = queryParamsObject?.language || EN_US;
+      state.language = queryParamsObject?.language || EN;
     }
   },
   extraReducers: builder => {

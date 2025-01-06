@@ -1,10 +1,10 @@
-export const apiKeys = {
+export const API_KEYS = {
   authenticateUser: 'authenticationSlice/authenticateUser',
   termsAndPolicies: 'termsAndPoliciesSlice/termsAndPolicies',
   complete: 'completeSlice/complete'
 };
 
-export const webViewApiKeys = {
+export const WEBPAGE_API_KEYS = {
   privacy_EN: 'privacy_EN',
   privacy_ES: 'privacy_ES',
   termsOfUse_EN: 'termsOfUse_EN',

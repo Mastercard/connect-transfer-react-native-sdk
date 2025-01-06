@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { createApiActions } from '../../services/api/routes';
-import { apiKeys } from '../../services/api/apiKeys';
+import { API_KEYS } from '../../services/api/apiKeys';
 import { handleAsyncActions } from './asyncHelper';
 
 const initialState = {
@@ -10,7 +10,7 @@ const initialState = {
   error: null
 };
 
-export const termsAndPolicies = createApiActions(apiKeys.termsAndPolicies);
+export const termsAndPolicies = createApiActions(API_KEYS.termsAndPolicies);
 
 const termsAndPoliciesSlice = createSlice({
   name: 'termsAndPolicies',
