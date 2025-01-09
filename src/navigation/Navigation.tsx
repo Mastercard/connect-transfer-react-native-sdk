@@ -19,7 +19,7 @@ const AppNavigator = () => {
     >
       <Stack.Screen name="Landing" component={LandingScreen} />
       <Stack.Screen name="Loading" component={LoadingScreen} />
-      <Stack.Screen name="Error" component={ErrorScreen} />
+      <Stack.Screen name="Error" options={{ headerBackVisible: false }} component={ErrorScreen} />
     </Stack.Navigator>
   );
 };

@@ -37,7 +37,11 @@ const FooterView = ({ navigation }) => {
         ]}
         component={<Image source={LinkIcon} style={styles.linkIcon} />}
       />
-      <MAButton text={t('NextText')} style={styles.button} onPress={() => {}} />
+      <MAButton
+        text={t('NextText')}
+        style={styles.button}
+        onPress={() => navigation.navigate('Error')}
+      />
       <SecuredBy />
     </View>
   );
