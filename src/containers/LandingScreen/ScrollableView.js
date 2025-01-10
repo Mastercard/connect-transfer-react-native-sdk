@@ -3,9 +3,7 @@ import { useTranslation } from 'react-i18next';
 
 import MAAttributedText from '../../components/MAAttributedText';
 import { LandingScreenScrollableViewStyle as styles } from './Styles';
-
 import Lock from '../../assets/lock.png';
-import CrossDismiss from '../../components/CrossDismiss';
 
 const ScrollableView = () => {
   const { t } = useTranslation();
@@ -57,11 +55,8 @@ const ScrollableView = () => {
     </View>
   );
 
-  const onCrossPress = () => {};
-
   return (
     <ScrollView bounces={false} style={styles.scrollView}>
-      <CrossDismiss onCrossPress={onCrossPress} />
       <Text style={styles.title}>{t('LandingPageTitle')}</Text>
       <MAAttributedText
         text={t('LandingPageSubtitle')}

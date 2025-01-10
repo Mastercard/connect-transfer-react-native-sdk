@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
-import { useTranslation } from 'react-i18next';
 
 import { setUrlData } from '../../redux/slices/authenticationSlice';
 import { extractUrlData } from '../../utility/utils';
@@ -13,11 +12,17 @@ import { LandingScreenProps } from '../../navigation/types';
 import { AppDispatch, RootState } from '../../redux/store';
 import { API_KEYS } from '../../services/api/apiKeys';
 import { authenticateUser } from '../../services/api/authenticate';
+import ExitBottomSheet from './ExitBottomSheet';
+import CrossDismiss from '../../components/CrossDismiss';
 
 const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
 
+  const bottomSheetRef = useRef(null);
+
   const { url, language } = useSelector((state: RootState) => state.user);
+
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     if (language) {
@@ -33,16 +38,28 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
     }
   }, [url]);
 
-  function renderMainView() {
-    return (
-      <>
-        <ScrollableView />
-        <FooterView navigation={navigation} />
-      </>
-    );
-  }
+  const onCrossPress = () => {
+    setIsVisible(true);
+    bottomSheetRef.current?.expand();
+  };
 
-  return <SafeAreaView style={styles.safeAreaView}>{renderMainView()}</SafeAreaView>;
+  const onBottomSheetCrossPress = () => {
+    bottomSheetRef.current?.close();
+    setIsVisible(false);
+  };
+
+  const openBottomSheet = () => {
+    return <ExitBottomSheet bottomSheetRef={bottomSheetRef} onClose={onBottomSheetCrossPress} />;
+  };
+
+  return (
+    <SafeAreaView style={styles.safeAreaView}>
+      <CrossDismiss style={styles.cross} onCrossPress={onCrossPress} />
+      <ScrollableView />
+      <FooterView navigation={navigation} />
+      {isVisible && openBottomSheet()}
+    </SafeAreaView>
+  );
 };
 
 export default LandingScreen;

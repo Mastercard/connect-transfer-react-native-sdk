@@ -2,7 +2,7 @@
   "ErrorSubtitle": "We weren’t able to connect to your data.",
   "ErrorTitle": "Looks like there was an issue",
   "Exit": "Exit",
-  "ExitPopUpSubtitle": "If you exit, you return back to %@ and your financial data won’t be connected or saved.",
+  "ExitPopUpSubtitle": "If you exit, you return back to {{applicationName}} and your financial data won’t be connected or saved.",
   "ExitPopUpTitle": "Are you sure you want to exit?",
   "FinicityMastercardCompanyText": "Finicity, a Mastercard company",
   "FinicityPermissionText": "Finicity only uses data with your permission",
