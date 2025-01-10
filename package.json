@@ -5,10 +5,22 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
-  },
+    "build": "bob build",
+    "example": "yarn workspace connect-react-native-sdk-example",
+    "test": "jest ./src",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
+    "prettier-check": "prettier --check ./src/",
+    "release": "release-it",
+    "test:version_bump": "test $npm_package_version != $(npm show $npm_package_name version) || (echo 'Failing... You must bump package.json and package-lock.json' && exit 1)"
+  
+  }, 
+  "keywords": [
+    "Mastercard",
+    "Mastercard Open Banking Connect"
+  ],
   "dependencies": {
     "@react-navigation/native": "6.1.18",
     "@react-navigation/native-stack": "6.11.0",
