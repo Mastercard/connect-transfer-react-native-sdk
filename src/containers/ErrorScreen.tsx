@@ -3,23 +3,70 @@ import ErrorIcon from '../assets/errorIcon.png';
 import CrossDismiss from '../components/CrossDismiss';
 import SecuredBy from '../components/SecuredBy';
 import MAButton from '../components/MAButton';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 
-const ErrorScreen: React.FC = ({ navigation }) => {
-  const onCrossPress = () => {
+export enum ErrorScreenState {
+  exitState = 0,
+  retryState = 1
+}
+
+export interface ErrorScreenProps {
+  partnerName: string;
+  errorScreenState: ErrorScreenState;
+  onClose: () => void;
+  onTryAgain: () => void;
+  onReturnToPartner: () => void;
+}
+
+const ErrorScreen: React.FC<ErrorScreenProps> = ({ navigation, route }) => {
+  // const route = useRoute();
+  const { t } = useTranslation();
+  const { partnerName, errorScreenState, onClose, onTryAgain, onReturnToPartner } = route.params;
+
+  const onClosePress = () => {
+    if (onClose) {
+      onClose();
+    }
     navigation.goBack();
+  };
+
+  const onTryAgainPress = () => {
+    if (onTryAgain) {
+      onTryAgain();
+    }
+    navigation.goBack();
+  };
+
+  const onReturnToPartnerPressed = () => {
+    if (onReturnToPartner) {
+      onReturnToPartner();
+    }
   };
 
   return (
     <SafeAreaView style={styles.safeAreaViewStyle}>
       <View style={styles.errorViewStyle}>
-        <CrossDismiss onCrossPress={onCrossPress} />
-        <Text style={styles.titleTextStyle}>Looks like there was an issue</Text>
-        <Text style={styles.descriptionTextStyle}>We weren’t able to connect to your data.</Text>
+        {errorScreenState === ErrorScreenState.retryState && (
+          <CrossDismiss onCrossPress={onClosePress} />
+        )}
+        <Text style={styles.titleTextStyle}>{t('ErrorTitle')}</Text>
+        <Text style={styles.descriptionTextStyle}>{t('ErrorSubtitle')}</Text>
         <Image source={ErrorIcon} resizeMode="contain" style={styles.errorIconStyle} />
-
         <View style={styles.footerViewStyle}>
-          <MAButton text="Try Again" style={styles.tryAgainButtonStyle} />
-          <MAButton text="Return to Partner" style={styles.returnToPartnerStyle} />
+          <MAButton
+            text={errorScreenState === ErrorScreenState.retryState ? t('TryAgain') : t('Exit')}
+            style={styles.tryAgainButtonStyle}
+            onPress={onTryAgainPress}
+          />
+          {errorScreenState === ErrorScreenState.retryState && (
+            <MAButton
+              text={t('ReturnToPartner', { partnerName })}
+              style={styles.returnToPartnerButtonStyle}
+              textStyle={styles.returnToPartnerTextStyle}
+              onPress={onReturnToPartnerPressed}
+            />
+          )}
           <SecuredBy />
         </View>
       </View>
@@ -60,9 +107,18 @@ const styles = StyleSheet.create({
   tryAgainButtonStyle: {
     marginHorizontal: 0
   },
-  returnToPartnerStyle: {
+  returnToPartnerButtonStyle: {
     marginTop: -10,
-    marginHorizontal: 0
+    marginHorizontal: 0,
+    backgroundColor: '#FFF',
+    borderWidth: 1,
+    borderColor: '#CF4500',
+    paddingVertical: 12,
+    alignItems: 'center'
+  },
+  returnToPartnerTextStyle: {
+    color: '#CF4500',
+    fontWeight: 'bold'
   }
 });
 
