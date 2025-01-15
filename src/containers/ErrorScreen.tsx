@@ -4,7 +4,6 @@ import CrossDismiss from '../components/CrossDismiss';
 import SecuredBy from '../components/SecuredBy';
 import MAButton from '../components/MAButton';
 import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
 
 export enum ErrorScreenState {
   exitState = 0,
@@ -14,34 +13,23 @@ export enum ErrorScreenState {
 export interface ErrorScreenProps {
   partnerName: string;
   errorScreenState: ErrorScreenState;
-  onClose: () => void;
   onTryAgain: () => void;
-  onReturnToPartner: () => void;
 }
 
 const ErrorScreen: React.FC<ErrorScreenProps> = ({ navigation, route }) => {
-  // const route = useRoute();
   const { t } = useTranslation();
-  const { partnerName, errorScreenState, onClose, onTryAgain, onReturnToPartner } = route.params;
+  const { partnerName, errorScreenState } = route.params;
 
   const onClosePress = () => {
-    if (onClose) {
-      onClose();
-    }
     navigation.goBack();
   };
 
   const onTryAgainPress = () => {
-    if (onTryAgain) {
-      onTryAgain();
-    }
-    navigation.goBack();
+    onClosePress();
   };
 
   const onReturnToPartnerPressed = () => {
-    if (onReturnToPartner) {
-      onReturnToPartner();
-    }
+    onClosePress();
   };
 
   return (
