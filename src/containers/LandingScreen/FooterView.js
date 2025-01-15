@@ -9,7 +9,7 @@ import MAAttributedText from '../../components/MAAttributedText';
 import { LandingScreenFooterStyle as styles } from './LandingScreenStyles';
 import { getURL, openLink } from '../../utility/utils';
 
-const FooterView = ({ navigation }) => {
+const FooterView = ({ onNextPress }) => {
   const { t } = useTranslation();
 
   const language = useSelector(state => state.user.language);
@@ -37,7 +37,7 @@ const FooterView = ({ navigation }) => {
         ]}
         component={<Image source={LinkIcon} style={styles.linkIcon} />}
       />
-      <MAButton text={t('NextText')} style={styles.button} onPress={() => {}} />
+      <MAButton text={t('NextText')} style={styles.button} onPress={onNextPress} />
       <SecuredBy />
     </View>
   );
