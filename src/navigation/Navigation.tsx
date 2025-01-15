@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import LandingScreen from '../containers/LandingScreen/LandingScreen';
-import LoadingScreen from '../containers/LoadingScreen';
+import RedirectingScreen from '../containers/RedirectingScreen/RedirectingScreen';
 import ErrorScreen from '../containers/ErrorScreen';
 import { RootStackParamList } from './types';
 import { setUrl } from '../redux/slices/authenticationSlice';
@@ -18,7 +18,7 @@ const AppNavigator = () => {
       screenOptions={{ title: '', headerShadowVisible: false }}
     >
       <Stack.Screen name="Landing" component={LandingScreen} />
-      <Stack.Screen name="Loading" component={LoadingScreen} />
+      <Stack.Screen name="Redirecting" component={RedirectingScreen} />
       <Stack.Screen name="Error" options={{ headerBackVisible: false }} component={ErrorScreen} />
     </Stack.Navigator>
   );

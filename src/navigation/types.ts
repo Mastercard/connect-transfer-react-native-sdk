@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   Landing: undefined;
-  Loading: undefined;
+  Redirecting: undefined;
   Error: undefined;
 };
 
