@@ -20,7 +20,8 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
 
   const bottomSheetRef = useRef(null);
 
-  const { url, language } = useSelector((state: RootState) => state.user);
+  const { url, language, error } = useSelector((state: RootState) => state.user);
+  const { applicationName } = useSelector(state => state.user?.data?.data?.metadata) || '';
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -47,6 +48,18 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
     bottomSheetRef.current?.close();
     setIsVisible(false);
   };
+
+  const navigateToErrorScreen = navigation => {
+    navigation.navigate('Error', {
+      partnerName: applicationName
+    });
+  };
+
+  useEffect(() => {
+    if (error) {
+      navigateToErrorScreen(navigation);
+    }
+  }, [error, navigation, dispatch]);
 
   const openBottomSheet = () => {
     return <ExitBottomSheet bottomSheetRef={bottomSheetRef} onClose={onBottomSheetCrossPress} />;

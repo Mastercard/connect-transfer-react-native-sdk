@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import SecuredBy from '../../components/SecuredBy';
 import MAButton from '../../components/MAButton';
 import LinkIcon from '../../assets/linkIcon.png';
-import ErrorScreenState from '../ErrorScreen';
 import MAAttributedText from '../../components/MAAttributedText';
 import { LandingScreenFooterStyle as styles } from './Styles';
 import { getURL, openLink } from '../../utility/utils';

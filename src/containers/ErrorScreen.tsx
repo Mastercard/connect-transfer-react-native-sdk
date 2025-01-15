@@ -3,7 +3,9 @@ import ErrorIcon from '../assets/errorIcon.png';
 import CrossDismiss from '../components/CrossDismiss';
 import SecuredBy from '../components/SecuredBy';
 import MAButton from '../components/MAButton';
+import ExitBottomSheet from '../containers/LandingScreen/ExitBottomSheet';
 import { useTranslation } from 'react-i18next';
+import { useState, useRef } from 'react';
 
 export enum ErrorScreenState {
   exitState = 0,
@@ -18,18 +20,33 @@ export interface ErrorScreenProps {
 
 const ErrorScreen: React.FC<ErrorScreenProps> = ({ navigation, route }) => {
   const { t } = useTranslation();
-  const { partnerName, errorScreenState } = route.params;
+  const { partnerName, errorScreenState = ErrorScreenState.exitState } =
+    route.params as ErrorScreenProps;
+  const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
+  const bottomSheetRef = useRef(null);
 
   const onClosePress = () => {
-    navigation.goBack();
+    setIsBottomSheetVisible(true);
+    bottomSheetRef.current?.expand();
   };
 
   const onTryAgainPress = () => {
-    onClosePress();
+    navigation.goBack();
   };
 
-  const onReturnToPartnerPressed = () => {
-    onClosePress();
+  const onReturnToPartnerPressed = () => {};
+
+  const onExitPressed = () => {
+    onReturnToPartnerPressed();
+  };
+
+  const onBottomSheetCrossPress = () => {
+    bottomSheetRef.current?.close();
+    setIsBottomSheetVisible(false);
+  };
+
+  const openBottomSheet = () => {
+    return <ExitBottomSheet bottomSheetRef={bottomSheetRef} onClose={onBottomSheetCrossPress} />;
   };
 
   return (
@@ -45,7 +62,9 @@ const ErrorScreen: React.FC<ErrorScreenProps> = ({ navigation, route }) => {
           <MAButton
             text={errorScreenState === ErrorScreenState.retryState ? t('TryAgain') : t('Exit')}
             style={styles.tryAgainButtonStyle}
-            onPress={onTryAgainPress}
+            onPress={
+              errorScreenState === ErrorScreenState.retryState ? onTryAgainPress : onExitPressed
+            }
           />
           {errorScreenState === ErrorScreenState.retryState && (
             <MAButton
@@ -58,6 +77,7 @@ const ErrorScreen: React.FC<ErrorScreenProps> = ({ navigation, route }) => {
           <SecuredBy />
         </View>
       </View>
+      {isBottomSheetVisible && openBottomSheet()}
     </SafeAreaView>
   );
 };
