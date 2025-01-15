@@ -1,30 +1,22 @@
 import { SafeAreaView, Text, StyleSheet, Image, View, Platform } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { useState, useRef } from 'react';
+
 import ErrorIcon from '../../assets/errorIcon.png';
 import CrossDismiss from '../../components/CrossDismiss';
 import SecuredBy from '../../components/SecuredBy';
 import MAButton from '../../components/MAButton';
 import ExitBottomSheet from '../LandingScreen/ExitBottomSheet';
-import { useTranslation } from 'react-i18next';
-import { useState, useRef } from 'react';
 import { ErrorScreenStyles as styles } from './Styles';
-
-export enum ErrorScreenState {
-  exitState = 0,
-  retryState = 1
-}
-
-export interface ErrorScreenProps {
-  partnerName: string;
-  errorScreenState: ErrorScreenState;
-  onTryAgain: () => void;
-}
+import { ErrorScreenProps, ErrorScreenState } from '../types';
 
 const ErrorScreen: React.FC<ErrorScreenProps> = ({ navigation, route }) => {
   const { t } = useTranslation();
-  const { partnerName, errorScreenState = ErrorScreenState.exitState } =
-    route.params as ErrorScreenProps;
+  const { partnerName, errorScreenState = ErrorScreenState.exitState } = route.params;
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const bottomSheetRef = useRef(null);
+
+  console.log(partnerName);
 
   const onClosePress = () => {
     setIsBottomSheetVisible(true);

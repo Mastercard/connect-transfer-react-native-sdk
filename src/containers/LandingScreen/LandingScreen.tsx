@@ -8,7 +8,7 @@ import { extractUrlData } from '../../utility/utils';
 import { LandingScreenStyle as styles } from './Styles';
 import ScrollableView from './ScrollableView';
 import FooterView from './FooterView';
-import { LandingScreenProps } from '../../navigation/types';
+import { LandingScreenProps } from '../types';
 import { AppDispatch, RootState } from '../../redux/store';
 import { API_KEYS } from '../../services/api/apiKeys';
 import { authenticateUser } from '../../services/api/authenticate';
@@ -49,16 +49,13 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
     setIsVisible(false);
   };
 
-  const navigateToErrorScreen = navigation => {
-    navigation.navigate('Error', {
-      partnerName: applicationName
-    });
-  };
+  const navigateToErrorScreen = navigation => {};
 
   useEffect(() => {
-    if (error) {
-      navigateToErrorScreen(navigation);
-    }
+    error &&
+      navigation.navigate('Error', {
+        partnerName: applicationName
+      });
   }, [error, navigation, dispatch]);
 
   const openBottomSheet = () => {
