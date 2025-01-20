@@ -9,7 +9,6 @@ export type RootStackParamList = {
   Landing: undefined;
   Redirecting: undefined;
   Error: {
-    partnerName: string;
     errorScreenState: ErrorScreenState;
     onTryAgain: () => void;
   };

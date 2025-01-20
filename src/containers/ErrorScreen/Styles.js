@@ -1,39 +1,39 @@
 import { StyleSheet } from 'react-native';
 
 export const ErrorScreenStyles = StyleSheet.create({
-  errorViewStyle: {
+  errorView: {
     flex: 1,
     marginHorizontal: 24
   },
-  safeAreaViewStyle: {
+  safeAreaView: {
     flex: 1,
     backgroundColor: 'white'
   },
-  titleTextStyle: {
+  titleText: {
     marginTop: 30,
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: 'bold',
     color: '#3F4B58'
   },
-  descriptionTextStyle: {
+  descriptionText: {
     marginTop: 15,
     fontSize: 16,
-    fontWeight: '400',
+    fontWeight: 'normal',
     color: '#3F4B58'
   },
-  errorIconStyle: {
+  errorIcon: {
     marginTop: 40,
     alignSelf: 'center'
   },
-  footerViewStyle: {
+  footerView: {
     bottom: 0,
     position: 'absolute',
     width: '100%'
   },
-  tryAgainButtonStyle: {
+  tryAgainButton: {
     marginHorizontal: 0
   },
-  returnToPartnerButtonStyle: {
+  returnToPartnerButton: {
     marginTop: -10,
     marginHorizontal: 0,
     backgroundColor: '#FFF',
@@ -42,7 +42,7 @@ export const ErrorScreenStyles = StyleSheet.create({
     paddingVertical: 12,
     alignItems: 'center'
   },
-  returnToPartnerTextStyle: {
+  returnToPartnerText: {
     color: '#CF4500',
     fontWeight: 'bold'
   }

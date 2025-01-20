@@ -15,11 +15,11 @@ const AppNavigator = () => {
   return (
     <Stack.Navigator
       initialRouteName="Landing"
-      screenOptions={{ title: '', headerShadowVisible: false }}
+      screenOptions={{ title: '', headerShadowVisible: false, headerShown: false }}
     >
       <Stack.Screen name="Landing" component={LandingScreen} />
       <Stack.Screen name="Redirecting" component={RedirectingScreen} />
-      <Stack.Screen name="Error" options={{ headerBackVisible: false }} component={ErrorScreen} />
+      <Stack.Screen name="Error" component={ErrorScreen} />
     </Stack.Navigator>
   );
 };

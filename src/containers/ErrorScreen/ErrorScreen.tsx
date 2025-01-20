@@ -1,22 +1,26 @@
-import { SafeAreaView, Text, StyleSheet, Image, View, Platform } from 'react-native';
-import { useTranslation } from 'react-i18next';
 import { useState, useRef } from 'react';
+
+import { SafeAreaView, Text, Image, View } from 'react-native';
+
+import { useSelector } from 'react-redux';
+
+import { useTranslation } from 'react-i18next';
 
 import ErrorIcon from '../../assets/errorIcon.png';
 import CrossDismiss from '../../components/CrossDismiss';
 import SecuredBy from '../../components/SecuredBy';
 import MAButton from '../../components/MAButton';
-import ExitBottomSheet from '../LandingScreen/ExitBottomSheet';
+import ExitBottomSheet from '../../components/ExitBottomSheet';
 import { ErrorScreenStyles as styles } from './Styles';
 import { ErrorScreenProps, ErrorScreenState } from '../types';
 
 const ErrorScreen: React.FC<ErrorScreenProps> = ({ navigation, route }) => {
   const { t } = useTranslation();
-  const { partnerName, errorScreenState = ErrorScreenState.exitState } = route.params;
+  const { errorScreenState } = route.params;
   const [isBottomSheetVisible, setIsBottomSheetVisible] = useState(false);
   const bottomSheetRef = useRef(null);
 
-  console.log(partnerName);
+  const partnerName = useSelector(state => state.user?.data?.data?.metadata) || '';
 
   const onClosePress = () => {
     setIsBottomSheetVisible(true);
@@ -42,33 +46,39 @@ const ErrorScreen: React.FC<ErrorScreenProps> = ({ navigation, route }) => {
     return <ExitBottomSheet bottomSheetRef={bottomSheetRef} onClose={onBottomSheetCrossPress} />;
   };
 
-  return (
-    <SafeAreaView style={styles.safeAreaViewStyle}>
-      <View style={styles.errorViewStyle}>
-        {errorScreenState === ErrorScreenState.retryState && (
-          <CrossDismiss onCrossPress={onClosePress} />
-        )}
-        <Text style={styles.titleTextStyle}>{t('ErrorTitle')}</Text>
-        <Text style={styles.descriptionTextStyle}>{t('ErrorSubtitle')}</Text>
-        <Image source={ErrorIcon} resizeMode="contain" style={styles.errorIconStyle} />
-        <View style={styles.footerViewStyle}>
+  const isRetryState = errorScreenState === ErrorScreenState.retryState;
+
+  const ErrorScreenFooter = () => {
+    return (
+      <View style={styles.footerView}>
+        <MAButton
+          text={errorScreenState === ErrorScreenState.retryState ? t('TryAgain') : t('Exit')}
+          style={styles.tryAgainButton}
+          onPress={
+            errorScreenState === ErrorScreenState.retryState ? onTryAgainPress : onExitPressed
+          }
+        />
+        {isRetryState && (
           <MAButton
-            text={errorScreenState === ErrorScreenState.retryState ? t('TryAgain') : t('Exit')}
-            style={styles.tryAgainButtonStyle}
-            onPress={
-              errorScreenState === ErrorScreenState.retryState ? onTryAgainPress : onExitPressed
-            }
+            text={t('ReturnToPartner', { partnerName })}
+            style={styles.returnToPartnerButton}
+            textStyle={styles.returnToPartnerText}
+            onPress={onReturnToPartnerPressed}
           />
-          {errorScreenState === ErrorScreenState.retryState && (
-            <MAButton
-              text={t('ReturnToPartner', { partnerName })}
-              style={styles.returnToPartnerButtonStyle}
-              textStyle={styles.returnToPartnerTextStyle}
-              onPress={onReturnToPartnerPressed}
-            />
-          )}
-          <SecuredBy />
-        </View>
+        )}
+        <SecuredBy />
+      </View>
+    );
+  };
+
+  return (
+    <SafeAreaView style={styles.safeAreaView}>
+      <View style={styles.errorView}>
+        {isRetryState && <CrossDismiss onCrossPress={onClosePress} />}
+        <Text style={styles.titleText}>{t('ErrorTitle')}</Text>
+        <Text style={styles.descriptionText}>{t('ErrorSubtitle')}</Text>
+        <Image source={ErrorIcon} resizeMode="contain" style={styles.errorIcon} />
+        <ErrorScreenFooter />
       </View>
       {isBottomSheetVisible && openBottomSheet()}
     </SafeAreaView>

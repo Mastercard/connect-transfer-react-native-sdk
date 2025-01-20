@@ -12,8 +12,9 @@ import { LandingScreenProps } from '../types';
 import { AppDispatch, RootState } from '../../redux/store';
 import { API_KEYS } from '../../services/api/apiKeys';
 import { authenticateUser } from '../../services/api/authenticate';
-import ExitBottomSheet from './ExitBottomSheet';
+import ExitBottomSheet from '../../components/ExitBottomSheet';
 import CrossDismiss from '../../components/CrossDismiss';
+import { ErrorScreenState } from '../types';
 
 const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -21,7 +22,6 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   const bottomSheetRef = useRef(null);
 
   const { url, language, error } = useSelector((state: RootState) => state.user);
-  const { applicationName } = useSelector(state => state.user?.data?.data?.metadata) || '';
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -49,14 +49,9 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
     setIsVisible(false);
   };
 
-  const navigateToErrorScreen = navigation => {};
-
   useEffect(() => {
-    error &&
-      navigation.navigate('Error', {
-        partnerName: applicationName
-      });
-  }, [error, navigation, dispatch]);
+    error && navigation?.navigate?.('Error', { errorScreenState: ErrorScreenState.exitState });
+  }, [error]);
 
   const openBottomSheet = () => {
     return <ExitBottomSheet bottomSheetRef={bottomSheetRef} onClose={onBottomSheetCrossPress} />;

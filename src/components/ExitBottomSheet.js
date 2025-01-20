@@ -3,8 +3,8 @@ import { useTranslation } from 'react-i18next';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { useSelector } from 'react-redux';
 
-import CrossDismiss from '../../components/CrossDismiss';
-import MAButton from '../../components/MAButton';
+import CrossDismiss from './CrossDismiss';
+import MAButton from './MAButton';
 import { ExitBottomSheetStyle as styles } from './Styles';
 
 const ExitBottomSheet = ({ bottomSheetRef, onClose }) => {
