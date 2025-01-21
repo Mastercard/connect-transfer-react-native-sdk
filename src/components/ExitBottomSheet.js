@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import CrossDismiss from './CrossDismiss';
 import MAButton from './MAButton';
-import { ExitBottomSheetStyle as styles } from './Styles';
+import { ExitBottomSheetStyle as styles } from './ComponentStyles';
 
 const ExitBottomSheet = ({ bottomSheetRef, onClose }) => {
   const { t } = useTranslation();

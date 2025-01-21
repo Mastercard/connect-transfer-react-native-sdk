@@ -5,7 +5,7 @@ import i18next from 'i18next';
 
 import { setUrlData } from '../../redux/slices/authenticationSlice';
 import { extractUrlData } from '../../utility/utils';
-import { LandingScreenStyle as styles } from './Styles';
+import { LandingScreenStyle as styles } from './LandingScreenStyles';
 import ScrollableView from './ScrollableView';
 import FooterView from './FooterView';
 import { LandingScreenProps } from '../types';

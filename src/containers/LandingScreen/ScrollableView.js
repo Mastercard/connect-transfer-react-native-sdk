@@ -2,7 +2,7 @@ import { ScrollView, Text, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import MAAttributedText from '../../components/MAAttributedText';
-import { LandingScreenScrollableViewStyle as styles } from './Styles';
+import { LandingScreenScrollableViewStyle as styles } from './LandingScreenStyles';
 import Lock from '../../assets/lock.png';
 
 const ScrollableView = () => {
