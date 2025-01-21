@@ -47,7 +47,6 @@ export const CrossDismissStyle = StyleSheet.create({
   }
 });
 
-
 export const LoaderStyle = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -58,5 +57,50 @@ export const LoaderStyle = StyleSheet.create({
     borderRightColor: '#ffffff',
     borderBottomColor: '#ffffff',
     borderRadius: 40
+  }
+});
+
+export const ExitBottomSheetStyle = StyleSheet.create({
+  content: {
+    flex: 1,
+    marginTop: 20,
+    paddingBottom: 70,
+    marginHorizontal: 24
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
+  },
+  title: {
+    color: '#212B36',
+    fontSize: 22,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    lineHeight: 32
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#616F7D',
+    marginBottom: 30,
+    lineHeight: 24
+  },
+  exitButton: {
+    paddingVertical: 12,
+    alignItems: 'center',
+    marginBottom: 20
+  },
+  exitButtonText: {
+    color: '#FFF',
+    fontWeight: 'bold'
+  },
+  stayButton: {
+    backgroundColor: '#FFF',
+    borderWidth: 1,
+    borderColor: '#CF4500',
+    paddingVertical: 12,
+    alignItems: 'center'
+  },
+  stayButtonText: {
+    color: '#CF4500',
+    fontWeight: 'bold'
   }
 });

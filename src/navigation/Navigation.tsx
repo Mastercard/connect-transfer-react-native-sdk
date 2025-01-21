@@ -5,8 +5,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import LandingScreen from '../containers/LandingScreen/LandingScreen';
 import RedirectingScreen from '../containers/RedirectingScreen/RedirectingScreen';
-import ErrorScreen from '../containers/ErrorScreen';
-import { RootStackParamList } from './types';
+import ErrorScreen from '../containers/ErrorScreen/ErrorScreen';
+import { RootStackParamList } from '../containers/types';
 import { setUrl } from '../redux/slices/authenticationSlice';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

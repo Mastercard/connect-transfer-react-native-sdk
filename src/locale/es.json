@@ -18,7 +18,7 @@
   "NoStay": "No, continuar",
   "PrivacyNoticeText": "Aviso de privacidad",
   "RedirectingText": "Redirigiendo...",
-  "ReturnToPartner": "Volver a %@",
+  "ReturnToPartner": "Volver a {{partnerName}}",
   "SecuredByText": "Protegido por",
   "TermsAndConditionsText": "Términos de uso",
   "TryAgain": "Volver a intentarlo",

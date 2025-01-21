@@ -8,19 +8,20 @@ import { extractUrlData } from '../../utility/utils';
 import { LandingScreenStyle as styles } from './LandingScreenStyles';
 import ScrollableView from './ScrollableView';
 import FooterView from './FooterView';
-import { LandingScreenProps } from '../../navigation/types';
+import { LandingScreenProps } from '../types';
 import { AppDispatch, RootState } from '../../redux/store';
 import { API_KEYS } from '../../services/api/apiKeys';
 import { authenticateUser } from '../../services/api/authenticate';
-import ExitBottomSheet from './ExitBottomSheet';
+import ExitBottomSheet from '../../components/ExitBottomSheet';
 import CrossDismiss from '../../components/CrossDismiss';
+import { ErrorScreenState } from '../types';
 
 const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
 
   const bottomSheetRef = useRef(null);
 
-  const { url, language } = useSelector((state: RootState) => state.user);
+  const { url, language, error } = useSelector((state: RootState) => state.user);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -48,9 +49,13 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
     setIsVisible(false);
   };
 
-  const openBottomSheet = () => (
-    <ExitBottomSheet bottomSheetRef={bottomSheetRef} onClose={onBottomSheetCrossPress} />
-  );
+  useEffect(() => {
+    error && navigation?.navigate?.('Error', { errorScreenState: ErrorScreenState.exitState });
+  }, [error]);
+
+  const openBottomSheet = () => {
+    <ExitBottomSheet bottomSheetRef={bottomSheetRef} onClose={onBottomSheetCrossPress} />;
+  };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
