@@ -54,14 +54,14 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   }, [error]);
 
   const openBottomSheet = () => {
-    return <ExitBottomSheet bottomSheetRef={bottomSheetRef} onClose={onBottomSheetCrossPress} />;
+    <ExitBottomSheet bottomSheetRef={bottomSheetRef} onClose={onBottomSheetCrossPress} />;
   };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <CrossDismiss style={styles.cross} onCrossPress={onCrossPress} />
       <ScrollableView />
-      <FooterView navigation={navigation} />
+      <FooterView onNextPress={() => navigation?.navigate?.('Redirecting')} />
       {isVisible && openBottomSheet()}
     </SafeAreaView>
   );
