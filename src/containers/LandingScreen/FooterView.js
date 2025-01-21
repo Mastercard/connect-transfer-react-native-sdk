@@ -6,7 +6,7 @@ import SecuredBy from '../../components/SecuredBy';
 import MAButton from '../../components/MAButton';
 import LinkIcon from '../../assets/linkIcon.png';
 import MAAttributedText from '../../components/MAAttributedText';
-import { LandingScreenFooterStyle as styles } from './Styles';
+import { LandingScreenFooterStyle as styles } from './LandingScreenStyles';
 import { getURL, openLink } from '../../utility/utils';
 
 const FooterView = ({ navigation }) => {

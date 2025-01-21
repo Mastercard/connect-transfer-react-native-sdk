@@ -46,3 +46,17 @@ export const CrossDismissStyle = StyleSheet.create({
     alignSelf: 'flex-end'
   }
 });
+
+
+export const LoaderStyle = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  box: {
+    borderStyle: 'solid',
+    borderRightColor: '#ffffff',
+    borderBottomColor: '#ffffff',
+    borderRadius: 40
+  }
+});
