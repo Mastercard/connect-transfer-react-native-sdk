@@ -1,6 +1,6 @@
 import { Text, TouchableOpacity } from 'react-native';
 
-import { MAButtonStyle as styles } from './Styles';
+import { MAButtonStyle as styles } from './ComponentStyles';
 
 const MAButton = props => {
   const { text, onPress, style, textStyle } = props;
