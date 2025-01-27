@@ -23,17 +23,14 @@ export const SecuredByStyle = StyleSheet.create({
   logo: { resizeMode: 'contain' }
 });
 
-export const MCButtonStyle = StyleSheet.create({
+export const MAButtonStyle = StyleSheet.create({
   button: {
-    height: 48,
     height: 58,
     backgroundColor: '#CF4500',
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 24,
-    marginBottom: 24,
-    marginHorizontal: 24
+    marginBottom: 24
   },
   buttonText: {
     fontSize: 18,
@@ -47,5 +44,19 @@ export const MCButtonStyle = StyleSheet.create({
 export const CrossDismissStyle = StyleSheet.create({
   crossIcon: {
     alignSelf: 'flex-end'
+  }
+});
+
+
+export const LoaderStyle = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  box: {
+    borderStyle: 'solid',
+    borderRightColor: '#ffffff',
+    borderBottomColor: '#ffffff',
+    borderRadius: 40
   }
 });

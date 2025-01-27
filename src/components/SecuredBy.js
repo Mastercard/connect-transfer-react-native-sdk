@@ -1,7 +1,7 @@
 import { View, Text, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { SecuredByStyle as styles } from './Styles';
+import { SecuredByStyle as styles } from './ComponentStyles';
 import Logo from '../assets/logo.png';
 
 const SecuredBy = () => {
