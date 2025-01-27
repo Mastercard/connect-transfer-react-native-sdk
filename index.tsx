@@ -25,3 +25,5 @@ const ConnectTransfer: React.FC<ConnectTransferProps> = ({ url }) => {
 };
 
 AppRegistry.registerComponent('ConnectTransferReactNativeSdk', () => ConnectTransfer);
+
+export default ConnectTransfer;
