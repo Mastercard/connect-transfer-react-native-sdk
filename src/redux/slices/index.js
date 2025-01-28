@@ -7,5 +7,5 @@ import termsAndPoliciesSlice from './termsAndPoliciesSlice';
 export const rootReducer = combineReducers({
   user: authenticationSlice,
   termsAndPolicies: termsAndPoliciesSlice,
-  complete: completeSlice
+  complete: completeSlice,
 });

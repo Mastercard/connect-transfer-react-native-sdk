@@ -8,7 +8,7 @@ import { formatCurrentDateTime } from '../../utility/utils';
 const PARTNER = 'partner';
 const CONNECT_PDS = 'CONNECT_PDS';
 
-export const termsAndPolicies = key => {
+export const termsAndPolicies = (key) => {
   return createAsyncThunk(key, (_, { getState, rejectWithValue }) => {
     const state = getState();
     const url = generateRoute(key, state);
@@ -19,16 +19,16 @@ export const termsAndPolicies = key => {
       url,
       headers,
       data: getData(state.user.language),
-      method: METHODS.PUT
+      method: METHODS.PUT,
     })
-      .then(response => response)
-      .catch(error => {
+      .then((response) => response)
+      .catch((error) => {
         return rejectWithValue(error);
       });
   }).call();
 };
 
-export const getData = language => {
+export const getData = (language) => {
   const currentDateTime = formatCurrentDateTime();
 
   return {
@@ -36,6 +36,6 @@ export const getData = language => {
     workflow: CONNECT_PDS,
     language: language,
     termsAndConditionsAcceptedDate: currentDateTime,
-    privacyPolicyAcceptedDate: currentDateTime
+    privacyPolicyAcceptedDate: currentDateTime,
   };
 };

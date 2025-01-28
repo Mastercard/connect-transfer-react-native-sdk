@@ -4,11 +4,11 @@ import { rootReducer } from '../slices';
 
 const store = configureStore({
   reducer: rootReducer,
-  middleware: getDefaultMiddleware =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       // Disable the serializable check to allow non-serializable data in actions/state
-      serializableCheck: false
-    })
+      serializableCheck: false,
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

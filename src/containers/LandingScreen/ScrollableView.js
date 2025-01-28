@@ -11,18 +11,18 @@ const ScrollableView = () => {
   const STEPS = [
     { number: '1', text: t('LandingPageInstructionFirstStepText') },
     { number: '2', text: t('LandingPageInstructionSecondStepText') },
-    { number: '3', text: t('LandingPageInstructionThirdStepText') }
+    { number: '3', text: t('LandingPageInstructionThirdStepText') },
   ];
 
   const STYLED_TEXT = [
     {
       text: t('FinicityMastercardCompanyText'),
-      style: styles.boldText
+      style: styles.boldText,
     },
     {
       text: t('Atomic'),
-      style: styles.boldText
-    }
+      style: styles.boldText,
+    },
   ];
 
   const StepItem = ({ number, text }) => (
@@ -34,7 +34,9 @@ const ScrollableView = () => {
 
   const StepsSection = () => (
     <View style={styles.stepsContainer}>
-      <Text style={styles.headerText}>{`${t('LandingPageStepInstructionText')}:`}</Text>
+      <Text style={styles.headerText}>{`${t(
+        'LandingPageStepInstructionText'
+      )}:`}</Text>
       {STEPS.map((step, index) => (
         <StepItem key={index} number={step.number} text={step.text} />
       ))}

@@ -16,7 +16,11 @@ import { WEBPAGE_API_KEYS } from '../services/api/apiKeys';
  */
 export const extractUrlData = (
   url: string = ''
-): { baseURL: string; queryParams: string; queryParamsObject: Record<string, string> } => {
+): {
+  baseURL: string;
+  queryParams: string;
+  queryParamsObject: Record<string, string>;
+} => {
   const defaultValues = { baseURL: '', queryParams: '', queryParamsObject: {} };
 
   try {
@@ -73,8 +77,14 @@ export const formatCurrentDateTime = (): string => {
  * @param {string} type - The type of page ('termsOfUse' or 'privacyPolicy').
  * @returns {string} - The URL for the specified page.
  */
-export const getURL = (language: string, type: 'termsOfUse' | 'privacy'): string | null => {
-  const key = language === 'es' ? WEBPAGE_API_KEYS[`${type}_ES`] : WEBPAGE_API_KEYS[`${type}_EN`];
+export const getURL = (
+  language: string,
+  type: 'termsOfUse' | 'privacy'
+): string | null => {
+  const key =
+    language === 'es'
+      ? WEBPAGE_API_KEYS[`${type}_ES`]
+      : WEBPAGE_API_KEYS[`${type}_EN`];
   return generateRoute(key);
 };
 

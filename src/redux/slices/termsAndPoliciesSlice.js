@@ -7,7 +7,7 @@ import { handleAsyncActions } from './asyncHelper';
 const initialState = {
   loading: false,
   data: null,
-  error: null
+  error: null,
 };
 
 export const termsAndPolicies = createApiActions(API_KEYS.termsAndPolicies);
@@ -15,9 +15,9 @@ export const termsAndPolicies = createApiActions(API_KEYS.termsAndPolicies);
 const termsAndPoliciesSlice = createSlice({
   name: 'termsAndPolicies',
   initialState,
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     handleAsyncActions(builder, termsAndPolicies);
-  }
+  },
 });
 
 export default termsAndPoliciesSlice.reducer;

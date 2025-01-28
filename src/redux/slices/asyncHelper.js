@@ -7,7 +7,7 @@
  */
 export const handleAsyncActions = (builder, action) => {
   builder
-    .addCase(action.pending, state => {
+    .addCase(action.pending, (state) => {
       state.loading = true;
       state.data = null;
       state.error = null;

@@ -9,14 +9,14 @@ i18next
   .init({
     resources: {
       en: { translation: en },
-      es: { translation: es }
+      es: { translation: es },
     },
     lng: 'en', // default language
     fallbackLng: 'en', // fallback language
     interpolation: {
-      escapeValue: false // Set to false to render translation values as-is without escaping
+      escapeValue: false, // Set to false to render translation values as-is without escaping
     },
-    compatibilityJSON: 'v3' // Use v3 compatibility mode
+    compatibilityJSON: 'v3', // Use v3 compatibility mode
   });
 
 export default i18next;

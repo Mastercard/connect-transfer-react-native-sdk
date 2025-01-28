@@ -2,7 +2,7 @@ export const TIMEOUT = 60 * 1000; // request timeout TBD
 
 export const HEADERS = {
   'Content-Type': 'application/json',
-  Accept: 'application/json'
+  'Accept': 'application/json',
 };
 
 export const METHODS = {
@@ -10,7 +10,7 @@ export const METHODS = {
   POST: 'POST',
   PUT: 'PUT',
   DELETE: 'DELETE',
-  OPTIONS: 'OPTIONS'
+  OPTIONS: 'OPTIONS',
 };
 
 export const ERROR_CODES = {
@@ -21,10 +21,10 @@ export const ERROR_CODES = {
   PASSWORD_FIELD_EMPTY: 1001,
   NOT_MODIFIED: 304,
   SERVICE_UNAVAILABLE: 503,
-  NO_NETWORK: 'ERR_NETWORK'
+  NO_NETWORK: 'ERR_NETWORK',
 };
 
 export const REQUEST_HEADER_TYPE = {
   HTML: 'html',
-  JSON: 'json'
+  JSON: 'json',
 };

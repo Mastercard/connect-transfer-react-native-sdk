@@ -18,7 +18,10 @@ import CrossDismiss from '../../components/CrossDismiss';
 const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const bottomSheetRef = useRef<{ expand: () => void; close: () => void } | null>(null);
+  const bottomSheetRef = useRef<{
+    expand: () => void;
+    close: () => void;
+  } | null>(null);
 
   const { url, language } = useSelector((state: RootState) => state.user);
 
@@ -49,7 +52,10 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   };
 
   const openBottomSheet = () => (
-    <ExitBottomSheet bottomSheetRef={bottomSheetRef} onClose={onBottomSheetCrossPress} />
+    <ExitBottomSheet
+      bottomSheetRef={bottomSheetRef}
+      onClose={onBottomSheetCrossPress}
+    />
   );
 
   return (

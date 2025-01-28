@@ -14,7 +14,7 @@ const initialState = {
   language: EN, // Default language
   loading: false,
   data: { data: null },
-  error: null
+  error: null,
 };
 
 export const authenticateUser = createApiActions(API_KEYS.authenticateUser);
@@ -33,11 +33,11 @@ const authenticationSlice = createSlice({
       state.queryParams = queryParams;
       state.queryParamsObject = queryParamsObject;
       state.language = queryParamsObject?.language || EN;
-    }
+    },
   },
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     handleAsyncActions(builder, authenticateUser);
-  }
+  },
 });
 
 export const { setUrl, setUrlData } = authenticationSlice.actions;

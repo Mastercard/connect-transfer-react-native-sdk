@@ -12,7 +12,7 @@ import { getURL, openLink } from '../../utility/utils';
 const FooterView = ({ onNextPress }) => {
   const { t } = useTranslation();
 
-  const language = useSelector(state => state.user.language);
+  const language = useSelector((state) => state.user.language);
 
   return (
     <View style={styles.footerContainer}>
@@ -22,22 +22,26 @@ const FooterView = ({ onNextPress }) => {
         styledTexts={[
           {
             text: t('NextText'),
-            style: styles.footerHighlight
+            style: styles.footerHighlight,
           },
           {
             text: t('TermsAndConditionsText'),
             style: styles.footerLink,
-            onPress: () => openLink(getURL(language, 'termsOfUse'))
+            onPress: () => openLink(getURL(language, 'termsOfUse')),
           },
           {
             text: t('PrivacyNoticeText'),
             style: styles.footerLink,
-            onPress: () => openLink(getURL(language, 'privacy'))
-          }
+            onPress: () => openLink(getURL(language, 'privacy')),
+          },
         ]}
         component={<Image source={LinkIcon} style={styles.linkIcon} />}
       />
-      <MAButton text={t('NextText')} style={styles.button} onPress={onNextPress} />
+      <MAButton
+        text={t('NextText')}
+        style={styles.button}
+        onPress={onNextPress}
+      />
       <SecuredBy />
     </View>
   );

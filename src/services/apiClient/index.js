@@ -5,14 +5,14 @@ import { requestHeaders } from '../api/routes';
 
 // options can contain the following arguments:
 // key, url, data, headers, method, timeout etc
-export const api = options => {
+export const api = (options) => {
   const {
     key,
     url,
     data,
     headers = requestHeaders(key, state),
     method = METHODS.GET,
-    timeout = TIMEOUT
+    timeout = TIMEOUT,
   } = options;
   const dataOrParams = method === METHODS.GET ? 'params' : 'data';
 
@@ -21,10 +21,10 @@ export const api = options => {
     method,
     headers,
     [dataOrParams]: data,
-    timeout
+    timeout,
   })
-    .then(response => response.data)
-    .catch(error => error && Promise.reject(error));
+    .then((response) => response.data)
+    .catch((error) => error && Promise.reject(error));
 };
 
 export default api;

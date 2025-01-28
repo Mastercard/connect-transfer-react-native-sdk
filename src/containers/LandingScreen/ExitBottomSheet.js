@@ -10,9 +10,12 @@ import { ExitBottomSheetStyle as styles } from './LandingScreenStyles';
 const ExitBottomSheet = ({ bottomSheetRef, onClose }) => {
   const { t } = useTranslation();
 
-  const { applicationName } = useSelector(state => state.user?.data?.data?.metadata) || '';
+  const { applicationName } =
+    useSelector((state) => state.user?.data?.data?.metadata) || '';
 
-  const renderBackdropComponent = style => <View style={[style, styles.backdrop]} />;
+  const renderBackdropComponent = (style) => (
+    <View style={[style, styles.backdrop]} />
+  );
   return (
     <BottomSheet
       handleComponent={null}
@@ -23,8 +26,14 @@ const ExitBottomSheet = ({ bottomSheetRef, onClose }) => {
       <BottomSheetView style={styles.content}>
         <CrossDismiss onCrossPress={onClose} />
         <Text style={styles.title}>{t('ExitPopUpTitle')}</Text>
-        <Text style={styles.subtitle}>{t('ExitPopUpSubtitle', { applicationName })}</Text>
-        <MAButton text={t('YesExit')} style={styles.exitButton} onPress={() => {}} />
+        <Text style={styles.subtitle}>
+          {t('ExitPopUpSubtitle', { applicationName })}
+        </Text>
+        <MAButton
+          text={t('YesExit')}
+          style={styles.exitButton}
+          onPress={() => {}}
+        />
         <MAButton
           text={t('NoStay')}
           style={styles.stayButton}

@@ -6,4 +6,7 @@ export type RootStackParamList = {
   Error: undefined;
 };
 
-export type LandingScreenProps = NativeStackScreenProps<RootStackParamList, 'Landing'>;
+export type LandingScreenProps = NativeStackScreenProps<
+  RootStackParamList,
+  'Landing'
+>;
