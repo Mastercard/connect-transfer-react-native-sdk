@@ -39,7 +39,7 @@ export const generateRoute = (key, state) => {
 
 const DEFAULT_HEADERS = {
   'Content-Type': 'application/json',
-  'Accept': 'application/json',
+  Accept: 'application/json'
 };
 
 export const requestHeaders = (key, state) => {
@@ -50,7 +50,7 @@ export const requestHeaders = (key, state) => {
     case API_KEYS.complete:
       headers = {
         ...headers,
-        authorization: `Bearer ${state.user?.data?.token}`,
+        authorization: `Bearer ${state.user?.data?.token}`
       };
       break;
 
@@ -61,4 +61,4 @@ export const requestHeaders = (key, state) => {
   return headers;
 };
 
-export const createApiActions = (key) => createAsyncThunk(key);
+export const createApiActions = key => createAsyncThunk(key);

@@ -4,7 +4,7 @@ import api from '../apiClient';
 import { generateRoute, requestHeaders } from './routes';
 import { METHODS } from '../apiClient/constants';
 
-export const complete = (key) => {
+export const complete = key => {
   return createAsyncThunk(key, (_, { getState, rejectWithValue }) => {
     const state = getState();
     const url = generateRoute(key, state);
@@ -16,10 +16,10 @@ export const complete = (key) => {
       url,
       headers,
       data,
-      method: METHODS.POST,
+      method: METHODS.POST
     })
-      .then((response) => response)
-      .catch((error) => {
+      .then(response => response)
+      .catch(error => {
         return rejectWithValue(error);
       });
   }).call();

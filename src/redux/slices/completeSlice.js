@@ -7,7 +7,7 @@ import { handleAsyncActions } from './asyncHelper';
 const initialState = {
   loading: false,
   data: null,
-  error: null,
+  error: null
 };
 
 export const complete = createApiActions(API_KEYS.complete);
@@ -15,9 +15,9 @@ export const complete = createApiActions(API_KEYS.complete);
 const completeSlice = createSlice({
   name: 'complete',
   initialState,
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     handleAsyncActions(builder, complete);
-  },
+  }
 });
 
 export default completeSlice.reducer;

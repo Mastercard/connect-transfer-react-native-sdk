@@ -52,10 +52,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   };
 
   const openBottomSheet = () => (
-    <ExitBottomSheet
-      bottomSheetRef={bottomSheetRef}
-      onClose={onBottomSheetCrossPress}
-    />
+    <ExitBottomSheet bottomSheetRef={bottomSheetRef} onClose={onBottomSheetCrossPress} />
   );
 
   return (

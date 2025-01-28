@@ -77,14 +77,8 @@ export const formatCurrentDateTime = (): string => {
  * @param {string} type - The type of page ('termsOfUse' or 'privacyPolicy').
  * @returns {string} - The URL for the specified page.
  */
-export const getURL = (
-  language: string,
-  type: 'termsOfUse' | 'privacy'
-): string | null => {
-  const key =
-    language === 'es'
-      ? WEBPAGE_API_KEYS[`${type}_ES`]
-      : WEBPAGE_API_KEYS[`${type}_EN`];
+export const getURL = (language: string, type: 'termsOfUse' | 'privacy'): string | null => {
+  const key = language === 'es' ? WEBPAGE_API_KEYS[`${type}_ES`] : WEBPAGE_API_KEYS[`${type}_EN`];
   return generateRoute(key);
 };
 

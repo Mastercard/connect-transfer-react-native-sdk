@@ -13,12 +13,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   text: {
     fontSize: 24,
-    fontWeight: '400',
-  },
+    fontWeight: '400'
+  }
 });
 
 export default ErrorScreen;

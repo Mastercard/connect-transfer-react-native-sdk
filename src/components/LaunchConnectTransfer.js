@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Atomic, Product } from '@atomicfi/transact-react-native';
 
 const LaunchConnectTransfer = () => {
-  const { data, language } = useSelector((state) => state.user) || '';
+  const { data, language } = useSelector(state => state.user) || '';
 
   const { userToken } = data?.data || '';
 
@@ -13,21 +13,17 @@ const LaunchConnectTransfer = () => {
         config: {
           publicToken: userToken,
           tasks: [{ product: Product.DEPOSIT }],
-          language: language,
+          language: language
         },
-        onInteraction: (interaction) => {
-          console.log(
-            'Interaction event: ',
-            interaction.name,
-            interaction.value
-          );
+        onInteraction: interaction => {
+          console.log('Interaction event: ', interaction.name, interaction.value);
         },
-        onFinish: (data) => {
+        onFinish: data => {
           console.log('Finish event: ', data.taskId, data.handoff);
         },
-        onClose: (data) => {
+        onClose: data => {
           console.log('Close event: ', data.reason);
-        },
+        }
       });
     } catch (error) {
       console.error('Error initializing Atomic Transact:', error);

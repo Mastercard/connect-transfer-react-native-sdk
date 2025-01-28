@@ -6,26 +6,26 @@ export const RedirectingScreenStyle = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 40,
+    gap: 40
   },
   centerContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    gap: 40,
+    gap: 40
   },
   text: {
     color: '#3F4B58',
     fontSize: 14,
     fontWeight: 'bold',
-    letterSpacing: 0.2,
+    letterSpacing: 0.2
   },
   redirectTextWithIcon: {
     flexDirection: 'row',
     gap: 10,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   loader: {
-    transform: [{ scaleX: 2.2 }, { scaleY: 2.2 }],
-  },
+    transform: [{ scaleX: 2.2 }, { scaleY: 2.2 }]
+  }
 });

@@ -5,7 +5,7 @@ import Animated, {
   useSharedValue,
   withRepeat,
   withTiming,
-  Easing,
+  Easing
 } from 'react-native-reanimated';
 
 import { LoaderStyle as styles } from './ComponentStyles';
@@ -14,14 +14,11 @@ const Loader = ({ size = 80, color = '#CF4500', strokeWidth = 8 }) => {
   const rotation = useSharedValue(0);
 
   React.useEffect(() => {
-    rotation.value = withRepeat(
-      withTiming(1, { duration: 1500, easing: Easing.linear }),
-      -1
-    );
+    rotation.value = withRepeat(withTiming(1, { duration: 1500, easing: Easing.linear }), -1);
   }, []);
 
   const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${rotation.value * 360}deg` }],
+    transform: [{ rotate: `${rotation.value * 360}deg` }]
   }));
 
   const customStyle = {
@@ -29,7 +26,7 @@ const Loader = ({ size = 80, color = '#CF4500', strokeWidth = 8 }) => {
     width: size,
     borderLeftColor: color,
     borderTopColor: color,
-    borderWidth: strokeWidth,
+    borderWidth: strokeWidth
   };
 
   return (

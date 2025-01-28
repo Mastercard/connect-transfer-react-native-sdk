@@ -17,9 +17,9 @@ const RedirectingScreen: React.FC = () => {
 
   const { t } = useTranslation();
 
-  const { userToken } = useSelector(
-    (state: RootState) => state.user.data?.data
-  ) || { userToken: '' };
+  const { userToken } = useSelector((state: RootState) => state.user.data?.data) || {
+    userToken: ''
+  };
 
   useEffect(() => {
     userToken && dispatch(complete(API_KEYS.complete));
@@ -29,11 +29,7 @@ const RedirectingScreen: React.FC = () => {
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.centerContainer}>
         <View style={styles.redirectTextWithIcon}>
-          <Image
-            src={Tick}
-            style={{ width: 14.44, height: 12.67 }}
-            resizeMode="contain"
-          />
+          <Image src={Tick} style={{ width: 14.44, height: 12.67 }} resizeMode="contain" />
           <Text style={styles.text}>{t('RedirectingText')}</Text>
         </View>
         <Loader />
