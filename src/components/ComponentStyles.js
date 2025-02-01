@@ -47,7 +47,6 @@ export const CrossDismissStyle = StyleSheet.create({
   }
 });
 
-
 export const LoaderStyle = StyleSheet.create({
   container: {
     alignItems: 'center',

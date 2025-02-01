@@ -26,6 +26,6 @@ export const RedirectingScreenStyle = StyleSheet.create({
     alignItems: 'center'
   },
   loader: {
-    transform: [{ scaleX: 2.2 }, {scaleY: 2.2 }]
+    transform: [{ scaleX: 2.2 }, { scaleY: 2.2 }]
   }
 });
