@@ -30,7 +30,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "example": "yarn workspace connect-react-native-sdk-example",
-    "test": "jest ./src",
+    "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
