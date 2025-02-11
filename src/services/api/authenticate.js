@@ -17,8 +17,6 @@ export const authenticateUser = key => {
       method: METHODS.POST
     })
       .then(response => response)
-      .catch(error => {
-        return rejectWithValue(error);
-      });
+      .catch(error => rejectWithValue(error));
   }).call();
 };
