@@ -14,22 +14,21 @@ import { API_KEYS } from '../../services/api/apiKeys';
 import { authenticateUser } from '../../services/api/authenticate';
 import ExitBottomSheet from '../../components/ExitBottomSheet';
 import CrossDismiss from '../../components/CrossDismiss';
-import { ErrorScreenState } from '../types';
+import { RedirectReason } from '../ConnectTransfer/transferEventConstants';
+import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandlers';
 
 const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
 
   const bottomSheetRef = useRef(null);
 
-  const { url, language, error } = useSelector((state: RootState) => state.user);
+  const { url, language, error, queryParamsObject } = useSelector((state: RootState) => state.user);
+  const { eventHandler: transferEventHandler } =
+    useSelector((state: RootState) => state.event) || null;
 
   const [isVisible, setIsVisible] = useState(false);
 
-  useEffect(() => {
-    if (language) {
-      i18next.changeLanguage(language);
-    }
-  }, [language]);
+  const { getResponseForInitializeTransfer, getResponseForClose } = useTransferEventResponse();
 
   useEffect(() => {
     if (url) {
@@ -38,6 +37,29 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
       dispatch(authenticateUser(API_KEYS.authenticateUser));
     }
   }, [url]);
+
+  useEffect(() => {
+    if (language) {
+      i18next.changeLanguage(language);
+    }
+  }, [language]);
+
+  useEffect(() => {
+    if (Object.keys(queryParamsObject).length > 0) {
+      transferEventHandler?.onInitializeConnectTransfer(getResponseForInitializeTransfer());
+      console.log('onInitializeConnectTransfer ****', getResponseForInitializeTransfer());
+    }
+  }, [queryParamsObject]);
+
+  useEffect(() => {
+    const { code } = error?.response?.data ?? {};
+
+    if (error) {
+      transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.ERROR, code));
+      console.log('onTransferEnd *****', getResponseForClose(RedirectReason.ERROR, code));
+      navigation?.navigate?.('Error');
+    }
+  }, [error]);
 
   const onCrossPress = () => {
     setIsVisible(true);
@@ -50,7 +72,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   };
 
   useEffect(() => {
-    error && navigation?.navigate?.('Error', { errorScreenState: ErrorScreenState.exitState });
+    error && navigation?.navigate?.('Error');
   }, [error]);
 
   const openBottomSheet = () => {

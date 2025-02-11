@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { SecuredByStyle as styles } from './ComponentStyles';
 import Logo from '../assets/logo.png';
 
-const SecuredBy = ({ style }) => {
+const SecuredBy = ({ style = {} }) => {
   const { t } = useTranslation();
 
   return (

@@ -23,7 +23,7 @@ export const api = options => {
     [dataOrParams]: data,
     timeout
   })
-    .then(response => response.data)
+    .then(response => response?.data)
     .catch(error => error && Promise.reject(error));
 };
 

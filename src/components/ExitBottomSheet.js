@@ -6,13 +6,24 @@ import { useSelector } from 'react-redux';
 import CrossDismiss from './CrossDismiss';
 import MAButton from './MAButton';
 import { ExitBottomSheetStyle as styles } from './ComponentStyles';
+import { RedirectReason } from '../containers/ConnectTransfer/transferEventConstants';
+import { useTransferEventResponse } from '../containers/ConnectTransfer/transferEventHandlers';
 
 const ExitBottomSheet = ({ bottomSheetRef, onClose }) => {
   const { t } = useTranslation();
 
   const { applicationName } = useSelector(state => state.user?.data?.data?.metadata) || '';
+  const { eventHandler: transferEventHandler } = useSelector(state => state.event) || '';
+
+  const { getResponseForClose } = useTransferEventResponse();
+
+  const onExitPressed = () => {
+    transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.EXIT));
+    console.log('onTransferEnd ****', getResponseForClose(RedirectReason.EXIT));
+  };
 
   const renderBackdropComponent = style => <View style={[style, styles.backdrop]} />;
+
   return (
     <BottomSheet
       handleComponent={null}
@@ -24,7 +35,7 @@ const ExitBottomSheet = ({ bottomSheetRef, onClose }) => {
         <CrossDismiss onCrossPress={onClose} />
         <Text style={styles.title}>{t('ExitPopUpTitle')}</Text>
         <Text style={styles.subtitle}>{t('ExitPopUpSubtitle', { applicationName })}</Text>
-        <MAButton text={t('YesExit')} style={styles.exitButton} onPress={() => {}} />
+        <MAButton text={t('YesExit')} style={styles.exitButton} onPress={onExitPressed} />
         <MAButton
           text={t('NoStay')}
           style={styles.stayButton}
