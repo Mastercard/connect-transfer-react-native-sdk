@@ -20,7 +20,10 @@ import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandle
 const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const bottomSheetRef = useRef(null);
+  const bottomSheetRef = useRef<{
+    expand: () => void;
+    close: () => void;
+  } | null>(null);
 
   const { url, language, error, queryParamsObject } = useSelector((state: RootState) => state.user);
   const { eventHandler: transferEventHandler } =

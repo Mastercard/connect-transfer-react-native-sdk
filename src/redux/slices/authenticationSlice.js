@@ -13,7 +13,7 @@ const initialState = {
   queryParamsObject: {},
   language: EN, // Default language
   loading: false,
-  data: null,
+  data: { data: null },
   error: null
 };
 

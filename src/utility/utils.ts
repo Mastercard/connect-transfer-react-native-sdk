@@ -16,7 +16,11 @@ import { WEBPAGE_API_KEYS } from '../services/api/apiKeys';
  */
 export const extractUrlData = (
   url: string = ''
-): { baseURL: string; queryParams: string; queryParamsObject: Record<string, string> } => {
+): {
+  baseURL: string;
+  queryParams: string;
+  queryParamsObject: Record<string, string>;
+} => {
   const defaultValues = { baseURL: '', queryParams: '', queryParamsObject: {} };
 
   try {
