@@ -4,7 +4,7 @@
   "private": true,
   "description": "React Native SDK for Mastercard Open Banking Connect",
   "license": "MIT",
-  "author": "connect-react-native-sdk",
+  "author": "connect-transfer-react-native-sdk",
   "react-native": "src/index",
   "source": "src/index",
   "files": [
@@ -29,7 +29,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "example": "yarn workspace connect-react-native-sdk-example",
+    "example": "yarn workspace connect-transfer-react-native-sdk-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
