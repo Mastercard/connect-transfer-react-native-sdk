@@ -6,10 +6,14 @@
   "license": "MIT",
   "author": "connect-transfer-react-native-sdk",
   "react-native": "src/index",
-  "source": "src/index",
+  "source": "./index.tsx",
   "files": [
-    "src",
+    "./",
     "lib",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__",
+    "src",
     "android",
     "ios",
     "cpp",
@@ -20,9 +24,6 @@
     "!android/gradlew",
     "!android/gradlew.bat",
     "!android/local.properties",
-    "!**/__tests__",
-    "!**/__fixtures__",
-    "!**/__mocks__",
     "!**/.*"
   ],
   "scripts": {
@@ -38,7 +39,8 @@
     "prettier-check": "prettier --config .prettierrc.js --check ./src/",
     "prettier-fix": "prettier --config .prettierrc.js --write ./src/",
     "release": "release-it",
-    "test:version_bump": "test $npm_package_version != $(npm show $npm_package_name version) || (echo 'Failing... You must bump package.json and package-lock.json' && exit 1)"
+    "test:version_bump": "test $npm_package_version != $(npm show $npm_package_name version) || (echo 'Failing... You must bump package.json and package-lock.json' && exit 1)",
+    "prepare": "bob build"
   },
   "keywords": [
     "Mastercard",
@@ -47,14 +49,19 @@
   "devDependencies": {
     "@babel/core": "7.23.6",
     "@babel/preset-env": "7.23.6",
+    "@babel/runtime": "^7.20.0",
     "@commitlint/config-conventional": "^17.0.2",
+    "@react-native/babel-preset": "0.75.2",
     "@react-native/eslint-config": "^0.72.2",
+    "@react-native/metro-config": "0.75.2",
+    "@react-native/typescript-config": "0.75.2",
     "@release-it/conventional-changelog": "^5.0.0",
     "@testing-library/react-native": "^12.4.1",
     "@types/jest": "^28.1.2",
     "@types/react": "~17.0.21",
     "@types/react-native": "0.70.0",
     "@types/react-test-renderer": "^18.0.6",
+    "babel-jest": "^29.6.3",
     "commitlint": "^17.0.2",
     "del-cli": "^5.0.0",
     "eslint": "^8.4.1",
@@ -66,18 +73,13 @@
     "prettier": "^2.0.5",
     "react": "18.2.0",
     "react-native": "^0.73.1",
-    "react-native-builder-bob": "^0.23.2",
+    "react-native-builder-bob": "^0.37.0",
     "react-test-renderer": "18.2.0",
     "release-it": "^17.0.1",
     "semver": ">=7.5.4",
     "turbo": "^1.10.7",
     "typescript": "^5.0.2",
-    "yarn-audit-fix": "^10.0.7",
-    "@babel/runtime": "^7.20.0",
-    "@react-native/babel-preset": "0.75.2",
-    "@react-native/metro-config": "0.75.2",
-    "@react-native/typescript-config": "0.75.2",
-    "babel-jest": "^29.6.3"
+    "yarn-audit-fix": "^10.0.7"
   },
   "resolutions": {
     "@types/react": "17.0.21",
@@ -143,15 +145,25 @@
     "useTabs": false
   },
   "react-native-builder-bob": {
-    "source": "src",
+    "source": "./",
     "output": "lib",
     "targets": [
-      "commonjs",
-      "module",
+      [
+        "commonjs",
+        {
+          "esm": true
+        }
+      ],
+      [
+        "module",
+        {
+          "esm": true
+        }
+      ],
       [
         "typescript",
         {
-          "project": "tsconfig.build.json"
+          "esm": true
         }
       ]
     ]
@@ -179,5 +191,20 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "main": "./lib/commonjs/index.js",
+  "module": "./lib/module/index.js",
+  "types": "./lib/typescript/commonjs/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./lib/typescript/module/index.d.ts",
+        "default": "./lib/module/index.js"
+      },
+      "require": {
+        "types": "./lib/typescript/commonjs/index.d.ts",
+        "default": "./lib/commonjs/index.js"
+      }
+    }
   }
 }
