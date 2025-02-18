@@ -170,25 +170,6 @@
         {
           "project": "tsconfig.build.json"
         }
-      ],
-
-      [
-        "commonjs",
-        {
-          "esm": true
-        }
-      ],
-      [
-        "module",
-        {
-          "esm": true
-        }
-      ],
-      [
-        "typescript",
-        {
-          "esm": true
-        }
       ]
     ]
   }
