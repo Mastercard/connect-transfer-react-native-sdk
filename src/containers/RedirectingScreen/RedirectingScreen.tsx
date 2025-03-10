@@ -8,20 +8,25 @@ import Tick from '../../assets/tick.png';
 import { RedirectingScreenStyle as styles } from './RedirectingScreenStyles';
 import Loader from '../../components/Loader';
 import { AppDispatch, RootState } from '../../redux/store';
-import { complete } from '../../services/api/complete';
-import LaunchConnectTransfer from '../../components/LaunchConnectTransfer';
+import LaunchConnectTransfer from '../ConnectTransfer/LaunchConnectTransfer';
+import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandlers';
+import { termsAndPolicies } from '../../services/api/termsAndPolicies';
 import { API_KEYS } from '../../services/api/apiKeys';
 
 const RedirectingScreen: React.FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
+  const { eventHandler: transferEventHandler } =
+    useSelector((state: RootState) => state.event) || null;
+
+  const { getResponseForTermsAndConditionsAccepted } = useTransferEventResponse();
+
   const { t } = useTranslation();
 
-  const { userToken } = useSelector((state: RootState) => state.user.data?.data) || '';
-
   useEffect(() => {
-    userToken && dispatch(complete(API_KEYS.complete));
-  }, [userToken]);
+    dispatch(termsAndPolicies(API_KEYS.termsAndPolicies));
+    transferEventHandler?.onTermsAndConditionsAccepted(getResponseForTermsAndConditionsAccepted());
+  }, []);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
