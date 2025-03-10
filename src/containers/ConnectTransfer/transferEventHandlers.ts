@@ -10,11 +10,11 @@ import {
   UserEvents
 } from './transferEventConstants';
 
-export const getProductKey = (product: string) => {
+export const getTransferProductType = (product: string) => {
   if (product === 'deposit') {
     return Product.DEPOSIT;
   }
-  return '';
+  return null;
 };
 
 export const useTransferEventCommonData = (): Record<string, string | undefined> => {

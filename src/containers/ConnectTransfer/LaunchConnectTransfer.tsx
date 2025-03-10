@@ -7,7 +7,7 @@ import {
   useTransferEventResponse,
   getUserEventMappingForPDS,
   useTransferEventCommonData,
-  getProductKey
+  getTransferProductType
 } from './transferEventHandlers';
 import { RootState } from '../../redux/store';
 
@@ -26,7 +26,7 @@ const LaunchConnectTransfer = () => {
       config: {
         publicToken: userToken,
         scope: Scope.USERLINK,
-        tasks: [{ product: getProductKey(product) }],
+        tasks: [{ product: getTransferProductType(product) }],
         theme: { brandColor: '#CF4500' },
         language: language,
         deeplink: {
