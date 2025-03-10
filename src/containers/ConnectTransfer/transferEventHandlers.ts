@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+import { Product } from '@atomicfi/transact-react-native';
 
 import { RootState } from '../../redux/store';
 import {
@@ -8,6 +9,13 @@ import {
   TransferEventDataName,
   UserEvents
 } from './transferEventConstants';
+
+export const getProductKey = (product: string) => {
+  if (product === 'deposit') {
+    return Product.DEPOSIT;
+  }
+  return '';
+};
 
 export const useTransferEventCommonData = (): Record<string, string | undefined> => {
   const queryParams: Record<string, string> = useSelector(

@@ -26,7 +26,6 @@ const RedirectingScreen: React.FC = () => {
   useEffect(() => {
     dispatch(termsAndPolicies(API_KEYS.termsAndPolicies));
     transferEventHandler?.onTermsAndConditionsAccepted(getResponseForTermsAndConditionsAccepted());
-    console.log('onTermsAndConditionsAccepted ****', getResponseForTermsAndConditionsAccepted());
   }, []);
 
   return (

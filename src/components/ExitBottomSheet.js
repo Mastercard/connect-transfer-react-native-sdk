@@ -19,7 +19,6 @@ const ExitBottomSheet = ({ bottomSheetRef, onClose }) => {
 
   const onExitPressed = () => {
     transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.EXIT));
-    console.log('onTransferEnd ****', getResponseForClose(RedirectReason.EXIT));
   };
 
   const renderBackdropComponent = style => <View style={[style, styles.backdrop]} />;

@@ -20,7 +20,6 @@ const ErrorScreen: React.FC = () => {
 
   const onExitPressed = () => {
     transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.EXIT));
-    console.log('onTransferEnd ****', getResponseForClose(RedirectReason.EXIT));
   };
 
   const ErrorScreenFooter = () => {

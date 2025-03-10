@@ -11,17 +11,16 @@ import Navigation from './src/navigation/Navigation';
 import { setEventHandlers } from './src/redux/slices/eventHandlerSlice';
 import { ConnectTransferProps } from './src/containers/ConnectTransfer/transferEventConstants';
 
-const ConnectTransfer: React.FC<ConnectTransferProps> = ({ connectUrl, eventHandlers }) => {
+const ConnectTransfer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, eventHandlers }) => {
   useEffect(() => {
     setEventHandlers(eventHandlers);
-    eventHandlers?.onInitializeConnectTransfer?.({ status: 'initialized' });
   }, []);
 
   return (
     <GestureHandlerRootView>
       <I18nextProvider i18n={i18next}>
         <Provider store={store}>
-          <Navigation url={connectUrl} />
+          <Navigation url={connectTransferUrl} />
         </Provider>
       </I18nextProvider>
     </GestureHandlerRootView>

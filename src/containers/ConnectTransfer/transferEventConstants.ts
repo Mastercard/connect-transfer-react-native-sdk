@@ -7,7 +7,7 @@ export interface ConnectTransferEventHandler {
 }
 
 export interface ConnectTransferProps {
-  connectUrl: string;
+  connectTransferUrl: string;
   eventHandlers: ConnectTransferEventHandler;
 }
 

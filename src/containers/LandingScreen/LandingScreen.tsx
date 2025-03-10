@@ -20,10 +20,7 @@ import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandle
 const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const bottomSheetRef = useRef<{
-    expand: () => void;
-    close: () => void;
-  } | null>(null);
+  const bottomSheetRef = useRef(null);
 
   const { url, language, error, queryParamsObject } = useSelector((state: RootState) => state.user);
   const { eventHandler: transferEventHandler } =
@@ -50,7 +47,6 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   useEffect(() => {
     if (Object.keys(queryParamsObject).length > 0) {
       transferEventHandler?.onInitializeConnectTransfer(getResponseForInitializeTransfer());
-      console.log('onInitializeConnectTransfer ****', getResponseForInitializeTransfer());
     }
   }, [queryParamsObject]);
 
@@ -59,7 +55,6 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
 
     if (error) {
       transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.ERROR, code));
-      console.log('onTransferEnd *****', getResponseForClose(RedirectReason.ERROR, code));
       navigation?.navigate?.('Error');
     }
   }, [error]);
