@@ -1,3 +1,30 @@
 module.exports = {
-  preset: 'react-native'
+  clearMocks: true,
+  collectCoverage: true,
+  coverageDirectory: 'coverage',
+  coverageProvider: 'v8',
+  preset: 'react-native',
+  setupFilesAfterEnv: ['react-native-gesture-handler/jestSetup.js','@testing-library/jest-native/extend-expect', './jest.setup.js'],
+  coverageReporters: ['cobertura', 'text', 'lcov', 'html'],
+  coverageThreshold: {
+    global: {
+      branches: 80,
+      functions: 70,
+      lines: 80,
+      statements: 80
+    }
+  },
+  testPathIgnorePatterns: [
+    '/node_modules/',
+    '/example/',
+    '/android/',
+    '/ios/',
+    '/lib/',
+  ],
+  moduleNameMapper: {
+    "^react-native$": "<rootDir>/node_modules/react-native"
+  },
+  transformIgnorePatterns: [
+    'node_modules/(?!(jest-react-native|react-native|@react-native|react-redux|@react-navigation|react-native-reanimated|react-native-gesture-handler|@react-native-community)/)',
+  ]
 };
