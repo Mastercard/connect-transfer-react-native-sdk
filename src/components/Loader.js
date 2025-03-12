@@ -10,7 +10,7 @@ import Animated, {
 
 import { LoaderStyle as styles } from './ComponentStyles';
 
-const Loader = ({ size = 80, color = '#CF4500', strokeWidth = 8 }) => {
+const Loader = ({ size = 80, color = '#CF4500', strokeWidth = 8, borderRadius = 40 }) => {
   const rotation = useSharedValue(0);
 
   React.useEffect(() => {
@@ -26,7 +26,8 @@ const Loader = ({ size = 80, color = '#CF4500', strokeWidth = 8 }) => {
     width: size,
     borderLeftColor: color,
     borderTopColor: color,
-    borderWidth: strokeWidth
+    borderWidth: strokeWidth,
+    borderRadius
   };
 
   return (

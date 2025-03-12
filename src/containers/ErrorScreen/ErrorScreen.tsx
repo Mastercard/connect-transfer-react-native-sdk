@@ -9,12 +9,16 @@ import { RedirectReason } from '../ConnectTransfer/transferEventConstants';
 import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandlers';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import { getTranslation } from '../../utility/utils';
 
 const ErrorScreen: React.FC = () => {
   const { t } = useTranslation();
 
   const { eventHandler: transferEventHandler } =
     useSelector((state: RootState) => state.event) || null;
+  const { code, user_message } =
+    useSelector((state: RootState) => state.user?.error?.response?.data) ?? {};
+  const { data } = useSelector((state: RootState) => state.errorTranslation) ?? {};
 
   const { getResponseForClose } = useTransferEventResponse();
 
@@ -31,11 +35,16 @@ const ErrorScreen: React.FC = () => {
     );
   };
 
+  const getSubtitle = () => {
+    const errorText = data && getTranslation(user_message, data);
+    return code && user_message ? `${errorText} (${code})` : t('ErrorSubtitle');
+  };
+
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.errorView}>
         <Text style={styles.titleText}>{t('ErrorTitle')}</Text>
-        <Text style={styles.descriptionText}>{t('ErrorSubtitle')}</Text>
+        <Text style={styles.descriptionText}>{getSubtitle()}</Text>
         <Image source={ErrorIcon} resizeMode="contain" style={styles.errorIcon} />
         <ErrorScreenFooter />
       </View>

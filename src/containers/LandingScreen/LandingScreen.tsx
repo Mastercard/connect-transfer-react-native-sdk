@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
 
@@ -16,13 +16,18 @@ import ExitBottomSheet from '../../components/ExitBottomSheet';
 import CrossDismiss from '../../components/CrossDismiss';
 import { RedirectReason } from '../ConnectTransfer/transferEventConstants';
 import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandlers';
+import ErrorScreen from '../ErrorScreen/ErrorScreen';
+import Loader from '../../components/Loader';
+import { errorTranslation } from '../../services/api/errorTranslation';
 
 const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
 
   const bottomSheetRef = useRef(null);
 
-  const { url, language, error, queryParamsObject } = useSelector((state: RootState) => state.user);
+  const { url, language, error, queryParamsObject, data } = useSelector(
+    (state: RootState) => state.user
+  );
   const { eventHandler: transferEventHandler } =
     useSelector((state: RootState) => state.event) || null;
 
@@ -35,6 +40,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
       const extractedData = extractUrlData(url);
       dispatch(setUrlData(extractedData));
       dispatch(authenticateUser(API_KEYS.authenticateUser));
+      dispatch(errorTranslation(API_KEYS.errorTranslation));
     }
   }, [url]);
 
@@ -53,9 +59,8 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   useEffect(() => {
     const { code } = error?.response?.data ?? {};
 
-    if (error) {
+    if (code) {
       transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.ERROR, code));
-      navigation?.navigate?.('Error');
     }
   }, [error]);
 
@@ -69,22 +74,36 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
     setIsVisible(false);
   };
 
-  useEffect(() => {
-    error && navigation?.navigate?.('Error');
-  }, [error]);
-
   const openBottomSheet = () => {
     <ExitBottomSheet bottomSheetRef={bottomSheetRef} onClose={onBottomSheetCrossPress} />;
   };
 
-  return (
-    <SafeAreaView style={styles.safeAreaView}>
-      <CrossDismiss style={styles.cross} onCrossPress={onCrossPress} />
-      <ScrollableView />
-      <FooterView onNextPress={() => navigation?.navigate?.('Redirecting')} />
-      {isVisible && openBottomSheet()}
-    </SafeAreaView>
-  );
+  const LandingView = () => {
+    return (
+      <>
+        <CrossDismiss style={styles.cross} onCrossPress={onCrossPress} />
+        <ScrollableView />
+        <FooterView onNextPress={() => navigation?.navigate?.('Redirecting')} />
+        {isVisible && openBottomSheet()}
+      </>
+    );
+  };
+
+  const renderConditionalViews = () => {
+    if (error || !url) {
+      return <ErrorScreen />;
+    } else if (data) {
+      return <LandingView />;
+    }
+
+    return (
+      <View style={{ flex: 1, justifyContent: 'center' }}>
+        <Loader color="gray" size={70} strokeWidth={7} borderRadius={35} />
+      </View>
+    );
+  };
+
+  return <SafeAreaView style={styles.safeAreaView}>{renderConditionalViews()}</SafeAreaView>;
 };
 
 export default LandingScreen;

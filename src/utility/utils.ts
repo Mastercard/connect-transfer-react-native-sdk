@@ -91,3 +91,6 @@ export const openLink = async (url: string): Promise<void> => {
     console.error('Failed to open link:', error);
   }
 };
+
+export const getTranslation = (text: string, esJson: Record<string, string>): string =>
+  esJson[text] || text;
