@@ -1,17 +1,21 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Atomic, Scope } from '@atomicfi/transact-react-native';
 
-import { AtomicEvents } from './transferEventConstants';
+import { AtomicEvents, BRAND_COLOR, SEARCH_COMPANY } from './transferEventConstants';
 import {
   useTransferEventResponse,
   getUserEventMappingForPDS,
   useTransferEventCommonData,
   getTransferProductType
 } from './transferEventHandlers';
-import { RootState } from '../../redux/store';
+import { AppDispatch, RootState } from '../../redux/store';
+import { complete } from '../../services/api/complete';
+import { API_KEYS } from '../../services/api/apiKeys';
 
 const LaunchConnectTransfer = () => {
+  const dispatch: AppDispatch = useDispatch();
+
   const { data, language } = useSelector((state: RootState) => state.user) || '';
   const { eventHandler: transferEventHandler } =
     useSelector((state: RootState) => state.event) || null;
@@ -27,10 +31,10 @@ const LaunchConnectTransfer = () => {
         publicToken: userToken,
         scope: Scope.USERLINK,
         tasks: [{ product: getTransferProductType(product) }],
-        theme: { brandColor: '#CF4500' },
+        theme: { brandColor: BRAND_COLOR },
         language: language,
         deeplink: {
-          step: 'search-company'
+          step: SEARCH_COMPANY
         },
         metadata: metadata
       },
@@ -60,10 +64,12 @@ const LaunchConnectTransfer = () => {
       reason = failReason;
     }
 
+    dispatch(complete(API_KEYS.complete));
     transferEventHandler?.onTransferEnd(getResponseForClose(reason));
   };
 
   const handleFinishEvent = (response: any) => {
+    dispatch(complete(API_KEYS.complete));
     transferEventHandler?.onTransferEnd(getResponseForFinish(response));
   };
 

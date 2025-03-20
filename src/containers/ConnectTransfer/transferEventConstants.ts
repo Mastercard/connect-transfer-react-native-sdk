@@ -73,3 +73,6 @@ export enum AtomicEvents {
   VIEWED_ACCESS_UNAUTHORIZED_PAGE = 'Viewed Access Unauthorized Page',
   VIEWED_EXPIRED_TOKEN_PAGE = 'Viewed Expired Token Page'
 }
+
+export const BRAND_COLOR = '#CF4500';
+export const SEARCH_COMPANY =  'search-company';
