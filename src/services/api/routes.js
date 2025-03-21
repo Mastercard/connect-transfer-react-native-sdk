@@ -8,11 +8,14 @@ const API_VERSION = 'v2';
 
 // Generate route based on the provided key
 export const generateRoute = (key, state) => {
-  const { baseURL = '', queryParams = '' } = state?.user || {};
+  const { baseURL = '', queryParams = '', language = 'en' } = state?.user || {};
 
   switch (key) {
     case API_KEYS.authenticateUser:
       return `${baseURL}/server/authenticate/${API_VERSION}/transfer/deposit-switch${queryParams}`;
+
+    case API_KEYS.errorTranslation:
+      return `${baseURL}/transfer/assets/i18n/errors/${language}.json`;
 
     case API_KEYS.termsAndPolicies:
       return `${baseURL}/server/terms-and-policies`;

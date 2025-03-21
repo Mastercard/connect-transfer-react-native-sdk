@@ -14,6 +14,7 @@ export const getTransferProductType = (product: string) => {
   if (product === 'deposit') {
     return Product.DEPOSIT;
   }
+  
   return null;
 };
 
@@ -44,12 +45,14 @@ export const useTransferEventResponse = () => {
   const getResponseForInitializeTransfer = (): Record<string, any> => {
     const commonData = { ...queryParams };
     commonData[TransferEventDataName.ACTION] = TransferActionEvents.INITIALIZE_TRANSFER;
+
     return commonData;
   };
 
   const getResponseForTermsAndConditionsAccepted = (): Record<string, any> => {
     const commonData = { ...queryParams };
     commonData[TransferEventDataName.ACTION] = TransferActionEvents.TERMS_ACCEPTED;
+
     return commonData;
   };
 

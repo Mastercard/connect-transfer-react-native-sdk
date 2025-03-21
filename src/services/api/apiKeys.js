@@ -1,7 +1,8 @@
 export const API_KEYS = {
   authenticateUser: 'authenticationSlice/authenticateUser',
   termsAndPolicies: 'termsAndPoliciesSlice/termsAndPolicies',
-  complete: 'completeSlice/complete'
+  complete: 'completeSlice/complete',
+  errorTranslation: 'errorTranslationSlice/errorTranslation'
 };
 
 export const WEBPAGE_API_KEYS = {

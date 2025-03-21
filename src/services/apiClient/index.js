@@ -1,19 +1,12 @@
 import axios from 'axios';
 
 import { METHODS, TIMEOUT } from './constants';
-import { requestHeaders } from '../api/routes';
 
 // options can contain the following arguments:
 // key, url, data, headers, method, timeout etc
 export const api = options => {
-  const {
-    key,
-    url,
-    data,
-    headers = requestHeaders(key, state),
-    method = METHODS.GET,
-    timeout = TIMEOUT
-  } = options;
+  const { key, url, data, headers, method = METHODS.GET, timeout = TIMEOUT } = options;
+
   const dataOrParams = method === METHODS.GET ? 'params' : 'data';
 
   return axios({
