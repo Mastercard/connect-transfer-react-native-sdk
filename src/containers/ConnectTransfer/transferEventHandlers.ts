@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Product } from '@atomicfi/transact-react-native';
 
-import { RootState } from '../../redux/store';
+import { type RootState } from '../../redux/store';
 import {
   AtomicEvents,
   RedirectReason,
@@ -10,16 +10,17 @@ import {
   UserEvents
 } from './transferEventConstants';
 
-export const getTransferProductType = (product: string) => {
+// @ts-ignore
+export const getTransferProductType = product => {
   if (product === 'deposit') {
     return Product.DEPOSIT;
   }
-  
+
   return null;
 };
 
 export const useTransferEventCommonData = (): Record<string, string | undefined> => {
-  const queryParams: Record<string, string> = useSelector(
+  const queryParams: Record<string, any> = useSelector(
     (state: RootState) => state.user.queryParamsObject
   );
 

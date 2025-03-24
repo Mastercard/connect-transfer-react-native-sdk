@@ -1,4 +1,3 @@
-import React from 'react';
 import { render } from '@testing-library/react-native';
 import { Provider } from 'react-redux';
 import { I18nextProvider } from 'react-i18next';
@@ -7,7 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import store from '../src/redux/store';
 import i18next from '../src/locale/i18n';
 import ConnectTransfer from '..';
-import { ConnectTransferEventHandler } from '../src/containers/ConnectTransfer/transferEventConstants';
+import { type ConnectTransferEventHandler } from '../src/containers/ConnectTransfer/transferEventConstants';
 
 jest.mock('../src/navigation/Navigation', () => () => 'MockedNavigation');
 
@@ -35,7 +34,10 @@ describe('ConnectTransfer Component', () => {
       <GestureHandlerRootView>
         <I18nextProvider i18n={i18next}>
           <Provider store={store}>
-            <ConnectTransfer connectUrl="https://example.com" eventHandlers={eventHandlerFns} />
+            <ConnectTransfer
+              connectTransferUrl="https://example.com"
+              eventHandlers={eventHandlerFns}
+            />
           </Provider>
         </I18nextProvider>
       </GestureHandlerRootView>

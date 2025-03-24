@@ -1,29 +1,22 @@
 {
   "name": "connect-transfer-react-native-sdk",
-  "version": "0.0.1",
-  "private": true,
+  "version": "1.0.0",
   "description": "React Native SDK for Mastercard Open Banking Connect",
+  "main": "lib/commonjs/index",
+  "module": "lib/module/index",
+  "types": "lib/typescript/src/index.d.ts",
   "license": "MIT",
   "author": "connect-transfer-react-native-sdk",
   "react-native": "src/index",
   "source": "./index.tsx",
   "files": [
-    "./",
     "lib",
     "!**/__tests__",
     "!**/__fixtures__",
     "!**/__mocks__",
     "src",
-    "android",
-    "ios",
-    "cpp",
-    "*.podspec",
-    "!ios/build",
-    "!android/build",
-    "!android/gradle",
-    "!android/gradlew",
-    "!android/gradlew.bat",
-    "!android/local.properties",
+    "!android",
+    "!ios",
     "!**/.*"
   ],
   "scripts": {
@@ -47,13 +40,12 @@
     "Mastercard Open Banking Connect"
   ],
   "dependencies": {
-    "@atomicfi/transact-react-native": "3.8.2",
+    "@atomicfi/transact-react-native": "^3.10.0",
     "@gorhom/bottom-sheet": "^5.1.1",
     "@react-navigation/native": "7.0.14",
     "@react-navigation/native-stack": "7.2.0",
     "@reduxjs/toolkit": "2.5.1",
     "axios": "1.7.9",
-    "bob": "^3.1.0",
     "i18next": "24.2.2",
     "react-i18next": "*",
     "react-native-gesture-handler": "2.23.1",
@@ -64,30 +56,12 @@
     "react-native-url-polyfill": "2.0.0",
     "react-redux": "9.2.0"
   },
-  "engines": {
-    "node": ">=18"
-  },
-  "main": "./lib/commonjs/index.js",
-  "module": "./lib/module/index.js",
-  "types": "./lib/typescript/commonjs/index.d.ts",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./lib/typescript/module/index.d.ts",
-        "default": "./lib/module/index.js"
-      },
-      "require": {
-        "types": "./lib/typescript/commonjs/index.d.ts",
-        "default": "./lib/commonjs/index.js"
-      }
-    }
-  },
   "devDependencies": {
-    "@react-native-community/cli": "latest",
     "@babel/core": "7.26.9",
     "@babel/preset-env": "7.26.9",
     "@babel/runtime": "^7.26.9",
     "@commitlint/config-conventional": "^19.7.1",
+    "@react-native-community/cli": "^18.0.0",
     "@react-native/babel-preset": "0.77.1",
     "@react-native/eslint-config": "^0.77.1",
     "@react-native/metro-config": "0.77.1",
@@ -119,14 +93,22 @@
     "typescript": "^5.7.3",
     "yarn-audit-fix": "^10.1.1"
   },
+  "peerDependencies": {
+    "@atomicfi/transact-react-native": ">=3.10.0",
+    "@react-navigation/native": "7.0.14",
+    "@react-navigation/native-stack": "7.2.0",
+    "@reduxjs/toolkit": "2.5.1",
+    "react": ">=16.13",
+    "react-native": ">=0.63",
+    "react-redux": "9.2.0",
+    "react-native-reanimated": "3.16.7",
+    "react-native-gesture-handler": "2.23.1",
+    "react-native-screens": "4.7.0",
+    "react-native-safe-area-context": "5.2.0"
+  },
   "resolutions": {
     "@types/react": "17.0.21",
     "semver": ">=7.5.4"
-  },
-  "peerDependencies": {
-    "react": ">=16.13",
-    "react-native": ">=0.63",
-    "react-native-inappbrowser-reborn": ">=3.6"
   },
   "packageManager": "yarn@1.22.22",
   "commitlint": {
@@ -162,7 +144,7 @@
     "lib/"
   ],
   "react-native-builder-bob": {
-    "source": "./",
+    "source": "src",
     "output": "lib",
     "targets": [
       "commonjs",
@@ -174,5 +156,8 @@
         }
       ]
     ]
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

@@ -7,13 +7,13 @@ import { handleAsyncActions } from './asyncHelper';
 const EN = 'en';
 
 const initialState = {
-  url: 'https://connect2.finicity.com/transfer?customerId=3012729752&language=en&origin=url&partnerId=2445582695152&signature=b17c55576eb4b6385c094e70ec424155864343b29d02fb1cc4ed36940ca93539&timestamp=1739279609161&ttl=1739366009161&type=transferDepositSwitch',
+  url: '',
   baseURL: '',
   queryParams: '',
   queryParamsObject: {},
   language: EN, // Default language
   loading: false,
-  data: { data: null },
+  data: null,
   error: null
 };
 
