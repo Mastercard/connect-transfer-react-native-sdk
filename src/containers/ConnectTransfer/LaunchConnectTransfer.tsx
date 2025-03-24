@@ -9,7 +9,7 @@ import {
   useTransferEventCommonData,
   getTransferProductType
 } from './transferEventHandlers';
-import { AppDispatch, RootState } from '../../redux/store';
+import { type AppDispatch, type RootState } from '../../redux/store';
 import { complete } from '../../services/api/complete';
 import { API_KEYS } from '../../services/api/apiKeys';
 
@@ -23,13 +23,14 @@ const LaunchConnectTransfer = () => {
   const { getResponseForInitializeDepositSwitch, getResponseForFinish, getResponseForClose } =
     useTransferEventResponse();
   const commonData = useTransferEventCommonData();
-  const { userToken, product, metadata } = data?.data || {};
+  const { userToken, product, metadata } = (data?.data || {}) as any;
 
   useEffect(() => {
     Atomic.transact({
       config: {
         publicToken: userToken,
         scope: Scope.USERLINK,
+        // @ts-ignore
         tasks: [{ product: getTransferProductType(product) }],
         theme: { brandColor: BRAND_COLOR },
         language: language,

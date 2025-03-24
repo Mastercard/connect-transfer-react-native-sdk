@@ -9,7 +9,7 @@ import store from './src/redux/store';
 import i18next from './src/locale/i18n';
 import Navigation from './src/navigation/Navigation';
 import { setEventHandlers } from './src/redux/slices/eventHandlerSlice';
-import { ConnectTransferProps } from './src/containers/ConnectTransfer/transferEventConstants';
+import { type ConnectTransferProps } from './src/containers/ConnectTransfer/transferEventConstants';
 
 const ConnectTransfer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, eventHandlers }) => {
   useEffect(() => {

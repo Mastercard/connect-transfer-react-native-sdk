@@ -47,13 +47,12 @@
     "Mastercard Open Banking Connect"
   ],
   "dependencies": {
-    "@atomicfi/transact-react-native": "3.8.2",
+    "@atomicfi/transact-react-native": "^3.10.0",
     "@gorhom/bottom-sheet": "^5.1.1",
     "@react-navigation/native": "7.0.14",
     "@react-navigation/native-stack": "7.2.0",
     "@reduxjs/toolkit": "2.5.1",
     "axios": "1.7.9",
-    "bob": "^3.1.0",
     "i18next": "24.2.2",
     "react-i18next": "*",
     "react-native-gesture-handler": "2.23.1",
@@ -69,25 +68,19 @@
   },
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
-  "types": "./lib/typescript/commonjs/index.d.ts",
+  "types": "./lib/typescript/index.d.ts",
   "exports": {
     ".": {
-      "import": {
-        "types": "./lib/typescript/module/index.d.ts",
-        "default": "./lib/module/index.js"
-      },
-      "require": {
-        "types": "./lib/typescript/commonjs/index.d.ts",
-        "default": "./lib/commonjs/index.js"
-      }
+      "import": "./lib/module/index.js",
+      "require": "./lib/commonjs/index.js"
     }
   },
   "devDependencies": {
-    "@react-native-community/cli": "latest",
     "@babel/core": "7.26.9",
     "@babel/preset-env": "7.26.9",
     "@babel/runtime": "^7.26.9",
     "@commitlint/config-conventional": "^19.7.1",
+    "@react-native-community/cli": "^18.0.0",
     "@react-native/babel-preset": "0.77.1",
     "@react-native/eslint-config": "^0.77.1",
     "@react-native/metro-config": "0.77.1",

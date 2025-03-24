@@ -2,14 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
+import BottomSheet from '@gorhom/bottom-sheet';
 
 import { setUrlData } from '../../redux/slices/authenticationSlice';
 import { extractUrlData } from '../../utility/utils';
 import { LandingScreenStyle as styles } from './LandingScreenStyles';
 import ScrollableView from './ScrollableView';
 import FooterView from './FooterView';
-import { LandingScreenProps } from '../types';
-import { AppDispatch, RootState } from '../../redux/store';
+import { type LandingScreenProps } from '../types';
+import { type AppDispatch, type RootState } from '../../redux/store';
 import { API_KEYS } from '../../services/api/apiKeys';
 import { authenticateUser } from '../../services/api/authenticate';
 import ExitBottomSheet from '../../components/ExitBottomSheet';
@@ -23,7 +24,7 @@ import { errorTranslation } from '../../services/api/errorTranslation';
 const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const bottomSheetRef = useRef(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const { url, language, error, queryParamsObject, data } = useSelector(
     (state: RootState) => state.user
@@ -57,7 +58,7 @@ const LandingScreen: React.FC<LandingScreenProps> = ({ navigation }) => {
   }, [queryParamsObject]);
 
   useEffect(() => {
-    const { code } = error?.response?.data ?? {};
+    const { code } = (error as any)?.response?.data;
 
     if (code) {
       transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.ERROR, code));

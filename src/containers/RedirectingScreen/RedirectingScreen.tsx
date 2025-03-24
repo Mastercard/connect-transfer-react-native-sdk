@@ -7,7 +7,7 @@ import SecuredBy from '../../components/SecuredBy';
 import Tick from '../../assets/tick.png';
 import { RedirectingScreenStyle as styles } from './RedirectingScreenStyles';
 import Loader from '../../components/Loader';
-import { AppDispatch, RootState } from '../../redux/store';
+import { type AppDispatch, type RootState } from '../../redux/store';
 import LaunchConnectTransfer from '../ConnectTransfer/LaunchConnectTransfer';
 import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandlers';
 import { termsAndPolicies } from '../../services/api/termsAndPolicies';
