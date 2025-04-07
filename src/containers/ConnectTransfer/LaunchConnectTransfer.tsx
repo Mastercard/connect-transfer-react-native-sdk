@@ -23,7 +23,7 @@ const LaunchConnectTransfer = () => {
   const { getResponseForInitializeDepositSwitch, getResponseForFinish, getResponseForClose } =
     useTransferEventResponse();
   const commonData = useTransferEventCommonData();
-  const { userToken, product, metadata } = (data?.data || {}) as any;
+  const { userToken, product, metadata } = (data as any)?.data || {};
 
   useEffect(() => {
     Atomic.transact({

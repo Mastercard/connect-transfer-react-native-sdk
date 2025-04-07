@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export const SecuredByStyle = StyleSheet.create({
   footer: {
@@ -25,7 +25,8 @@ export const SecuredByStyle = StyleSheet.create({
 
 export const LandingScreenStyle = StyleSheet.create({
   safeAreaView: { flex: 1, backgroundColor: '#FFF' },
-  cross: { marginHorizontal: 24, marginTop: 10 }
+  cross: { marginHorizontal: 24, marginTop: 10 },
+  loader: { flex: 1, justifyContent: 'center' }
 });
 
 export const LandingScreenScrollableViewStyle = StyleSheet.create({
@@ -124,6 +125,7 @@ export const LandingScreenFooterStyle = StyleSheet.create({
     color: '#141413'
   },
   footerLink: {
+    ...Platform.select({ android: { marginBottom: -3 } }),
     fontSize: 13,
     color: '#CF4500',
     textDecorationLine: 'underline'

@@ -8,6 +8,8 @@ import RedirectingScreen from '../containers/RedirectingScreen/RedirectingScreen
 import ErrorScreen from '../containers/ErrorScreen/ErrorScreen';
 import { type RootStackParamList } from '../containers/types';
 import { setUrl } from '../redux/slices/authenticationSlice';
+import { ConnectTransferEventHandler } from '../containers/ConnectTransfer/transferEventConstants';
+import { setEventHandlers } from '../redux/slices/eventHandlerSlice';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -21,11 +23,15 @@ const AppNavigator = () => {
   );
 };
 
-const Navigation: React.FC<{ url: string }> = ({ url }) => {
+const Navigation: React.FC<{ url: string; eventHandlers: ConnectTransferEventHandler }> = ({
+  url,
+  eventHandlers
+}) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (url) {
+      dispatch(setEventHandlers(eventHandlers));
       dispatch(setUrl(url));
     }
   }, [url]);

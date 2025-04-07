@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import ConnectTransfer from 'connect-transfer-react-native-sdk';
 
 const App = () => {
   const [url, setUrl] = useState('');
@@ -25,6 +26,25 @@ const App = () => {
   const onPressHandler = () => {
     setIsConnectTransferEnabled(true);
     urlInputRef.current?.clear();
+  };
+
+  const eventHandlers = {
+    onInitializeConnectTransfer: (data: any) => {
+      console.log('Transfer initialized: ', data);
+    },
+    onTermsAndConditionsAccepted: (data: any) => {
+      console.log('Terms accepted: ', data);
+    },
+    onLaunchTransferSwitch: (data: any) => {
+      console.log('Transfer switch launched: ', data);
+    },
+    onTransferEnd: (data: any) => {
+      setIsConnectTransferEnabled(false);
+      console.log('Transfer ended: ', data);
+    },
+    onUserEvent: (data: any) => {
+      console.log('User event: ', data);
+    }
   };
 
   return (
@@ -62,7 +82,9 @@ const App = () => {
             </Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>
-        {/* {isConnectTransferEnabled && <ConnectTransfer url={url} />}  */}
+        {isConnectTransferEnabled && (
+          <ConnectTransfer connectTransferUrl={url} eventHandlers={eventHandlers} />
+        )}
       </View>
     </SafeAreaView>
   );
