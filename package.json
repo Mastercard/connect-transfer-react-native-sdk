@@ -40,12 +40,12 @@
     "Mastercard Open Banking Connect"
   ],
   "dependencies": {
-    "@atomicfi/transact-react-native": "^3.10.0",
+    "@atomicfi/transact-react-native": ">=3.10.0",
     "@gorhom/bottom-sheet": "^5.1.1",
     "@react-navigation/native": "7.0.14",
     "@react-navigation/native-stack": "7.2.0",
     "@reduxjs/toolkit": "2.5.1",
-    "axios": "1.7.9",
+    "axios": "^1.8.4",
     "i18next": "24.2.2",
     "react-i18next": "*",
     "react-native-gesture-handler": "2.23.1",
@@ -100,11 +100,11 @@
     "@reduxjs/toolkit": "2.5.1",
     "react": ">=16.13",
     "react-native": ">=0.63",
-    "react-redux": "9.2.0",
-    "react-native-reanimated": "3.16.7",
     "react-native-gesture-handler": "2.23.1",
+    "react-native-reanimated": "3.16.7",
+    "react-native-safe-area-context": "5.2.0",
     "react-native-screens": "4.7.0",
-    "react-native-safe-area-context": "5.2.0"
+    "react-redux": "9.2.0"
   },
   "resolutions": {
     "@types/react": "17.0.21",
