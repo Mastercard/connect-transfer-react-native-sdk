@@ -12,6 +12,7 @@ import {
 import { type AppDispatch, type RootState } from '../../redux/store';
 import { complete } from '../../services/api/complete';
 import { API_KEYS } from '../../services/api/apiKeys';
+import { resetData } from '../../redux/slices/authenticationSlice';
 
 const LaunchConnectTransfer = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -65,13 +66,15 @@ const LaunchConnectTransfer = () => {
       reason = failReason;
     }
 
-    dispatch(complete(API_KEYS.complete));
     transferEventHandler?.onTransferEnd(getResponseForClose(reason));
+    dispatch(complete(API_KEYS.complete));
+    dispatch(resetData());
   };
 
   const handleFinishEvent = (response: any) => {
-    dispatch(complete(API_KEYS.complete));
     transferEventHandler?.onTransferEnd(getResponseForFinish(response));
+    dispatch(complete(API_KEYS.complete));
+    dispatch(resetData());
   };
 
   return <></>;

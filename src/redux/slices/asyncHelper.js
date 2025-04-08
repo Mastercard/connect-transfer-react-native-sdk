@@ -18,7 +18,6 @@ export const handleAsyncActions = (builder, action) => {
       state.error = null;
     })
     .addCase(action.rejected, (state, { payload }) => {
-      console.error('An error occurred:', payload);
       state.loading = false;
       state.data = null;
       state.error = payload;

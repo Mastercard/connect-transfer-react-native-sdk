@@ -1,15 +1,18 @@
 import { View, Text } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import CrossDismiss from './CrossDismiss';
 import MAButton from './MAButton';
 import { ExitBottomSheetStyle as styles } from './ComponentStyles';
 import { RedirectReason } from '../containers/ConnectTransfer/transferEventConstants';
 import { useTransferEventResponse } from '../containers/ConnectTransfer/transferEventHandlers';
+import { resetData } from '../redux/slices/authenticationSlice';
 
 const ExitBottomSheet = ({ bottomSheetRef, onClose }) => {
+  const dispatch = useDispatch();
+
   const { t } = useTranslation();
 
   const { applicationName } = useSelector(state => state.user?.data?.data?.metadata) || '';
@@ -19,6 +22,7 @@ const ExitBottomSheet = ({ bottomSheetRef, onClose }) => {
 
   const onExitPressed = () => {
     transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.EXIT));
+    dispatch(resetData());
   };
 
   const renderBackdropComponent = style => <View style={[style, styles.backdrop]} />;

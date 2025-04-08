@@ -13,7 +13,7 @@ import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandle
 import { termsAndPolicies } from '../../services/api/termsAndPolicies';
 import { API_KEYS } from '../../services/api/apiKeys';
 
-const RedirectingScreen: React.FC = () => {
+const RedirectingScreen: React.FC<{ isExperience?: boolean }> = ({ isExperience = false }) => {
   const dispatch: AppDispatch = useDispatch();
 
   const { eventHandler: transferEventHandler } =
@@ -24,8 +24,12 @@ const RedirectingScreen: React.FC = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    dispatch(termsAndPolicies(API_KEYS.termsAndPolicies));
-    transferEventHandler?.onTermsAndConditionsAccepted(getResponseForTermsAndConditionsAccepted());
+    if (!isExperience) {
+      dispatch(termsAndPolicies(API_KEYS.termsAndPolicies));
+      transferEventHandler?.onTermsAndConditionsAccepted(
+        getResponseForTermsAndConditionsAccepted()
+      );
+    }
   }, []);
 
   return (
