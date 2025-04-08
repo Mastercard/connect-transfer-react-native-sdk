@@ -6,11 +6,6 @@ export interface ConnectTransferEventHandler {
   onUserEvent(data?: Record<string, any>): void;
 }
 
-export interface ConnectTransferProps {
-  connectTransferUrl: string;
-  eventHandlers: ConnectTransferEventHandler;
-}
-
 export enum TransferEventDataName {
   CUSTOMER_ID = 'customerId',
   PARTNER_ID = 'partnerId',
@@ -76,3 +71,7 @@ export enum AtomicEvents {
 
 export const BRAND_COLOR = '#CF4500';
 export const SEARCH_COMPANY = 'search-company';
+
+export enum TransferModuleType {
+  PDS = 'PDS'
+}

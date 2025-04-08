@@ -40,6 +40,8 @@ const App = () => {
     },
     onTransferEnd: (data: any) => {
       setIsConnectTransferEnabled(false);
+      setUrl('');
+      setPressable(false);
       console.log('Transfer ended: ', data);
     },
     onUserEvent: (data: any) => {

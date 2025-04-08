@@ -1,9 +1,19 @@
-import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import { ConnectTransferEventHandler } from './ConnectTransfer/transferEventConstants';
 
-export type RootStackParamList = {
-  Landing: undefined;
-  Redirecting: undefined;
-  Error: undefined;
-};
+export interface ConnectTransferProps {
+  connectTransferUrl: string;
+  eventHandlers: ConnectTransferEventHandler;
+}
 
-export type LandingScreenProps = NativeStackScreenProps<RootStackParamList, 'Landing'>;
+export interface LandingScreenProps {
+  url: string;
+  eventHandlers: ConnectTransferEventHandler;
+}
+
+export interface ErrorScreenProps {
+  isExperienceError?: boolean;
+}
+
+export interface RedirectingScreenProps {
+  isExperience?: boolean;
+}

@@ -15,7 +15,6 @@ export const termsAndPolicies = key => {
     const headers = requestHeaders(key, state);
 
     return api({
-      key,
       url,
       headers,
       data: getData(state.user.language),

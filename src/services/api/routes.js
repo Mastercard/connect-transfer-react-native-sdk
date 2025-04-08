@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { API_KEYS, WEBPAGE_API_KEYS } from './apiKeys';
+import { HEADERS } from '../apiClient/constants';
 
 const FINICITY_BASE_URL = 'https://www.finicity.com/';
 const CONNECT_BASE_URL = 'https://connect2.finicity.com';
@@ -40,13 +41,8 @@ export const generateRoute = (key, state) => {
   }
 };
 
-const DEFAULT_HEADERS = {
-  'Content-Type': 'application/json',
-  Accept: 'application/json'
-};
-
 export const requestHeaders = (key, state) => {
-  let headers = { ...DEFAULT_HEADERS };
+  let headers = { ...HEADERS };
 
   switch (key) {
     case API_KEYS.termsAndPolicies:

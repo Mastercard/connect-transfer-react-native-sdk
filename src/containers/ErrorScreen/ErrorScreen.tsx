@@ -1,5 +1,6 @@
 import { SafeAreaView, Text, Image, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import ErrorIcon from '../../assets/errorIcon.png';
 import SecuredBy from '../../components/SecuredBy';
@@ -7,11 +8,14 @@ import MAButton from '../../components/MAButton';
 import { ErrorScreenStyles as styles } from './Styles';
 import { RedirectReason } from '../ConnectTransfer/transferEventConstants';
 import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandlers';
-import { shallowEqual, useSelector } from 'react-redux';
-import { type RootState } from '../../redux/store';
+import { AppDispatch, type RootState } from '../../redux/store';
 import { getTranslation } from '../../utility/utils';
+import { resetData } from '../../redux/slices/authenticationSlice';
+import { type ErrorScreenProps } from '../types';
 
-const ErrorScreen: React.FC = () => {
+const ErrorScreen: React.FC<ErrorScreenProps> = ({ isExperienceError = false }) => {
+  const dispatch: AppDispatch = useDispatch();
+
   const { t } = useTranslation();
 
   const { eventHandler: transferEventHandler } =
@@ -26,7 +30,12 @@ const ErrorScreen: React.FC = () => {
   const { getResponseForClose } = useTransferEventResponse();
 
   const onExitPressed = () => {
-    transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.EXIT));
+    const finalCode = isExperienceError ? -1 : code;
+
+    if (finalCode) {
+      transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.ERROR, finalCode));
+      dispatch(resetData());
+    }
   };
 
   const ErrorScreenFooter = () => {
@@ -38,16 +47,24 @@ const ErrorScreen: React.FC = () => {
     );
   };
 
-  const getSubtitle = () => {
+  const getErrorText = () => {
+    if (isExperienceError) {
+      return { title: t('ExperienceErrorTitle'), subTitle: `${t('ExperienceErrorSubtitle')} (-1)` };
+    }
+
     const errorText = data && getTranslation(user_message, data);
-    return code && user_message ? `${errorText} (${code})` : t('ErrorSubtitle');
+
+    return {
+      title: t('ErrorTitle'),
+      subTitle: code && user_message ? `${errorText} (${code})` : t('ErrorSubtitle')
+    };
   };
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
       <View style={styles.errorView}>
-        <Text style={styles.titleText}>{t('ErrorTitle')}</Text>
-        <Text style={styles.descriptionText}>{getSubtitle()}</Text>
+        <Text style={styles.titleText}>{getErrorText().title}</Text>
+        <Text style={styles.descriptionText}>{getErrorText().subTitle}</Text>
         <Image source={ErrorIcon} resizeMode="contain" style={styles.errorIcon} />
         <ErrorScreenFooter />
       </View>

@@ -7,6 +7,7 @@ import { handleAsyncActions } from './asyncHelper';
 const EN = 'en';
 
 const initialState = {
+  modalVisible: false,
   url: '',
   baseURL: '',
   queryParams: '',
@@ -25,6 +26,7 @@ const authenticationSlice = createSlice({
   reducers: {
     setUrl: (state, action) => {
       state.url = action.payload;
+      state.modalVisible = !!action.payload;
     },
     setUrlData: (state, action) => {
       const { baseURL, queryParams, queryParamsObject } = action.payload;
@@ -33,12 +35,13 @@ const authenticationSlice = createSlice({
       state.queryParams = queryParams;
       state.queryParamsObject = queryParamsObject;
       state.language = queryParamsObject?.language || EN;
-    }
+    },
+    resetData: () => initialState
   },
   extraReducers: builder => {
     handleAsyncActions(builder, authenticateUser);
   }
 });
 
-export const { setUrl, setUrlData } = authenticationSlice.actions;
+export const { setUrl, setUrlData, resetData } = authenticationSlice.actions;
 export default authenticationSlice.reducer;

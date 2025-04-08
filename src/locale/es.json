@@ -1,6 +1,8 @@
 {
   "ErrorSubtitle": "No pudimos conectar con tus datos",
   "ErrorTitle": "Parece que hubo un problema",
+  "ExperienceErrorSubtitle": "Experiencia inválida",
+  "ExperienceErrorTitle": "Enlace de conexión no válido",
   "Exit": "Salida",
   "ExitPopUpSubtitle": "Si sales, volverás a {{applicationName}}, y tus datos financieros no se conectarán ni se guardarán.",
   "ExitPopUpTitle": "¿Confirmas que quieres salir?",

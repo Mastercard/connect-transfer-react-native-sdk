@@ -15,14 +15,9 @@
     "!**/__fixtures__",
     "!**/__mocks__",
     "src",
-    "!android",
-    "!ios",
     "!**/.*"
   ],
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
     "example": "yarn workspace connect-transfer-react-native-sdk-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
@@ -40,10 +35,8 @@
     "Mastercard Open Banking Connect"
   ],
   "dependencies": {
-    "@atomicfi/transact-react-native": "3.10.0",
+    "@atomicfi/transact-react-native": ">=3.10.0",
     "@gorhom/bottom-sheet": "^5.1.1",
-    "@react-navigation/native": "7.0.14",
-    "@react-navigation/native-stack": "7.2.0",
     "@reduxjs/toolkit": "2.5.1",
     "axios": "1.8.4",
     "i18next": "24.2.2",
@@ -51,8 +44,6 @@
     "react-native-gesture-handler": "2.23.1",
     "react-native-inappbrowser-reborn": ">=3.6",
     "react-native-reanimated": "3.16.7",
-    "react-native-safe-area-context": "5.2.0",
-    "react-native-screens": "4.7.0",
     "react-native-url-polyfill": "2.0.0",
     "react-redux": "9.2.0"
   },
@@ -95,15 +86,11 @@
   },
   "peerDependencies": {
     "@atomicfi/transact-react-native": ">=3.10.0",
-    "@react-navigation/native": "7.0.14",
-    "@react-navigation/native-stack": "7.2.0",
     "@reduxjs/toolkit": "2.5.1",
     "react": ">=16.13",
     "react-native": ">=0.63",
     "react-native-gesture-handler": "2.23.1",
     "react-native-reanimated": "3.16.7",
-    "react-native-safe-area-context": "5.2.0",
-    "react-native-screens": "4.7.0",
     "react-redux": "9.2.0"
   },
   "resolutions": {

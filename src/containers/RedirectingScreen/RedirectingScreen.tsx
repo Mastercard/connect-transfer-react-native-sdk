@@ -12,8 +12,9 @@ import LaunchConnectTransfer from '../ConnectTransfer/LaunchConnectTransfer';
 import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandlers';
 import { termsAndPolicies } from '../../services/api/termsAndPolicies';
 import { API_KEYS } from '../../services/api/apiKeys';
+import { type RedirectingScreenProps } from '../types';
 
-const RedirectingScreen: React.FC = () => {
+const RedirectingScreen: React.FC<RedirectingScreenProps> = ({ isExperience = false }) => {
   const dispatch: AppDispatch = useDispatch();
 
   const { eventHandler: transferEventHandler } =
@@ -24,8 +25,12 @@ const RedirectingScreen: React.FC = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    dispatch(termsAndPolicies(API_KEYS.termsAndPolicies));
-    transferEventHandler?.onTermsAndConditionsAccepted(getResponseForTermsAndConditionsAccepted());
+    if (!isExperience) {
+      dispatch(termsAndPolicies(API_KEYS.termsAndPolicies));
+      transferEventHandler?.onTermsAndConditionsAccepted(
+        getResponseForTermsAndConditionsAccepted()
+      );
+    }
   }, []);
 
   return (
