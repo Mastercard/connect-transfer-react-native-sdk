@@ -5,7 +5,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import store from '../src/redux/store';
 import i18next from '../src/locale/i18n';
-import ConnectTransfer from '..';
+import ConnectTransfer from '../src/index';
 import { type ConnectTransferEventHandler } from '../src/containers/ConnectTransfer/transferEventConstants';
 
 jest.mock('../src/navigation/Navigation', () => () => 'MockedNavigation');

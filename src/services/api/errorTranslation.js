@@ -8,10 +8,7 @@ export const errorTranslation = key => {
     const state = getState();
     const url = generateRoute(key, state);
 
-    return api({
-      key,
-      url
-    })
+    return api({ url })
       .then(response => response)
       .catch(error => {
         return rejectWithValue(error);

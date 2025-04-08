@@ -4,31 +4,38 @@ import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
 import BottomSheet from '@gorhom/bottom-sheet';
 
-import { setUrlData } from '../../redux/slices/authenticationSlice';
+import { resetData, setUrlData, setUrl } from '../../redux/slices/authenticationSlice';
 import { extractUrlData } from '../../utility/utils';
 import { LandingScreenStyle as styles } from './LandingScreenStyles';
 import ScrollableView from './ScrollableView';
 import FooterView from './FooterView';
-import { type LandingScreenProps } from '../types';
 import { type AppDispatch, type RootState } from '../../redux/store';
 import { API_KEYS } from '../../services/api/apiKeys';
 import { authenticateUser } from '../../services/api/authenticate';
 import ExitBottomSheet from '../../components/ExitBottomSheet';
 import CrossDismiss from '../../components/CrossDismiss';
-import { RedirectReason } from '../ConnectTransfer/transferEventConstants';
+import {
+  ConnectTransferEventHandler,
+  RedirectReason,
+  TransferModuleType
+} from '../ConnectTransfer/transferEventConstants';
 import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandlers';
 import ErrorScreen from '../ErrorScreen/ErrorScreen';
 import RedirectingScreen from '../RedirectingScreen/RedirectingScreen';
 import Loader from '../../components/Loader';
 import { errorTranslation } from '../../services/api/errorTranslation';
+import { setEventHandlers } from '../../redux/slices/eventHandlerSlice';
 
-const LandingScreen: React.FC<LandingScreenProps> = ({}) => {
+const LandingScreen: React.FC<{ url: string; eventHandlers: ConnectTransferEventHandler }> = ({
+  url,
+  eventHandlers
+}) => {
   const dispatch: AppDispatch = useDispatch();
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const hasInitializedRef = useRef(false);
 
-  const { url, language, error, queryParamsObject, data } = useSelector(
+  const { modalVisible, language, error, queryParamsObject, data } = useSelector(
     (state: RootState) => state.user
   );
   const { eventHandler: transferEventHandler } =
@@ -38,11 +45,15 @@ const LandingScreen: React.FC<LandingScreenProps> = ({}) => {
   const [showRedirecting, setShowRedirecting] = useState(false);
 
   const { getResponseForInitializeTransfer, getResponseForClose } = useTransferEventResponse();
+  const skipLandingPage = isSkipLandingPageEnabled();
+  const isRedirecting = skipLandingPage || showRedirecting;
+  const isError = error || !url || isExperienceError();
 
   useEffect(() => {
     if (url) {
-      const extractedData = extractUrlData(url);
-      dispatch(setUrlData(extractedData));
+      dispatch(setEventHandlers(eventHandlers));
+      dispatch(setUrl(url));
+      dispatch(setUrlData(extractUrlData(url)));
     }
   }, [url]);
 
@@ -55,20 +66,11 @@ const LandingScreen: React.FC<LandingScreenProps> = ({}) => {
   }, [queryParamsObject]);
 
   useEffect(() => {
-    if (data && !hasInitializedRef.current) {
+    if (!isError && data && !hasInitializedRef.current) {
       transferEventHandler?.onInitializeConnectTransfer(getResponseForInitializeTransfer());
       hasInitializedRef.current = true;
     }
-  }, [data]);
-
-  useEffect(() => {
-    const { code } = (error as any)?.response?.data ?? '';
-
-    if (code) {
-      setShowRedirecting(false);
-      transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.ERROR, code));
-    }
-  }, [error]);
+  }, [data, isError]);
 
   const onCrossPress = () => {
     setIsVisible(true);
@@ -93,12 +95,31 @@ const LandingScreen: React.FC<LandingScreenProps> = ({}) => {
     );
   };
 
-  const renderConditionalViews = () => {
-    const isError = error || !url;
+  function isSkipLandingPageEnabled() {
+    const { transferModule, customizations } = (data as any)?.data?.experience ?? {};
 
-    if (isError) return <ErrorScreen />;
-    if (showRedirecting) return <RedirectingScreen />;
-    if (data) return <LandingView />;
+    return (
+      transferModule?.moduleType === TransferModuleType.PDS &&
+      transferModule?.enabled &&
+      customizations?.skipLandingPage
+    );
+  }
+
+  function isExperienceError() {
+    const { id, transferModule } = (data as any)?.data?.experience ?? {};
+
+    return (
+      !!id &&
+      (Object.keys(transferModule).length === 0 ||
+        transferModule.moduleType !== TransferModuleType.PDS ||
+        transferModule.enabled !== true)
+    );
+  }
+
+  const renderConditionalViews = () => {
+    if (isError) return <ErrorScreen isExperienceError={isExperienceError()} />;
+    if (isRedirecting) return <RedirectingScreen isExperience={skipLandingPage} />;
+    if (!isError && data) return <LandingView />;
 
     return (
       <View style={styles.loader}>
@@ -108,12 +129,14 @@ const LandingScreen: React.FC<LandingScreenProps> = ({}) => {
   };
 
   const closeModal = () => {
-    setShowRedirecting(false);
     transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.EXIT));
+    setShowRedirecting(false);
+    dispatch(resetData());
   };
 
   return (
     <Modal
+      visible={modalVisible}
       animationType={'slide'}
       transparent={false}
       testID="test-modal"
