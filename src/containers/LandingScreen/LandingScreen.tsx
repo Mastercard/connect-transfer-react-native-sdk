@@ -94,21 +94,17 @@ const LandingScreen: React.FC<LandingScreenProps> = ({}) => {
   };
 
   const renderConditionalViews = () => {
-    switch (true) {
-      case error || !url:
-        return <ErrorScreen />;
-      case showRedirecting:
-        return <RedirectingScreen />;
-      case Boolean(data):
-        return <LandingView />;
+    const isError = error || !url;
 
-      default:
-        return (
-          <View style={styles.loader}>
-            <Loader color="gray" size={70} strokeWidth={7} borderRadius={35} />
-          </View>
-        );
-    }
+    if (isError) return <ErrorScreen />;
+    if (showRedirecting) return <RedirectingScreen />;
+    if (data) return <LandingView />;
+
+    return (
+      <View style={styles.loader}>
+        <Loader color="gray" size={70} strokeWidth={7} borderRadius={35} />
+      </View>
+    );
   };
 
   const closeModal = () => {

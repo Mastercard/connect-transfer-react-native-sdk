@@ -1,7 +1,7 @@
 {
   "name": "connect-transfer-react-native-sdk",
   "version": "1.0.0",
-  "description": "Connecy Transfer React Native SDK for Mastercard Open Banking Connect",
+  "description": "Connect Transfer React Native SDK for Mastercard Open Banking Connect",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",

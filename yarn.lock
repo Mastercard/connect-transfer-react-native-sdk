@@ -10,10 +10,10 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
-"@atomicfi/transact-react-native@^3.10.0":
-  version "3.11.0"
-  resolved "https://registry.npmjs.org/@atomicfi/transact-react-native/-/transact-react-native-3.11.0.tgz"
-  integrity sha512-+3chBHSnJkQttVIqPqE4AyDgEl/YcuxgBo3PX29SqnYbEHnKHNHF4eE2VMe1NBZYyKuVGbubeNAx6ql235eX/A==
+"@atomicfi/transact-react-native@3.10.0":
+  version "3.10.0"
+  resolved "https://registry.npmjs.org/@atomicfi/transact-react-native/-/transact-react-native-3.10.0.tgz"
+  integrity sha512-zRuSd9lSoVgMjbjneOisuwYpRmDL2FoSZWKITa7vVXoiMRNYlIBiS69SRutAezxzH11RL+J2zKXzuk/coAvnsA==
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.24.7", "@babel/code-frame@^7.26.2":
   version "7.26.2"
@@ -3215,7 +3215,7 @@ available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-axios@^1.8.4:
+axios@1.8.4:
   version "1.8.4"
   resolved "https://registry.npmjs.org/axios/-/axios-1.8.4.tgz"
   integrity sha512-eBSYY4Y68NNlHbHBMdeDmKNtDgXWhQsJcGqzO3iLUM0GraQFSS9cVgPX5I9b3lbdFKyYoAEGAZF1DwhTaljNAw==
