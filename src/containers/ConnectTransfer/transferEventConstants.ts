@@ -75,4 +75,4 @@ export enum AtomicEvents {
 }
 
 export const BRAND_COLOR = '#CF4500';
-export const SEARCH_COMPANY =  'search-company';
+export const SEARCH_COMPANY = 'search-company';

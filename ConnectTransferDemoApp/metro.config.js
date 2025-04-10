@@ -1,5 +1,7 @@
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
 
-const config = {};
+const defaultConfig = getDefaultConfig(__dirname);
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+defaultConfig.resolver.sourceExts.push('cjs'); // Required for Reanimated
+
+module.exports = mergeConfig(defaultConfig, {});

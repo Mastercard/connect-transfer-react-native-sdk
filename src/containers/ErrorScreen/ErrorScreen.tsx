@@ -7,8 +7,8 @@ import MAButton from '../../components/MAButton';
 import { ErrorScreenStyles as styles } from './Styles';
 import { RedirectReason } from '../ConnectTransfer/transferEventConstants';
 import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandlers';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
+import { shallowEqual, useSelector } from 'react-redux';
+import { type RootState } from '../../redux/store';
 import { getTranslation } from '../../utility/utils';
 
 const ErrorScreen: React.FC = () => {
@@ -16,10 +16,13 @@ const ErrorScreen: React.FC = () => {
 
   const { eventHandler: transferEventHandler } =
     useSelector((state: RootState) => state.event) || null;
-  const { code, user_message } =
-    useSelector((state: RootState) => state.user?.error?.response?.data) ?? {};
   const { data } = useSelector((state: RootState) => state.errorTranslation) ?? {};
+  const errorData = useSelector(
+    (state: RootState) => (state.user?.error as any)?.response?.data ?? {},
+    shallowEqual
+  );
 
+  const { code, user_message } = errorData;
   const { getResponseForClose } = useTransferEventResponse();
 
   const onExitPressed = () => {
