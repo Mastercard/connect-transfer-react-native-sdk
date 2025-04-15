@@ -8,8 +8,6 @@ import i18next from '../src/locale/i18n';
 import ConnectTransfer from '../src/index';
 import { type ConnectTransferEventHandler } from '../src/containers/ConnectTransfer/transferEventConstants';
 
-jest.mock('../src/navigation/Navigation', () => () => 'MockedNavigation');
-
 const eventHandlerFns: ConnectTransferEventHandler = {
   onInitializeConnectTransfer: data => {
     console.log('Initialize Connect Transfer', data);

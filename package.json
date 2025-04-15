@@ -15,14 +15,9 @@
     "!**/__fixtures__",
     "!**/__mocks__",
     "src",
-    "!android",
-    "!ios",
     "!**/.*"
   ],
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
     "example": "yarn workspace connect-transfer-react-native-sdk-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
