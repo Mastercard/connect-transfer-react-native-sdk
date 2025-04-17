@@ -2,10 +2,10 @@ import { ScrollView, Text, View, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import MAAttributedText from '../../components/MAAttributedText';
-import { LandingScreenScrollableViewStyle as styles } from './LandingScreenStyles';
+import { MAScrollableViewStyle as styles } from './MALandingViewStyles';
 import Lock from '../../assets/lock.png';
 
-const ScrollableView = () => {
+const MAScrollableView = () => {
   const { t } = useTranslation();
 
   const STEPS = [
@@ -68,4 +68,4 @@ const ScrollableView = () => {
   );
 };
 
-export default ScrollableView;
+export default MAScrollableView;

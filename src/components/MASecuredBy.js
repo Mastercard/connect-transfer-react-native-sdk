@@ -1,14 +1,14 @@
 import { View, Text, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
-import { SecuredByStyle as styles } from './ComponentStyles';
+import { MASecuredByStyle as styles } from './ComponentStyles';
 import Logo from '../assets/logo.png';
 
-const SecuredBy = ({ style = {} }) => {
+const MASecuredBy = () => {
   const { t } = useTranslation();
 
   return (
-    <View style={[styles.footer, style]}>
+    <View style={[styles.footer]}>
       <View style={styles.logoContainer}>
         <Text style={styles.securedText}>{t('SecuredByText')}</Text>
         <Image source={Logo} style={styles.logo} />
@@ -17,4 +17,4 @@ const SecuredBy = ({ style = {} }) => {
   );
 };
 
-export default SecuredBy;
+export default MASecuredBy;

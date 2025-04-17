@@ -1,35 +1,10 @@
 import { Platform, StyleSheet } from 'react-native';
 
-export const SecuredByStyle = StyleSheet.create({
-  footer: {
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-around'
-  },
-  logoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    width: 119,
-    height: 18
-  },
-  securedText: {
-    fontSize: 14,
-    fontWeight: '350',
-    marginRight: 5
-  },
-  logo: { resizeMode: 'contain' }
+export const MALandingViewStyle = StyleSheet.create({
+  cross: { marginHorizontal: 24, marginTop: 10 }
 });
 
-export const LandingScreenStyle = StyleSheet.create({
-  safeAreaView: { flex: 1, backgroundColor: '#FFF' },
-  cross: { marginHorizontal: 24, marginTop: 10 },
-  loader: { flex: 1, justifyContent: 'center' }
-});
-
-export const LandingScreenScrollableViewStyle = StyleSheet.create({
+export const MAScrollableViewStyle = StyleSheet.create({
   scrollView: { marginHorizontal: 24 },
   title: {
     fontSize: 23,
@@ -102,7 +77,7 @@ export const LandingScreenScrollableViewStyle = StyleSheet.create({
   lock: { marginRight: 4, resizeMode: 'contain', width: 16, height: 16 }
 });
 
-export const LandingScreenFooterStyle = StyleSheet.create({
+export const MAFooterViewStyle = StyleSheet.create({
   safeAreaView: { flex: 1, backgroundColor: 'white' },
   linkIcon: {
     width: 16,

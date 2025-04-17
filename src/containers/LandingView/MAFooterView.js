@@ -2,14 +2,14 @@ import { Image, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
-import SecuredBy from '../../components/SecuredBy';
+import MASecuredBy from '../../components/MASecuredBy';
 import MAButton from '../../components/MAButton';
 import LinkIcon from '../../assets/linkIcon.png';
 import MAAttributedText from '../../components/MAAttributedText';
-import { LandingScreenFooterStyle as styles } from './LandingScreenStyles';
+import { MAFooterViewStyle as styles } from './MALandingViewStyles';
 import { getURL, openLink } from '../../utility/utils';
 
-const FooterView = ({ onNextPress }) => {
+const MAFooterView = ({ onNextPress }) => {
   const { t } = useTranslation();
 
   const language = useSelector(state => state.user.language);
@@ -38,9 +38,9 @@ const FooterView = ({ onNextPress }) => {
         component={<Image source={LinkIcon} style={styles.linkIcon} />}
       />
       <MAButton text={t('NextText')} style={styles.button} onPress={onNextPress} />
-      <SecuredBy />
+      <MASecuredBy />
     </View>
   );
 };
 
-export default FooterView;
+export default MAFooterView;

@@ -6,11 +6,6 @@ export interface ConnectTransferEventHandler {
   onUserEvent(data?: Record<string, any>): void;
 }
 
-export interface ConnectTransferProps {
-  connectTransferUrl: string;
-  eventHandlers: ConnectTransferEventHandler;
-}
-
 export enum TransferEventDataName {
   CUSTOMER_ID = 'customerId',
   PARTNER_ID = 'partnerId',

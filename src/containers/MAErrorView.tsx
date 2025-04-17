@@ -2,17 +2,18 @@ import { SafeAreaView, Text, Image, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 
-import ErrorIcon from '../../assets/errorIcon.png';
-import SecuredBy from '../../components/SecuredBy';
-import MAButton from '../../components/MAButton';
-import { ErrorScreenStyles as styles } from './Styles';
-import { RedirectReason } from '../ConnectTransfer/transferEventConstants';
-import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandlers';
-import { AppDispatch, type RootState } from '../../redux/store';
-import { getTranslation } from '../../utility/utils';
-import { resetData } from '../../redux/slices/authenticationSlice';
+import ErrorIcon from '../assets/errorIcon.png';
+import MASecuredBy from '../components/MASecuredBy';
+import MAButton from '../components/MAButton';
+import { MAErrorViewStyles as styles } from './ContainerStyles';
+import { RedirectReason } from './ConnectTransfer/transferEventConstants';
+import { useTransferEventResponse } from './ConnectTransfer/transferEventHandlers';
+import { AppDispatch, type RootState } from '../redux/store';
+import { getTranslation } from '../utility/utils';
+import { resetData } from '../redux/slices/authenticationSlice';
+import { type MAErrorViewProps } from './types';
 
-const ErrorScreen: React.FC<{ isExperienceError?: boolean }> = ({ isExperienceError = false }) => {
+const MAErrorView: React.FC<MAErrorViewProps> = ({ isExperienceError = false }) => {
   const dispatch: AppDispatch = useDispatch();
 
   const { t } = useTranslation();
@@ -26,6 +27,7 @@ const ErrorScreen: React.FC<{ isExperienceError?: boolean }> = ({ isExperienceEr
   );
 
   const { code, user_message } = errorData;
+  const errorText = data && getTranslation(user_message, data);
   const { getResponseForClose } = useTransferEventResponse();
 
   const onExitPressed = () => {
@@ -41,7 +43,7 @@ const ErrorScreen: React.FC<{ isExperienceError?: boolean }> = ({ isExperienceEr
     return (
       <View style={styles.footerView}>
         <MAButton text={t('Exit')} style={styles.tryAgainButton} onPress={onExitPressed} />
-        <SecuredBy />
+        <MASecuredBy />
       </View>
     );
   };
@@ -50,8 +52,6 @@ const ErrorScreen: React.FC<{ isExperienceError?: boolean }> = ({ isExperienceEr
     if (isExperienceError) {
       return { title: t('ExperienceErrorTitle'), subTitle: `${t('ExperienceErrorSubtitle')} (-1)` };
     }
-
-    const errorText = data && getTranslation(user_message, data);
 
     return {
       title: t('ErrorTitle'),
@@ -71,4 +71,4 @@ const ErrorScreen: React.FC<{ isExperienceError?: boolean }> = ({ isExperienceEr
   );
 };
 
-export default ErrorScreen;
+export default MAErrorView;

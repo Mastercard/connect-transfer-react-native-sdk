@@ -10,7 +10,7 @@ import Animated, {
 
 import { LoaderStyle as styles } from './ComponentStyles';
 
-const Loader = ({ size = 80, color = '#CF4500', strokeWidth = 8, borderRadius = 40 }) => {
+const MALoader = ({ size = 80, color = '#CF4500', strokeWidth = 8, borderRadius = 40 }) => {
   const rotation = useSharedValue(0);
 
   React.useEffect(() => {
@@ -37,4 +37,4 @@ const Loader = ({ size = 80, color = '#CF4500', strokeWidth = 8, borderRadius = 
   );
 };
 
-export default Loader;
+export default MALoader;

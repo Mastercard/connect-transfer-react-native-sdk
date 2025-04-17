@@ -5,15 +5,15 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import store from './redux/store';
 import i18next from './locale/i18n';
-import { type ConnectTransferProps } from './containers/ConnectTransfer/transferEventConstants';
-import LandingScreen from './containers/LandingScreen/LandingScreen';
+import { type ConnectTransferProps } from './containers/types';
+import MARootContainer from './containers/MARootContainer';
 
 const ConnectTransfer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, eventHandlers }) => {
   return (
     <GestureHandlerRootView>
       <I18nextProvider i18n={i18next}>
         <Provider store={store}>
-          <LandingScreen url={connectTransferUrl} eventHandlers={eventHandlers} />
+          <MARootContainer connectTransferUrl={connectTransferUrl} eventHandlers={eventHandlers} />
         </Provider>
       </I18nextProvider>
     </GestureHandlerRootView>

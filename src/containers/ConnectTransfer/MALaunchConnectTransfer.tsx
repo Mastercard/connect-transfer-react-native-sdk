@@ -14,7 +14,7 @@ import { complete } from '../../services/api/complete';
 import { API_KEYS } from '../../services/api/apiKeys';
 import { resetData } from '../../redux/slices/authenticationSlice';
 
-const LaunchConnectTransfer = () => {
+const MALaunchConnectTransfer = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const { data, language } = useSelector((state: RootState) => state.user) || '';
@@ -67,17 +67,20 @@ const LaunchConnectTransfer = () => {
     }
 
     transferEventHandler?.onTransferEnd(getResponseForClose(reason));
-    dispatch(complete(API_KEYS.complete));
-    dispatch(resetData());
+    completeAndReset();
   };
 
   const handleFinishEvent = (response: any) => {
     transferEventHandler?.onTransferEnd(getResponseForFinish(response));
+    completeAndReset();
+  };
+
+  function completeAndReset() {
     dispatch(complete(API_KEYS.complete));
     dispatch(resetData());
-  };
+  }
 
   return <></>;
 };
 
-export default LaunchConnectTransfer;
+export default MALaunchConnectTransfer;

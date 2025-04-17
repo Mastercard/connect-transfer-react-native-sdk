@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CrossDismiss from './CrossDismiss';
+import MACrossDismiss from './MACrossDismiss';
 import MAButton from './MAButton';
-import { ExitBottomSheetStyle as styles } from './ComponentStyles';
+import { MAExitBottomSheetStyle as styles } from './ComponentStyles';
 import { RedirectReason } from '../containers/ConnectTransfer/transferEventConstants';
 import { useTransferEventResponse } from '../containers/ConnectTransfer/transferEventHandlers';
 import { resetData } from '../redux/slices/authenticationSlice';
 
-const ExitBottomSheet = ({ bottomSheetRef, onClose }) => {
+const MAExitBottomSheet = ({ bottomSheetRef, onClose }) => {
   const dispatch = useDispatch();
 
   const { t } = useTranslation();
@@ -35,7 +35,7 @@ const ExitBottomSheet = ({ bottomSheetRef, onClose }) => {
       backdropComponent={({ style }) => renderBackdropComponent(style)}
     >
       <BottomSheetView style={styles.content}>
-        <CrossDismiss onCrossPress={onClose} />
+        <MACrossDismiss onCrossPress={onClose} />
         <Text style={styles.title}>{t('ExitPopUpTitle')}</Text>
         <Text style={styles.subtitle}>{t('ExitPopUpSubtitle', { applicationName })}</Text>
         <MAButton text={t('YesExit')} style={styles.exitButton} onPress={onExitPressed} />
@@ -50,4 +50,4 @@ const ExitBottomSheet = ({ bottomSheetRef, onClose }) => {
   );
 };
 
-export default ExitBottomSheet;
+export default MAExitBottomSheet;

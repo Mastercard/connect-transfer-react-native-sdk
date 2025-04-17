@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-export const SecuredByStyle = StyleSheet.create({
+export const MASecuredByStyle = StyleSheet.create({
   footer: {
     bottom: 0,
     left: 0,
@@ -41,7 +41,7 @@ export const MAButtonStyle = StyleSheet.create({
   }
 });
 
-export const CrossDismissStyle = StyleSheet.create({
+export const MACrossDismissStyle = StyleSheet.create({
   crossIcon: {
     alignSelf: 'flex-end'
   }
@@ -60,7 +60,7 @@ export const LoaderStyle = StyleSheet.create({
   }
 });
 
-export const ExitBottomSheetStyle = StyleSheet.create({
+export const MAExitBottomSheetStyle = StyleSheet.create({
   content: {
     flex: 1,
     marginTop: 20,
