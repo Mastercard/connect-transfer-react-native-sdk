@@ -38,7 +38,8 @@ const MALaunchConnectTransfer = () => {
         deeplink: {
           step: SEARCH_COMPANY
         },
-        metadata: metadata
+        metadata: metadata,
+        customer: metadata?.applicationName || ''
       },
       onInteraction: (interaction: any) => handleInteractionEvents(interaction),
       onFinish: (response: any) => handleFinishEvent(response),

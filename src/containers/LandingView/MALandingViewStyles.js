@@ -59,8 +59,7 @@ export const MAScrollableViewStyle = StyleSheet.create({
   stepText: {
     fontSize: 13,
     color: '#141413',
-    lineHeight: 20,
-    color: '#141413'
+    lineHeight: 20
   },
   disclaimerContainer: {
     flexDirection: 'row',

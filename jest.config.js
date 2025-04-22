@@ -23,6 +23,13 @@ module.exports = {
     '^react-native$': '<rootDir>/node_modules/react-native'
   },
   transformIgnorePatterns: [
-    'node_modules/(?!(jest-react-native|react-native|@react-native|react-redux|react-native-reanimated|react-native-gesture-handler|@react-native-community)/)'
+    'node_modules/(?!(react-native' +
+      '|@react-native' +
+      '|react-redux' +
+      '|react-native-reanimated' +
+      '|react-native-gesture-handler' +
+      '|@react-native-community' +
+      '|react-native-url-polyfill' +
+      ')/)'
   ]
 };

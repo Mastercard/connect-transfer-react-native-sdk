@@ -1,4 +1,4 @@
-import { ConnectTransferEventHandler } from './ConnectTransfer/transferEventConstants';
+import { type ConnectTransferEventHandler } from './ConnectTransfer/transferEventConstants';
 
 export interface ConnectTransferProps {
   connectTransferUrl: string;

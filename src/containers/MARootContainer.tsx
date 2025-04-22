@@ -100,7 +100,7 @@ export function isSkipLandingPageEnabled(data: any) {
   );
 }
 
-function isExperienceError(data: any) {
+export function isExperienceError(data: any) {
   const { id, transferModule } = data?.data?.experience ?? {};
   return (
     !!id &&
