@@ -1,6 +1,8 @@
 {
   "ErrorSubtitle": "We weren’t able to connect to your data.",
   "ErrorTitle": "Looks like there was an issue",
+  "ExperienceErrorSubtitle": "Invalid Experience",
+  "ExperienceErrorTitle": "Invalid connection link",
   "Exit": "Exit",
   "ExitPopUpSubtitle": "If you exit, you return back to {{applicationName}} and your financial data won’t be connected or saved.",
   "ExitPopUpTitle": "Are you sure you want to exit?",

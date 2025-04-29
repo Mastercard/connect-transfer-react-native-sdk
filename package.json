@@ -15,14 +15,9 @@
     "!**/__fixtures__",
     "!**/__mocks__",
     "src",
-    "!android",
-    "!ios",
     "!**/.*"
   ],
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "start": "react-native start",
     "example": "yarn workspace connect-transfer-react-native-sdk-example",
     "test": "jest",
     "typecheck": "tsc --noEmit",
@@ -40,23 +35,16 @@
     "Mastercard Open Banking Connect"
   ],
   "dependencies": {
-    "@atomicfi/transact-react-native": "3.10.0",
-    "@gorhom/bottom-sheet": "^5.1.1",
-    "@react-navigation/native": "7.0.14",
-    "@react-navigation/native-stack": "7.2.0",
+    "@gorhom/bottom-sheet": "5.1.1",
     "@reduxjs/toolkit": "2.5.1",
     "axios": "1.8.4",
     "i18next": "24.2.2",
-    "react-i18next": "*",
-    "react-native-gesture-handler": "2.23.1",
-    "react-native-inappbrowser-reborn": ">=3.6",
-    "react-native-reanimated": "3.16.7",
-    "react-native-safe-area-context": "5.2.0",
-    "react-native-screens": "4.7.0",
+    "react-i18next": "15.4.1",
     "react-native-url-polyfill": "2.0.0",
     "react-redux": "9.2.0"
   },
   "devDependencies": {
+    "@atomicfi/transact-react-native": "3.11.1",
     "@babel/core": "7.26.9",
     "@babel/preset-env": "7.26.9",
     "@babel/runtime": "^7.26.9",
@@ -85,7 +73,10 @@
     "prettier": "^3.5.1",
     "react": "19.0.0",
     "react-native": "^0.77.1",
-    "react-native-builder-bob": "^0.37.0",
+    "react-native-builder-bob": "0.37.0",
+    "react-native-gesture-handler": "2.25.0",
+    "react-native-inappbrowser-reborn": "3.7.0",
+    "react-native-reanimated": "3.17.4",
     "react-test-renderer": "19.0.0",
     "release-it": "^18.1.2",
     "semver": ">=7.7.1",
@@ -94,17 +85,12 @@
     "yarn-audit-fix": "^10.1.1"
   },
   "peerDependencies": {
-    "@atomicfi/transact-react-native": ">=3.10.0",
-    "@react-navigation/native": "7.0.14",
-    "@react-navigation/native-stack": "7.2.0",
-    "@reduxjs/toolkit": "2.5.1",
+    "@atomicfi/transact-react-native": "3.11.1",
     "react": ">=16.13",
     "react-native": ">=0.63",
-    "react-native-gesture-handler": "2.23.1",
-    "react-native-reanimated": "3.16.7",
-    "react-native-safe-area-context": "5.2.0",
-    "react-native-screens": "4.7.0",
-    "react-redux": "9.2.0"
+    "react-native-gesture-handler": "2.25.0",
+    "react-native-inappbrowser-reborn": "3.7.0",
+    "react-native-reanimated": "3.17.4"
   },
   "resolutions": {
     "@types/react": "17.0.21",

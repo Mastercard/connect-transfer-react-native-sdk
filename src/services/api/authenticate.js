@@ -11,7 +11,6 @@ export const authenticateUser = key => {
     const headers = requestHeaders(key, state);
 
     return api({
-      key,
       url,
       headers,
       method: METHODS.POST

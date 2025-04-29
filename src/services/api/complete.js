@@ -12,7 +12,6 @@ export const complete = key => {
     const data = { reportData: [] };
 
     return api({
-      key,
       url,
       headers,
       data,
