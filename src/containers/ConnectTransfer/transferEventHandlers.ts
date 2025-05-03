@@ -5,6 +5,7 @@ import { type RootState } from '../../redux/store';
 import {
   AtomicEvents,
   RedirectReason,
+  TransferActionCodes,
   TransferActionEvents,
   TransferEventDataName,
   UserEvents
@@ -24,6 +25,8 @@ export const useTransferEventCommonData = (): Record<string, string | undefined>
     (state: RootState) => state.user.queryParamsObject
   );
 
+  if (!queryParams || Object.keys(queryParams).length === 0) return {};
+
   const commonData: Record<string, string | undefined> = {
     [TransferEventDataName.CUSTOMER_ID]: queryParams[TransferEventDataName.CUSTOMER_ID],
     [TransferEventDataName.PARTNER_ID]: queryParams[TransferEventDataName.PARTNER_ID],
@@ -41,61 +44,83 @@ export const useTransferEventCommonData = (): Record<string, string | undefined>
 };
 
 export const useTransferEventResponse = () => {
-  const queryParams = useTransferEventCommonData();
+  const commonData = useTransferEventCommonData();
+  const isEmpty = !commonData || Object.keys(commonData).length === 0;
 
-  const getResponseForInitializeTransfer = (): Record<string, any> => {
-    const commonData = { ...queryParams };
-    commonData[TransferEventDataName.ACTION] = TransferActionEvents.INITIALIZE_TRANSFER;
+  const getResponseForInitializeTransfer = (): Record<string, any> | undefined => {
+    if (isEmpty) return;
 
-    return commonData;
+    return {
+      ...commonData,
+      [TransferEventDataName.ACTION]: TransferActionEvents.INITIALIZE_TRANSFER
+    };
   };
 
-  const getResponseForTermsAndConditionsAccepted = (): Record<string, any> => {
-    const commonData = { ...queryParams };
-    commonData[TransferEventDataName.ACTION] = TransferActionEvents.TERMS_ACCEPTED;
+  const getResponseForTermsAndConditionsAccepted = (): Record<string, any> | undefined => {
+    if (isEmpty) return;
 
-    return commonData;
+    return {
+      ...commonData,
+      [TransferEventDataName.ACTION]: TransferActionEvents.TERMS_ACCEPTED
+    };
   };
 
-  const getResponseForInitializeDepositSwitch = (productType?: string): Record<string, any> => {
-    const commonData = { ...queryParams };
-    commonData[TransferEventDataName.ACTION] = UserEvents.INITIALIZE_DEPOSIT_SWITCH;
+  const getResponseForInitializeDepositSwitch = (
+    productType?: string
+  ): Record<string, any> | undefined => {
+    if (isEmpty) return;
 
-    if (productType) {
-      commonData[TransferEventDataName.PRODUCT] = productType;
-    }
-
-    return commonData;
+    return {
+      ...commonData,
+      [TransferEventDataName.ACTION]: UserEvents.INITIALIZE_DEPOSIT_SWITCH,
+      ...(productType && { [TransferEventDataName.PRODUCT]: productType })
+    };
   };
 
-  const getResponseForClose = (reason: string, errorCode?: string): Record<string, any> => {
-    const commonData = { ...queryParams };
-    commonData[TransferEventDataName.ACTION] = TransferActionEvents.END;
+  const getResponseForError = (errorCode?: string): Record<string, any> | undefined => ({
+    ...commonData,
+    [TransferEventDataName.ACTION]: TransferActionEvents.ERROR,
+    [TransferEventDataName.REASON]: RedirectReason.ERROR,
+    [TransferEventDataName.CODE]: errorCode || TransferActionCodes.BAD_REQUEST
+  });
 
-    if (reason === RedirectReason.UNKNOWN || reason === RedirectReason.EXIT) {
-      commonData[TransferEventDataName.REASON] = RedirectReason.EXIT;
-      commonData[TransferEventDataName.CODE] = '100';
-    } else {
-      commonData[TransferEventDataName.REASON] = reason;
-      commonData[TransferEventDataName.CODE] = errorCode || '500';
-    }
+  const getResponseForClose = (
+    reason: string,
+    errorCode?: string
+  ): Record<string, any> | undefined => {
+    if (isEmpty) return;
 
-    return commonData;
+    const isExitReason = reason === RedirectReason.UNKNOWN || reason === RedirectReason.EXIT;
+
+    return {
+      ...commonData,
+      [TransferEventDataName.ACTION]: TransferActionEvents.END,
+      [TransferEventDataName.REASON]: isExitReason ? RedirectReason.EXIT : reason,
+      [TransferEventDataName.CODE]: isExitReason
+        ? TransferActionCodes.USER_INITIATED_EXIT
+        : errorCode || TransferActionCodes.ATOMIC_ERROR
+    };
   };
 
-  const getResponseForFinish = (responseData: Record<string, any>): Record<string, any> => {
-    const commonData = { ...queryParams };
-    commonData[TransferEventDataName.ACTION] = TransferActionEvents.END;
-    commonData[TransferEventDataName.REASON] = RedirectReason.COMPLETE;
-    commonData[TransferEventDataName.CODE] = '200';
+  const getResponseForFinish = (
+    responseData: Record<string, any>
+  ): Record<string, any> | undefined => {
+    if (isEmpty) return;
 
-    return { ...commonData, ...responseData };
+    return {
+      ...commonData,
+      [TransferEventDataName.ACTION]: TransferActionEvents.END,
+      [TransferEventDataName.REASON]: RedirectReason.COMPLETE,
+      [TransferEventDataName.CODE]: TransferActionCodes.SUCCESS,
+      ...responseData
+    };
   };
 
   return {
     getResponseForInitializeTransfer,
     getResponseForTermsAndConditionsAccepted,
     getResponseForInitializeDepositSwitch,
+    getResponseForError,
     getResponseForClose,
     getResponseForFinish
   };

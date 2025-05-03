@@ -16,24 +16,24 @@ import { WEBPAGE_API_KEYS } from '../services/api/apiKeys';
  */
 export const extractUrlData = (
   url: string = ''
-): {
-  baseURL: string;
-  queryParams: string;
-  queryParamsObject: Record<string, string>;
-} => {
-  const defaultValues = { baseURL: '', queryParams: '', queryParamsObject: {} };
-
+):
+  | {
+      baseURL: string;
+      queryParams: string;
+      queryParamsObject: Record<string, string>;
+    }
+  | undefined => {
   try {
     if (!url) {
       console.error('Invalid URL: URL is empty/null/undefined');
-      return defaultValues;
+      return;
     }
 
     const urlPattern = /^https:\/\//i;
 
     if (!urlPattern.test(url)) {
       console.error('Invalid URL: Must start with https://');
-      return defaultValues;
+      return;
     }
 
     const urlObject = new URL(url);
@@ -54,7 +54,7 @@ export const extractUrlData = (
     return { baseURL, queryParams, queryParamsObject };
   } catch (error) {
     console.error('Error parsing URL:', error);
-    return defaultValues;
+    return;
   }
 };
 

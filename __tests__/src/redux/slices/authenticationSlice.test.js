@@ -1,5 +1,6 @@
 import reducer, {
   setUrl,
+  setModalVisible,
   setUrlData,
   resetData,
   authenticateUser
@@ -26,13 +27,17 @@ describe('authenticationSlice', () => {
     const url = 'https://example.com';
     const state = reducer(initialState, setUrl(url));
     expect(state.url).toBe(url);
-    expect(state.modalVisible).toBe(true);
   });
 
   it('should handle setUrl with empty string', () => {
     const state = reducer(initialState, setUrl(''));
     expect(state.url).toBe('');
     expect(state.modalVisible).toBe(false);
+  });
+
+  it('should handle setModalVisible', () => {
+    const state = reducer(initialState, setModalVisible());
+    expect(state.modalVisible).toBe(true);
   });
 
   it('should default to EN if queryParamsObject.language is undefined', () => {

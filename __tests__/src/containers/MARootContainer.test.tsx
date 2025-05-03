@@ -65,7 +65,8 @@ describe('MARootContainer', () => {
     onTermsAndConditionsAccepted: jest.fn(),
     onLaunchTransferSwitch: jest.fn(),
     onTransferEnd: jest.fn(),
-    onUserEvent: jest.fn()
+    onUserEvent: jest.fn(),
+    onErrorEvent: jest.fn()
   };
 
   beforeEach(() => {
@@ -100,7 +101,7 @@ describe('MARootContainer', () => {
     );
 
     return render(
-      <MARootContainer connectTransferUrl="http://mockurl.com" eventHandlers={mockEventHandler} />
+      <MARootContainer connectTransferUrl="https://mockurl.com" eventHandlers={mockEventHandler} />
     );
   };
 
@@ -119,14 +120,7 @@ describe('MARootContainer', () => {
   it('dispatches setUrl, setUrlData, setEventHandlers when connectTransferUrl is provided', () => {
     renderComponent();
     expect(mockDispatch).toHaveBeenCalledWith(setEventHandlers(mockEventHandler));
-    expect(mockDispatch).toHaveBeenCalledWith(setUrl('http://mockurl.com'));
-    expect(mockDispatch).toHaveBeenCalledWith(
-      setUrlData({
-        baseURL: '',
-        queryParams: '',
-        queryParamsObject: {}
-      })
-    );
+    expect(mockDispatch).toHaveBeenCalledWith(setUrl('https://mockurl.com'));
   });
 
   it('dispatches setUrlData with extracted URL data when connectTransferUrl is provided', () => {

@@ -1,4 +1,4 @@
-import { render, fireEvent, screen } from '@testing-library/react-native';
+import { render, fireEvent, screen, act } from '@testing-library/react-native';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import { configureStore, type Store } from '@reduxjs/toolkit';
 import { useTranslation } from 'react-i18next';
@@ -31,7 +31,8 @@ const mockEventHandler = {
   onLaunchTransferSwitch: jest.fn(),
   onTermsAndConditionsAccepted: jest.fn(),
   onTransferEnd: jest.fn(),
-  onUserEvent: jest.fn()
+  onUserEvent: jest.fn(),
+  onErrorEvent: jest.fn()
 };
 
 (mockStoreData as any).event.eventHandler = mockEventHandler;
@@ -65,7 +66,8 @@ describe('MAErrorView', () => {
             onLaunchTransferSwitch: jest.fn(),
             onTermsAndConditionsAccepted: jest.fn(),
             onTransferEnd: jest.fn(),
-            onUserEvent: jest.fn()
+            onUserEvent: jest.fn(),
+            onErrorEvent: jest.fn()
           }
         },
         errorTranslation: {
@@ -238,5 +240,26 @@ describe('MAErrorView', () => {
     fireEvent.press(screen.getByText('Exit'));
 
     expect(screen.getByText(t('ExperienceErrorTitle'))).toBeTruthy();
+  });
+
+  it('test for timer', () => {
+    jest.useFakeTimers();
+
+    render(
+      <Provider store={store}>
+        <MAErrorView />
+      </Provider>
+    );
+    act(() => {
+      jest.advanceTimersByTime(300000);
+    });
+
+    jest.useRealTimers();
+
+    const exitButton = screen.getByText(t('Exit'));
+    fireEvent.press(exitButton);
+
+    expect(screen.getByText('Looks like there was an issue')).toBeTruthy();
+    expect(screen.getByText('We weren’t able to connect to your data.')).toBeTruthy();
   });
 });

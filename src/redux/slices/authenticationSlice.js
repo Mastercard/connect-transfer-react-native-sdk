@@ -24,9 +24,11 @@ const authenticationSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setModalVisible: state => {
+      state.modalVisible = true;
+    },
     setUrl: (state, action) => {
       state.url = action.payload;
-      state.modalVisible = !!action.payload;
     },
     setUrlData: (state, action) => {
       const { baseURL, queryParams, queryParamsObject } = action.payload;
@@ -43,5 +45,5 @@ const authenticationSlice = createSlice({
   }
 });
 
-export const { setUrl, setUrlData, resetData } = authenticationSlice.actions;
+export const { setModalVisible, setUrl, setUrlData, resetData } = authenticationSlice.actions;
 export default authenticationSlice.reducer;

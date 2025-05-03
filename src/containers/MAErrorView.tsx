@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { SafeAreaView, Text, Image, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
@@ -16,6 +17,8 @@ import { type MAErrorViewProps } from './types';
 const MAErrorView: React.FC<MAErrorViewProps> = ({ isExperienceError = false }) => {
   const dispatch: AppDispatch = useDispatch();
 
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const { t } = useTranslation();
 
   const { eventHandler: transferEventHandler } =
@@ -26,20 +29,38 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({ isExperienceError = false }) 
     shallowEqual
   );
 
+  const FIVE_MINUTES = 5 * 60 * 1000;
   const { code, user_message } = errorData;
   const errorText = data && getTranslation(user_message, data);
-  const { getResponseForClose } = useTransferEventResponse();
+  const finalCode = isExperienceError ? -1 : code;
+  const { getResponseForClose, getResponseForError } = useTransferEventResponse();
 
-  const onExitPressed = () => {
-    const finalCode = isExperienceError ? -1 : code;
+  useEffect(() => {
+    transferEventHandler?.onErrorEvent(getResponseForError(finalCode));
 
-    if (finalCode) {
-      transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.ERROR, finalCode));
-      dispatch(resetData());
+    timeoutRef.current = setTimeout(() => {
+      onExitPressed();
+    }, FIVE_MINUTES);
+
+    return () => {
+      clearTimeoutRef();
+    };
+  }, []);
+
+  const clearTimeoutRef = () => {
+    if (timeoutRef?.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
     }
   };
 
-  const ErrorScreenFooter = () => {
+  const onExitPressed = () => {
+    transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.ERROR, finalCode));
+    dispatch(resetData());
+    clearTimeoutRef();
+  };
+
+  const errorScreenFooter = () => {
     return (
       <View style={styles.footerView}>
         <MAButton text={t('Exit')} style={styles.tryAgainButton} onPress={onExitPressed} />
@@ -65,7 +86,7 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({ isExperienceError = false }) 
         <Text style={styles.titleText}>{getErrorText().title}</Text>
         <Text style={styles.descriptionText}>{getErrorText().subTitle}</Text>
         <Image source={ErrorIcon} resizeMode="contain" style={styles.errorIcon} />
-        <ErrorScreenFooter />
+        {errorScreenFooter()}
       </View>
     </SafeAreaView>
   );

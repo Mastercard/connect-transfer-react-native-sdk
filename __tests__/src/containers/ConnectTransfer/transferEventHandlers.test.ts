@@ -5,7 +5,8 @@ import {
   TransferActionEvents,
   RedirectReason,
   AtomicEvents,
-  UserEvents
+  UserEvents,
+  TransferActionCodes
 } from '../../../../src/containers/ConnectTransfer/transferEventConstants';
 import {
   getTransferProductType,
@@ -96,13 +97,13 @@ describe('transferEventHandlers', () => {
       expect(getResponseForClose(RedirectReason.EXIT)).toMatchObject({
         action: TransferActionEvents.END,
         reason: RedirectReason.EXIT,
-        code: '100'
+        code: TransferActionCodes.USER_INITIATED_EXIT
       });
 
       expect(getResponseForClose('CUSTOM_REASON')).toMatchObject({
         action: TransferActionEvents.END,
         reason: 'CUSTOM_REASON',
-        code: '500'
+        code: TransferActionCodes.ATOMIC_ERROR
       });
 
       expect(getResponseForClose('CUSTOM_REASON', '404')).toMatchObject({
@@ -112,7 +113,7 @@ describe('transferEventHandlers', () => {
       expect(getResponseForFinish({ extra: 'data' })).toMatchObject({
         action: TransferActionEvents.END,
         reason: RedirectReason.COMPLETE,
-        code: '200',
+        code: TransferActionCodes.SUCCESS,
         extra: 'data'
       });
     });

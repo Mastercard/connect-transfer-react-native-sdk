@@ -39,7 +39,7 @@ const MALaunchConnectTransfer = () => {
           step: SEARCH_COMPANY
         },
         metadata: metadata,
-        customer: metadata?.applicationName || ''
+        customer: { name: metadata?.applicationName || '' }
       },
       onInteraction: (interaction: any) => handleInteractionEvents(interaction),
       onFinish: (response: any) => handleFinishEvent(response),
