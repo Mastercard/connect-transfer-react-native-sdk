@@ -35,9 +35,14 @@ const MAFooterView = ({ onNextPress }) => {
             onPress: () => openLink(getURL(language, 'privacy'))
           }
         ]}
-        component={<Image source={LinkIcon} style={styles.linkIcon} />}
+        component={<Image source={LinkIcon} style={styles.linkIcon} testID="link-icon" />}
       />
-      <MAButton text={t('NextText')} style={styles.button} onPress={onNextPress} />
+      <MAButton
+        text={t('NextText')}
+        style={styles.button}
+        onPress={onNextPress}
+        testID="next-button"
+      />
       <MASecuredBy />
     </View>
   );

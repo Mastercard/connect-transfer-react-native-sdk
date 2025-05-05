@@ -25,7 +25,9 @@ const MAExitBottomSheet = ({ bottomSheetRef, onClose }) => {
     dispatch(resetData());
   };
 
-  const renderBackdropComponent = style => <View style={[style, styles.backdrop]} />;
+  const renderBackdropComponent = style => (
+    <View style={[style, styles.backdrop]} testID="bottom-sheet-backdrop" />
+  );
 
   return (
     <BottomSheet

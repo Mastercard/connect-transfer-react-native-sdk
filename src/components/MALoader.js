@@ -31,7 +31,7 @@ const MALoader = ({ size = 80, color = '#CF4500', strokeWidth = 8, borderRadius 
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="loader-box">
       <Animated.View style={[styles.box, animatedStyle, customStyle]} />
     </View>
   );

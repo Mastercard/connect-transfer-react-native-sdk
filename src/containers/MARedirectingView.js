@@ -11,10 +11,15 @@ const MARedirectingView = () => {
   const { t } = useTranslation();
 
   return (
-    <SafeAreaView style={styles.safeAreaView}>
+    <SafeAreaView style={styles.safeAreaView} testID="safe-area-view">
       <View style={styles.centerContainer}>
         <View style={styles.redirectTextWithIcon}>
-          <Image source={Tick} style={{ width: 14.44, height: 12.67 }} resizeMode="contain" />
+          <Image
+            source={Tick}
+            style={{ width: 14.44, height: 12.67 }}
+            resizeMode="contain"
+            testID="tick-image"
+          />
           <Text style={styles.text}>{t('RedirectingText')}</Text>
         </View>
         <MALoader />
