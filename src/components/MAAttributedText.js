@@ -3,7 +3,7 @@ import { Text, TouchableOpacity } from 'react-native';
 const MAAttributedText = ({ text, styledTexts, textStyle, component = null }) => {
   const pattern =
     styledTexts?.length > 0
-      ? new RegExp(`(${styledTexts?.map(item => item.text).join('|')})`, 'gi')
+      ? new RegExp(`(${styledTexts.map(item => item.text).join('|')})`, 'gi')
       : null;
 
   const parts = pattern ? text?.split(pattern) : [text];
@@ -16,19 +16,23 @@ const MAAttributedText = ({ text, styledTexts, textStyle, component = null }) =>
             item => item.text?.toLowerCase() === part.toLowerCase()
           );
 
-          return styledTextObj ? (
-            styledTextObj.onPress ? (
-              <TouchableOpacity key={index} onPress={styledTextObj.onPress} activeOpacity={0.7}>
-                <Text style={styledTextObj.style}>{part}</Text>
-              </TouchableOpacity>
-            ) : (
-              <Text key={index} style={styledTextObj.style}>
-                {part}
-              </Text>
-            )
-          ) : (
-            part
-          );
+          if (styledTextObj) {
+            const key = `${styledTextObj.text}-${index}`;
+            if (styledTextObj.onPress) {
+              return (
+                <TouchableOpacity key={key} onPress={styledTextObj.onPress} activeOpacity={0.7}>
+                  <Text style={styledTextObj.style}>{part}</Text>
+                </TouchableOpacity>
+              );
+            } else {
+              return (
+                <Text key={key} style={styledTextObj.style}>
+                  {part}
+                </Text>
+              );
+            }
+          }
+          return part;
         })}
         {component}
       </Text>

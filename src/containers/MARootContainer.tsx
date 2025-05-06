@@ -29,7 +29,7 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
 
   const hasInitializedRef = useRef(false);
 
-  const { modalVisible, language, error, queryParamsObject, data } = useSelector(
+  const { modalVisible, language, error, data, baseURL } = useSelector(
     (state: RootState) => state.user
   );
   const { eventHandler: transferEventHandler } =
@@ -54,12 +54,12 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
   }, [connectTransferUrl]);
 
   useEffect(() => {
-    if (Object.keys(queryParamsObject).length > 0) {
+    if (baseURL) {
       dispatch(authenticateUser(API_KEYS.authenticateUser));
       dispatch(errorTranslation(API_KEYS.errorTranslation));
       i18next.changeLanguage(language);
     }
-  }, [queryParamsObject]);
+  }, [baseURL]);
 
   useEffect(() => {
     if (!isError && data && !hasInitializedRef.current) {

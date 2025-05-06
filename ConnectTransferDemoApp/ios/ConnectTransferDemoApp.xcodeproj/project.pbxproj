@@ -492,7 +492,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mastercard.openbanking.connectreactnative;
 				PRODUCT_NAME = ConnectTransferDemoApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "React Native Demo App";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Connect_Transfer_React_Native_Distribution;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -525,7 +525,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.mastercard.openbanking.connectreactnative;
 				PRODUCT_NAME = ConnectTransferDemoApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "React Native Demo App";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = Connect_Transfer_React_Native_Distribution;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};

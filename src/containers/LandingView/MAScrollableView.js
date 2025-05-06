@@ -25,33 +25,29 @@ const MAScrollableView = () => {
     }
   ];
 
-  const StepItem = ({ number, text }) => (
-    <View style={styles.stepItem}>
-      <Text style={styles.stepNumber}>{number}</Text>
-      <Text style={styles.stepText}>{text}</Text>
-    </View>
-  );
-
-  const StepsSection = () => (
+  const stepsSection = () => (
     <View style={styles.stepsContainer}>
       <Text style={styles.headerText}>{`${t('LandingPageStepInstructionText')}:`}</Text>
-      {STEPS.map((step, index) => (
-        <StepItem key={index} number={step.number} text={step.text} />
+      {STEPS.map(step => (
+        <View key={step.number} style={styles.stepItem}>
+          <Text style={styles.stepNumber}>{step.number}</Text>
+          <Text style={styles.stepText}>{step.text}</Text>
+        </View>
       ))}
     </View>
   );
 
-  const DisclaimerSection = () => (
+  const disclaimerSection = () => (
     <View style={styles.disclaimerContainer}>
       <Image source={Lock} style={styles.lock} />
       <Text style={styles.disclaimerText}>{t('FinicityPermissionText')}</Text>
     </View>
   );
 
-  const DirectDepositInfo = () => (
+  const directDepositInfo = () => (
     <View style={styles.container}>
-      <StepsSection />
-      <DisclaimerSection />
+      {stepsSection()}
+      {disclaimerSection()}
     </View>
   );
 
@@ -63,7 +59,7 @@ const MAScrollableView = () => {
         textStyle={styles.subtitle}
         styledTexts={STYLED_TEXT}
       />
-      <DirectDepositInfo />
+      {directDepositInfo()}
     </ScrollView>
   );
 };

@@ -25,7 +25,12 @@ export const useTransferEventCommonData = (): Record<string, string | undefined>
     (state: RootState) => state.user.queryParamsObject
   );
 
-  if (!queryParams || Object.keys(queryParams).length === 0) return {};
+  if (
+    Object.keys(queryParams).length === 0 ||
+    (!queryParams.hasOwnProperty('customerId') && !queryParams.hasOwnProperty('partnerId'))
+  ) {
+    return {};
+  }
 
   const commonData: Record<string, string | undefined> = {
     [TransferEventDataName.CUSTOMER_ID]: queryParams[TransferEventDataName.CUSTOMER_ID],

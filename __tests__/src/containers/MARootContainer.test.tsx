@@ -131,10 +131,10 @@ describe('MARootContainer', () => {
     expect(mockDispatch).toHaveBeenCalledWith(setUrlData(extractUrlData(mockUrl)));
   });
 
-  it('dispatches authenticateUser, errorTranslation, and changes language on queryParamsObject change', () => {
+  it('dispatches authenticateUser, errorTranslation, and language change', () => {
     renderComponent({
       user: {
-        queryParamsObject: { mock: 'mock' }
+        baseURL: 'https://mockurl.com/'
       }
     });
     expect(mockDispatch).toHaveBeenCalledWith(authenticateUser(expect.any(String)));
