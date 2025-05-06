@@ -4,6 +4,7 @@ export interface ConnectTransferEventHandler {
   onLaunchTransferSwitch(data?: Record<string, any>): void;
   onTransferEnd(data?: Record<string, any>): void;
   onUserEvent(data?: Record<string, any>): void;
+  onErrorEvent(data?: Record<string, any>): void;
 }
 
 export enum TransferEventDataName {
@@ -31,7 +32,15 @@ export enum TransferEventDataName {
 export enum TransferActionEvents {
   INITIALIZE_TRANSFER = 'InitializeTransfer',
   TERMS_ACCEPTED = 'TermsAccepted',
-  END = 'End'
+  END = 'End',
+  ERROR = 'Error'
+}
+
+export enum TransferActionCodes {
+  BAD_REQUEST = '400',
+  ATOMIC_ERROR = '500',
+  USER_INITIATED_EXIT = '100',
+  SUCCESS = '200'
 }
 
 export enum UserEvents {

@@ -46,6 +46,9 @@ const App = () => {
     },
     onUserEvent: (data: any) => {
       console.log('User event: ', data);
+    },
+    onErrorEvent: (data: any) => {
+      console.log('Error event: ', data);
     }
   };
 

@@ -21,31 +21,27 @@ describe('extractUrlData', () => {
   it('should correctly extract URL data from a valid URL', () => {
     const url = 'https://example.com/page?param1=value1&param2=value2';
     const result = extractUrlData(url);
-    expect(result.baseURL).toBe('https://example.com');
-    expect(result.queryParams).toBe('?param1=value1&param2=value2');
-    expect(result.queryParamsObject).toEqual({ param1: 'value1', param2: 'value2' });
+
+    expect(result).toBeDefined();
+    expect(result!.baseURL).toBe('https://example.com');
+    expect(result!.queryParams).toBe('?param1=value1&param2=value2');
+    expect(result!.queryParamsObject).toEqual({ param1: 'value1', param2: 'value2' });
   });
 
   it('should return default values for invalid URL format (missing https://)', () => {
     const url = 'ftp://example.com';
     const result = extractUrlData(url);
-    expect(result.baseURL).toBe('');
-    expect(result.queryParams).toBe('');
-    expect(result.queryParamsObject).toEqual({});
+    expect(result).toBe(undefined);
   });
 
   it('should return default values when URL is empty', () => {
     const result = extractUrlData('');
-    expect(result.baseURL).toBe('');
-    expect(result.queryParams).toBe('');
-    expect(result.queryParamsObject).toEqual({});
+    expect(result).toBe(undefined);
   });
 
   it('should return default values when URL is undefined', () => {
     const result = extractUrlData();
-    expect(result.baseURL).toBe('');
-    expect(result.queryParams).toBe('');
-    expect(result.queryParamsObject).toEqual({});
+    expect(result).toBe(undefined);
   });
 
   it('should handle error and return default values if new URL throws', () => {
@@ -54,11 +50,7 @@ describe('extractUrlData', () => {
 
     const result = extractUrlData(malformedUrl);
 
-    expect(result).toEqual({
-      baseURL: '',
-      queryParams: '',
-      queryParamsObject: {}
-    });
+    expect(result).toEqual(undefined);
 
     expect(consoleErrorSpy).toHaveBeenCalledWith('Error parsing URL:', expect.any(Error));
 

@@ -33,6 +33,9 @@ export const eventHandlers: ConnectTransferEventHandler = {
   },
   onUserEvent: data => {
     console.log('User Event', data);
+  },
+  onErrorEvent: data => {
+    console.log('Error Event', data);
   }
 };
 

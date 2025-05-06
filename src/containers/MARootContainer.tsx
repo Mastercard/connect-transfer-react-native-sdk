@@ -7,7 +7,12 @@ import { type RootState, type AppDispatch } from '../redux/store';
 import { API_KEYS } from '../services/api/apiKeys';
 import { authenticateUser } from '../services/api/authenticate';
 import { errorTranslation } from '../services/api/errorTranslation';
-import { setUrl, setUrlData, resetData } from '../redux/slices/authenticationSlice';
+import {
+  setUrl,
+  setUrlData,
+  resetData,
+  setModalVisible
+} from '../redux/slices/authenticationSlice';
 import { extractUrlData } from '../utility/utils';
 import { setEventHandlers } from '../redux/slices/eventHandlerSlice';
 import { useTransferEventResponse } from './ConnectTransfer/transferEventHandlers';
@@ -35,13 +40,16 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
   const { getResponseForInitializeTransfer, getResponseForClose } = useTransferEventResponse();
   const skipLandingPage = isSkipLandingPageEnabled(data);
   const isRedirecting = skipLandingPage || showRedirecting;
-  const isError = error || !connectTransferUrl || isExperienceError(data);
+  const isValidUrlData = extractUrlData(connectTransferUrl);
+  const isError = error || !connectTransferUrl || isExperienceError(data) || !isValidUrlData;
 
   useEffect(() => {
-    if (connectTransferUrl) {
-      dispatch(setEventHandlers(eventHandlers));
+    dispatch(setModalVisible());
+    eventHandlers && dispatch(setEventHandlers(eventHandlers));
+
+    if (isValidUrlData) {
       dispatch(setUrl(connectTransferUrl));
-      dispatch(setUrlData(extractUrlData(connectTransferUrl)));
+      dispatch(setUrlData(isValidUrlData));
     }
   }, [connectTransferUrl]);
 
