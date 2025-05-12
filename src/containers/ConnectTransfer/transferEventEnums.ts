@@ -1,11 +1,18 @@
-export interface ConnectTransferEventHandler {
-  onInitializeConnectTransfer(data?: Record<string, any>): void;
-  onTermsAndConditionsAccepted(data?: Record<string, any>): void;
-  onLaunchTransferSwitch(data?: Record<string, any>): void;
-  onTransferEnd(data?: Record<string, any>): void;
-  onUserEvent(data?: Record<string, any>): void;
-  onErrorEvent(data?: Record<string, any>): void;
-}
+/**
+ * transferEventEnums.ts
+ *
+ * This file defines enums related to event names, action types, codes, and statuses
+ * used in the Connect Transfer module.
+ *
+ * Enums included:
+ * - TransferEventDataName: Keys for event data payloads.
+ * - TransferActionEvents: Action event types sent from the Transfer module.
+ * - TransferActionCodes: Status or result codes for actions or errors.
+ * - UserEvents: User interaction event types during the Transfer flow.
+ * - RedirectReason: Reasons for redirection or flow termination.
+ * - AtomicEvents: Granular UI events for tracking user behavior in the Transfer flow.
+ * - TransferModuleType: Defines the module type(s), e.g., Payroll Deposit Switch (PDS).
+ */
 
 export enum TransferEventDataName {
   CUSTOMER_ID = 'customerId',
@@ -77,9 +84,6 @@ export enum AtomicEvents {
   VIEWED_ACCESS_UNAUTHORIZED_PAGE = 'Viewed Access Unauthorized Page',
   VIEWED_EXPIRED_TOKEN_PAGE = 'Viewed Expired Token Page'
 }
-
-export const BRAND_COLOR = '#CF4500';
-export const SEARCH_COMPANY = 'search-company';
 
 export enum TransferModuleType {
   PDS = 'PDS'

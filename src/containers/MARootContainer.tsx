@@ -16,8 +16,8 @@ import {
 import { extractUrlData } from '../utility/utils';
 import { setEventHandlers } from '../redux/slices/eventHandlerSlice';
 import { useTransferEventResponse } from './ConnectTransfer/transferEventHandlers';
-import { RedirectReason, TransferModuleType } from './ConnectTransfer/transferEventConstants';
-import { type ConnectTransferProps } from './types';
+import { RedirectReason, TransferModuleType } from './ConnectTransfer/transferEventEnums';
+import { type ConnectTransferProps } from './containerInterfaces';
 import { MARootContainerStyle as styles } from './ContainerStyles';
 import MALandingView from './LandingView/MALandingView';
 import MARedirectingView from './MARedirectingView';

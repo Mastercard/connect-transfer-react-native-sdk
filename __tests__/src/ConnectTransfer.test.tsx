@@ -5,9 +5,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import store from '../../src/redux/store';
 import i18next from '../../src/locale/i18n';
-import ConnectTransfer from '../../src/index';
+import { ConnectTransfer, type ConnectTransferEventHandler } from '../../src/index';
 import MARootContainer from '../../src/containers/MARootContainer';
-import { type ConnectTransferEventHandler } from '../../src/containers/ConnectTransfer/transferEventConstants';
 
 jest.mock('../../src/containers/MARootContainer', () => {
   return {

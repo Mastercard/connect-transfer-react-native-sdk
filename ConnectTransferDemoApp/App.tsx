@@ -9,7 +9,10 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
-import ConnectTransfer from 'connect-transfer-react-native-sdk';
+import {
+  ConnectTransfer,
+  type ConnectTransferEventHandler
+} from 'connect-transfer-react-native-sdk';
 
 const App = () => {
   const [url, setUrl] = useState('');
@@ -28,7 +31,7 @@ const App = () => {
     urlInputRef.current?.clear();
   };
 
-  const eventHandlers = {
+  const eventHandlers: ConnectTransferEventHandler = {
     onInitializeConnectTransfer: (data: any) => {
       console.log('Transfer initialized: ', data);
     },

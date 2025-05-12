@@ -17,7 +17,7 @@ jest.mock('@atomicfi/transact-react-native', () => ({
   }
 }));
 
-jest.mock('../../../../src/containers/ConnectTransfer/transferEventConstants', () => ({
+jest.mock('../../../../src/containers/ConnectTransfer/transferEventEnums', () => ({
   AtomicEvents: {
     INITIALIZED_TRANSACT: 'INITIALIZED_TRANSACT'
   },
