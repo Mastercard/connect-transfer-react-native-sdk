@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import MACrossDismiss from './MACrossDismiss';
 import MAButton from './MAButton';
 import { MAExitBottomSheetStyle as styles } from './ComponentStyles';
-import { RedirectReason } from '../containers/ConnectTransfer/transferEventConstants';
+import { RedirectReason } from '../containers/ConnectTransfer/transferEventEnums';
 import { useTransferEventResponse } from '../containers/ConnectTransfer/transferEventHandlers';
 import { resetData } from '../redux/slices/authenticationSlice';
 

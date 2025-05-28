@@ -9,7 +9,7 @@ import {
   TransferActionEvents,
   TransferEventDataName,
   UserEvents
-} from './transferEventConstants';
+} from './transferEventEnums';
 
 // @ts-ignore
 export const getTransferProductType = product => {

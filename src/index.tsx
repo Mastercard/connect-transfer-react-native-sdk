@@ -5,10 +5,35 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import store from './redux/store';
 import i18next from './locale/i18n';
-import { type ConnectTransferProps } from './containers/types';
+import { type ConnectTransferProps } from './containers/containerInterfaces';
+import { type ConnectTransferEventHandler } from './containers/containerInterfaces';
 import MARootContainer from './containers/MARootContainer';
 
-const ConnectTransfer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, eventHandlers }) => {
+const defaultEventHandlers: ConnectTransferEventHandler = {
+  onInitializeConnectTransfer: () => {
+    // Intentionally empty function
+  },
+  onTermsAndConditionsAccepted: () => {
+    // Intentionally empty function
+  },
+  onLaunchTransferSwitch: () => {
+    // Intentionally empty function
+  },
+  onUserEvent: () => {
+    // Intentionally empty function
+  },
+  onTransferEnd: () => {
+    // Intentionally empty function
+  },
+  onErrorEvent: () => {
+    // Intentionally empty function
+  }
+};
+
+export const ConnectTransfer: React.FC<ConnectTransferProps> = ({
+  connectTransferUrl = '',
+  eventHandlers = defaultEventHandlers
+}) => {
   return (
     <GestureHandlerRootView>
       <I18nextProvider i18n={i18next}>
@@ -20,4 +45,4 @@ const ConnectTransfer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
   );
 };
 
-export default ConnectTransfer;
+export type { ConnectTransferEventHandler };

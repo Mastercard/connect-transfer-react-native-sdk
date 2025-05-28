@@ -11,7 +11,7 @@ import { setEventHandlers } from '../../../src/redux/slices/eventHandlerSlice';
 import { authenticateUser } from '../../../src/services/api/authenticate';
 import { errorTranslation } from '../../../src/services/api/errorTranslation';
 import { extractUrlData } from '../../../src/utility/utils';
-import { type ConnectTransferEventHandler } from '../../../src/containers/ConnectTransfer/transferEventConstants';
+import { type ConnectTransferEventHandler } from '../../../src/index';
 
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),

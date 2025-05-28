@@ -7,7 +7,7 @@ import {
   AtomicEvents,
   UserEvents,
   TransferActionCodes
-} from '../../../../src/containers/ConnectTransfer/transferEventConstants';
+} from '../../../../src/containers/ConnectTransfer/transferEventEnums';
 import {
   getTransferProductType,
   useTransferEventCommonData,

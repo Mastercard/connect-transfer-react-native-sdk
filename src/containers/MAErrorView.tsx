@@ -7,12 +7,12 @@ import ErrorIcon from '../assets/errorIcon.png';
 import MASecuredBy from '../components/MASecuredBy';
 import MAButton from '../components/MAButton';
 import { MAErrorViewStyles as styles } from './ContainerStyles';
-import { RedirectReason } from './ConnectTransfer/transferEventConstants';
+import { RedirectReason } from './ConnectTransfer/transferEventEnums';
 import { useTransferEventResponse } from './ConnectTransfer/transferEventHandlers';
 import { AppDispatch, type RootState } from '../redux/store';
 import { getTranslation } from '../utility/utils';
 import { resetData } from '../redux/slices/authenticationSlice';
-import { type MAErrorViewProps } from './types';
+import { type MAErrorViewProps } from './containerInterfaces';
 
 const MAErrorView: React.FC<MAErrorViewProps> = ({ isExperienceError = false }) => {
   const dispatch: AppDispatch = useDispatch();

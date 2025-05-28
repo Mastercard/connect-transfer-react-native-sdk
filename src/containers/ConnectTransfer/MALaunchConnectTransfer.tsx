@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Atomic, Scope } from '@atomicfi/transact-react-native';
 
-import { AtomicEvents, BRAND_COLOR, SEARCH_COMPANY } from './transferEventConstants';
+import { AtomicEvents } from './transferEventEnums';
 import {
   useTransferEventResponse,
   getUserEventMappingForPDS,
@@ -13,6 +13,9 @@ import { type AppDispatch, type RootState } from '../../redux/store';
 import { complete } from '../../services/api/complete';
 import { API_KEYS } from '../../services/api/apiKeys';
 import { resetData } from '../../redux/slices/authenticationSlice';
+
+const BRAND_COLOR = '#CF4500';
+const SEARCH_COMPANY = 'search-company';
 
 const MALaunchConnectTransfer = () => {
   const dispatch: AppDispatch = useDispatch();
