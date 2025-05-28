@@ -25,7 +25,8 @@ describe('authenticate', () => {
     expect(api).toHaveBeenCalledWith({
       url: generateRoute(API_KEYS.authenticateUser, mockGetState()),
       headers: requestHeaders(API_KEYS.authenticateUser, mockGetState()),
-      method: METHODS.POST
+      method: METHODS.POST,
+      signal: expect.any(Object)
     });
 
     expect(mockDispatch).toHaveBeenCalledWith({
@@ -58,7 +59,8 @@ describe('authenticate', () => {
     expect(api).toHaveBeenCalledWith({
       url: 'mock-url',
       headers: { Authorization: 'Bearer token' },
-      method: METHODS.POST
+      method: METHODS.POST,
+      signal: expect.any(Object)
     });
 
     expect(result.type).toBe(`${API_KEYS.authenticateUser}/rejected`);

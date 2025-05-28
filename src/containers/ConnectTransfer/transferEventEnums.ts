@@ -45,8 +45,11 @@ export enum TransferActionEvents {
 
 export enum TransferActionCodes {
   BAD_REQUEST = '400',
+  INVALID_EXPERIENCE = '-1',
   ATOMIC_ERROR = '500',
   USER_INITIATED_EXIT = '100',
+  INVALID_URL = '401',
+  API_TIMEOUT = '1440',
   SUCCESS = '200'
 }
 

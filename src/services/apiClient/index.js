@@ -3,9 +3,9 @@ import axios from 'axios';
 import { METHODS, TIMEOUT } from './constants';
 
 // options can contain the following arguments:
-// url, data, headers, method, timeout etc
+// url, data, headers, method, timeout, signal etc
 export const api = options => {
-  const { url, data, headers, method = METHODS.GET, timeout = TIMEOUT } = options;
+  const { url, data, headers, method = METHODS.GET, timeout = TIMEOUT, signal } = options;
 
   const dataOrParams = method === METHODS.GET ? 'params' : 'data';
 
@@ -14,7 +14,8 @@ export const api = options => {
     method,
     headers,
     [dataOrParams]: data,
-    timeout
+    timeout,
+    signal
   })
     .then(response => response?.data)
     .catch(error => error && Promise.reject(error));

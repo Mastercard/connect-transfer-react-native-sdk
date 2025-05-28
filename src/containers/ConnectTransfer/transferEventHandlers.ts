@@ -112,12 +112,15 @@ export const useTransferEventResponse = () => {
   ): Record<string, any> | undefined => {
     if (isEmpty) return;
 
+    const { taskId, ...otherResponseData } = responseData;
+
     return {
       ...commonData,
       [TransferEventDataName.ACTION]: TransferActionEvents.END,
       [TransferEventDataName.REASON]: RedirectReason.COMPLETE,
       [TransferEventDataName.CODE]: TransferActionCodes.SUCCESS,
-      ...responseData
+      ...otherResponseData,
+      switchId: taskId
     };
   };
 
