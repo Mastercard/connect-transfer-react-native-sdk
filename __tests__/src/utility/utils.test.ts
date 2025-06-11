@@ -46,7 +46,7 @@ describe('extractUrlData', () => {
 
   it('should handle error and return default values if new URL throws', () => {
     const malformedUrl = 'https://[malformed-url]'; // valid prefix, invalid structure
-    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleErrorSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
 
     const result = extractUrlData(malformedUrl);
 
@@ -114,11 +114,11 @@ describe('openLink', () => {
     const error = new Error('open failed');
     InAppBrowser.isAvailable = jest.fn().mockResolvedValue(true);
     InAppBrowser.open = jest.fn().mockRejectedValue(error);
-    console.error = jest.fn();
+    console.warn = jest.fn();
 
     await openLink('https://example.com');
 
-    expect(console.error).toHaveBeenCalledWith('Failed to open link:', error);
+    expect(console.warn).toHaveBeenCalledWith('Failed to open link:', error);
   });
 });
 

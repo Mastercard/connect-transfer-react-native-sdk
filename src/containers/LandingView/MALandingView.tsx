@@ -10,8 +10,11 @@ import MAExitBottomSheet from '../../components/MAExitBottomSheet';
 import MACrossDismiss from '../../components/MACrossDismiss';
 import { termsAndPolicies } from '../../services/api/termsAndPolicies';
 import { API_KEYS } from '../../services/api/apiKeys';
-import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandlers';
+import { useTransferEventResponse } from '../../events/transferEventHandlers';
 import { AppDispatch, RootState } from '../../redux/store';
+import { useAuditEventsMapper } from '../../events/auditEventsMapper';
+import { TransferActionEvents } from '../../events/transferEventEnums';
+import { queueAuditEvent } from '../../events/auditEventQueue';
 
 const MALandingView: React.FC<MALandingViewProps> = ({ onNextPress }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -20,6 +23,8 @@ const MALandingView: React.FC<MALandingViewProps> = ({ onNextPress }) => {
 
   const { eventHandler: transferEventHandler } =
     useSelector((state: RootState) => state.event) || null;
+
+  const mapAuditEvent = useAuditEventsMapper();
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -38,6 +43,8 @@ const MALandingView: React.FC<MALandingViewProps> = ({ onNextPress }) => {
   const onNextButtonPressed = () => {
     dispatch(termsAndPolicies(API_KEYS.termsAndPolicies));
     transferEventHandler?.onTermsAndConditionsAccepted(getResponseForTermsAndConditionsAccepted());
+    const data = mapAuditEvent(TransferActionEvents.TERMS_ACCEPTED);
+    queueAuditEvent(data);
     onNextPress();
   };
 

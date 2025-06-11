@@ -1,0 +1,184 @@
+/**
+ * Maps event names to structured payloads compatible with the Audit Service events API.
+ * Includes utility functions to transform event data and extract metadata from Redux state.
+ *
+ * Usage:
+ *   const mapAuditEvent = useAuditEventsMapper();
+ *   const payload = mapAuditEvent("SomeEventName", eventData);
+ */
+
+import { useSelector } from 'react-redux';
+
+import {
+  ListenerType,
+  RedirectReason,
+  TransferActionCodes,
+  TransferActionEvents,
+  TransferEventDataName,
+  UserEvents
+} from './transferEventEnums';
+import { RootState } from '../redux/store';
+import { SDK_VERSION } from '../utility/version';
+import { getTransferProductType } from './transferEventHandlers';
+
+const SDK_PLATFORM = 'reactNative';
+
+/**
+ * Extracts and returns common event fields used across audit events.
+ *
+ * @param queryParams - Object containing query parameters, including origin, timestamp, and ttl.
+ * @returns An object containing platform, SDK version, and timestamp-related metadata.
+ */
+const getCommonFields = (queryParams: Record<string, any>) => {
+  const { origin, timestamp, ttl } = queryParams;
+
+  return {
+    origin,
+    platform: SDK_PLATFORM,
+    release: SDK_VERSION,
+    sdkVersion: SDK_VERSION,
+    [TransferEventDataName.TIMESTAMP]: timestamp,
+    [TransferEventDataName.TTL]: ttl
+  };
+};
+
+/**
+ * Maps event-specific parameters to structured audit event data.
+ *
+ * @param eventParams - Object containing eventName, eventData, queryParams, and product.
+ * @returns An object formatted according to the event name for the audit API.
+ */
+const mapEventData = (eventParams: any): Record<string, any> => {
+  const { eventName, eventData, queryParams, product } = eventParams;
+  const COMMON_FIELDS = getCommonFields(queryParams);
+
+  switch (eventName) {
+    case TransferActionEvents.INITIALIZE_TRANSFER:
+    case TransferActionEvents.TERMS_ACCEPTED:
+    case UserEvents.TASK_COMPLETED:
+      return COMMON_FIELDS;
+
+    case UserEvents.INITIALIZE_DEPOSIT_SWITCH:
+      return {
+        ...COMMON_FIELDS,
+        product
+      };
+
+    case UserEvents.SEARCH_PAYROLL_PROVIDER:
+      return {
+        ...COMMON_FIELDS,
+        searchTerms: eventData.searchTerm
+      };
+
+    case UserEvents.SELECT_PAYROLL_PROVIDER:
+      return {
+        ...COMMON_FIELDS,
+        payrollProvider: eventData.payrollProvider
+      };
+
+    case UserEvents.SUBMIT_CREDENTIALS:
+      return {
+        ...COMMON_FIELDS,
+        inputType: eventData.inputType
+      };
+
+    case UserEvents.CHANGE_DEFAULT_ALLOCATION:
+    case UserEvents.SUBMIT_ALLOCATION:
+      const { depositOption, depositAllocation } = eventData;
+      return {
+        ...COMMON_FIELDS,
+        distributions: [
+          {
+            type: depositOption,
+            ...(depositAllocation !== undefined && { allocatedValue: depositAllocation })
+          }
+        ]
+      };
+
+    case TransferActionEvents.END:
+      const {
+        listenerType,
+        code,
+        reason,
+        distributionType,
+        distributionAmount,
+        taskId,
+        ...restEventData
+      } = eventData;
+
+      if (listenerType === ListenerType.FINISH) {
+        return {
+          ...COMMON_FIELDS,
+          ...restEventData,
+          switchId: taskId,
+          distributions: [
+            {
+              type: distributionType,
+              ...(distributionAmount !== undefined && { allocatedValue: distributionAmount })
+            }
+          ],
+          code: TransferActionCodes.SUCCESS,
+          reason: RedirectReason.COMPLETE
+        };
+      }
+
+      if (listenerType === ListenerType.CLOSE) {
+        const isExitReason = reason === RedirectReason.UNKNOWN || reason === RedirectReason.EXIT;
+
+        return {
+          ...COMMON_FIELDS,
+          code: isExitReason ? TransferActionCodes.USER_INITIATED_EXIT : code,
+          reason: isExitReason ? RedirectReason.EXIT : reason
+        };
+      }
+      return COMMON_FIELDS;
+
+    case TransferActionEvents.ERROR:
+      return {
+        ...COMMON_FIELDS,
+        code: eventData.code || TransferActionCodes.BAD_REQUEST,
+        reason: RedirectReason.ERROR
+      };
+
+    default:
+      return COMMON_FIELDS;
+  }
+};
+
+/**
+ * Extracts metadata fields from the query parameters.
+ *
+ * @param queryParams - Query parameters containing customer, partner, session, and experience data.
+ * @returns An object containing metadata fields for the audit payload.
+ */
+function getMetadata(queryParams: any) {
+  const metaData: Record<string, string | undefined> = {
+    [TransferEventDataName.CUSTOMER_ID]: queryParams[TransferEventDataName.CUSTOMER_ID],
+    [TransferEventDataName.PARTNER_ID]: queryParams[TransferEventDataName.PARTNER_ID],
+    [TransferEventDataName.SESSION_ID]: queryParams.signature
+  };
+
+  if (queryParams?.experience?.id) {
+    metaData[TransferEventDataName.EXPERIENCE] = queryParams.experience.id;
+  }
+  return metaData;
+}
+
+/**
+ * Custom React hook to map Redux state and event input to a complete audit event payload.
+ *
+ * @returns A function that accepts eventName and eventData, and returns a structured event object.
+ */
+export const useAuditEventsMapper = () => {
+  const { queryParamsObject: queryParams, data }: Record<string, any> = useSelector(
+    (state: RootState) => state.user
+  );
+  const product = getTransferProductType((data as any)?.data?.product);
+
+  return (eventName: string, eventData?: any) => ({
+    eventType: queryParams.type,
+    eventName,
+    eventData: mapEventData({ eventName, eventData, queryParams, product }),
+    metadata: getMetadata(queryParams)
+  });
+};

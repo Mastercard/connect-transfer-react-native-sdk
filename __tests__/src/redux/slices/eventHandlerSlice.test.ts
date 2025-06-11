@@ -4,7 +4,6 @@ import reducer, {
 } from '../../../../src/redux/slices/eventHandlerSlice';
 import { eventHandlers } from '../../ConnectTransfer.test';
 
-setEventHandlers;
 describe('eventHandlerSlice', () => {
   const initialState: EventHandlersState = {
     eventHandler: null

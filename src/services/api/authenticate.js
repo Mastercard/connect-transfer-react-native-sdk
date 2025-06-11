@@ -3,7 +3,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../apiClient';
 import { generateRoute, requestHeaders } from './routes';
 import { METHODS, TIMEOUT } from '../apiClient/constants';
-import { TransferActionCodes } from '../../containers/ConnectTransfer/transferEventEnums';
+import { TransferActionCodes } from '../../events/transferEventEnums';
 
 export const authenticateUser = key => {
   return createAsyncThunk(key, async (_, { getState, rejectWithValue }) => {

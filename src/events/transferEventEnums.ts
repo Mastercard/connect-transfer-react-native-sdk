@@ -43,16 +43,6 @@ export enum TransferActionEvents {
   ERROR = 'Error'
 }
 
-export enum TransferActionCodes {
-  BAD_REQUEST = '400',
-  INVALID_EXPERIENCE = '-1',
-  ATOMIC_ERROR = '500',
-  USER_INITIATED_EXIT = '100',
-  INVALID_URL = '401',
-  API_TIMEOUT = '1440',
-  SUCCESS = '200'
-}
-
 export enum UserEvents {
   INITIALIZE_DEPOSIT_SWITCH = 'InitializeDepositSwitch',
   SEARCH_PAYROLL_PROVIDER = 'SearchPayrollProvider',
@@ -63,6 +53,16 @@ export enum UserEvents {
   SUBMIT_ALLOCATION = 'SubmitAllocation',
   TASK_COMPLETED = 'TaskCompleted',
   UNAUTHORIZED = 'Unauthorized'
+}
+
+export enum TransferActionCodes {
+  BAD_REQUEST = '400',
+  INVALID_EXPERIENCE = '-1',
+  ATOMIC_ERROR = '500',
+  USER_INITIATED_EXIT = '100',
+  INVALID_URL = '401',
+  API_TIMEOUT = '1440',
+  SUCCESS = '200'
 }
 
 export enum RedirectReason {
@@ -90,4 +90,9 @@ export enum AtomicEvents {
 
 export enum TransferModuleType {
   PDS = 'PDS'
+}
+
+export enum ListenerType {
+  CLOSE = 'CLOSE',
+  FINISH = 'FINISH'
 }

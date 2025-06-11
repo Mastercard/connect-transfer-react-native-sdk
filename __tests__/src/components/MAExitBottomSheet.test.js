@@ -36,7 +36,7 @@ jest.mock('react-i18next', () => ({
   })
 }));
 
-jest.mock('../../../src/containers/ConnectTransfer/transferEventHandlers', () => ({
+jest.mock('../../../src/events/transferEventHandlers', () => ({
   useTransferEventResponse: () => ({
     getResponseForClose: () => 'mockedResponse'
   })

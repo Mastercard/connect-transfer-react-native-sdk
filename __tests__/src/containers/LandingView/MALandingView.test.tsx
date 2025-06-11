@@ -46,7 +46,7 @@ jest.mock('../../../../src/services/api/termsAndPolicies', () => ({
   termsAndPolicies: jest.fn()
 }));
 
-jest.mock('../../../../src/containers/ConnectTransfer/transferEventHandlers', () => ({
+jest.mock('../../../../src/events/transferEventHandlers', () => ({
   useTransferEventResponse: jest.fn(() => ({
     getResponseForTermsAndConditionsAccepted: jest.fn()
   }))

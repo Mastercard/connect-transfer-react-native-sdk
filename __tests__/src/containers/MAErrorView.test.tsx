@@ -95,7 +95,8 @@ describe('MAErrorView', () => {
           loading: false,
           data: null,
           error: null
-        }
+        },
+        auditEvents: { loading: false, data: null, error: null }
       })
   );
 

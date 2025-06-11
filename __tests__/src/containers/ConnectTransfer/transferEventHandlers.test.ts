@@ -7,14 +7,14 @@ import {
   AtomicEvents,
   UserEvents,
   TransferActionCodes
-} from '../../../../src/containers/ConnectTransfer/transferEventEnums';
+} from '../../../../src/events/transferEventEnums';
 import {
   getTransferProductType,
   useTransferEventCommonData,
   useTransferEventResponse,
   getUserEventMappingForPDS,
   getCommonUserEventMapping
-} from '../../../../src/containers/ConnectTransfer/transferEventHandlers';
+} from '../../../../src/events/transferEventHandlers';
 
 jest.mock('react-redux', () => ({
   useSelector: jest.fn()

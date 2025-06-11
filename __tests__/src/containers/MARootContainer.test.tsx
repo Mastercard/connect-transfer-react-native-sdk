@@ -30,7 +30,7 @@ jest.mock('i18next', () => ({
   changeLanguage: jest.fn()
 }));
 
-jest.mock('../../../src/containers/ConnectTransfer/transferEventHandlers', () => ({
+jest.mock('../../../src/events/transferEventHandlers', () => ({
   useTransferEventResponse: () => ({
     getResponseForInitializeTransfer: jest.fn(() => ({ transfer: 'initialize' })),
     getResponseForClose: jest.fn(() => ({ transfer: 'close' }))

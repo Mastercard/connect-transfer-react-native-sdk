@@ -7,12 +7,19 @@ import ErrorIcon from '../assets/errorIcon.png';
 import MASecuredBy from '../components/MASecuredBy';
 import MAButton from '../components/MAButton';
 import { MAErrorViewStyles as styles } from './ContainerStyles';
-import { RedirectReason, TransferActionCodes } from './ConnectTransfer/transferEventEnums';
-import { useTransferEventResponse } from './ConnectTransfer/transferEventHandlers';
+import {
+  ListenerType,
+  RedirectReason,
+  TransferActionCodes,
+  TransferActionEvents
+} from '../events/transferEventEnums';
+import { useTransferEventResponse } from '../events/transferEventHandlers';
 import { AppDispatch, type RootState } from '../redux/store';
 import { getTranslation } from '../utility/utils';
 import { resetData } from '../redux/slices/authenticationSlice';
 import { type MAErrorViewProps } from './containerInterfaces';
+import { useAuditEventsMapper } from '../events/auditEventsMapper';
+import { eventQueue, queueAuditEvent } from '../events/auditEventQueue';
 
 const MAErrorView: React.FC<MAErrorViewProps> = ({
   isExperienceError = false,
@@ -32,16 +39,25 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
     shallowEqual
   );
   const error = useSelector((state: RootState) => state.user?.error as any);
+  const auditServiceToken = useSelector(
+    (state: RootState) => (state.user?.data as any)?.auditServiceDetails?.token
+  );
+
+  const { getResponseForClose, getResponseForError } = useTransferEventResponse();
+  const mapAuditEvent = useAuditEventsMapper();
 
   const FIVE_MINUTES = 5 * 60 * 1000;
   const { code, user_message } = errorData;
   const errorText = data && getTranslation(user_message, data);
   const isApiTimeout = error?.code === TransferActionCodes.API_TIMEOUT;
   const finalCode = getFinalCode();
-  const { getResponseForClose, getResponseForError } = useTransferEventResponse();
 
   useEffect(() => {
     transferEventHandler?.onErrorEvent(getResponseForError(finalCode));
+    if (auditServiceToken) {
+      const data = mapAuditEvent(TransferActionEvents.ERROR, { code: finalCode });
+      queueAuditEvent(data);
+    }
 
     timeoutRef.current = setTimeout(() => {
       onExitPressed();
@@ -72,6 +88,15 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
 
   const onExitPressed = () => {
     transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.ERROR, finalCode));
+    if (auditServiceToken) {
+      const data = mapAuditEvent(TransferActionEvents.END, {
+        code: finalCode,
+        reason: RedirectReason.ERROR,
+        listenerType: ListenerType.CLOSE
+      });
+      queueAuditEvent(data);
+    }
+    eventQueue.destroy();
     dispatch(resetData());
     clearTimeoutRef();
   };

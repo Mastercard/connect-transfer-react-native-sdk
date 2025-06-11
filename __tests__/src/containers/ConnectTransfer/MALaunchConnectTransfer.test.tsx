@@ -2,7 +2,7 @@ import { Atomic } from '@atomicfi/transact-react-native';
 import { render } from '@testing-library/react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import * as handlers from '../../../../src/containers/ConnectTransfer/transferEventHandlers';
+import * as handlers from '../../../../src/events/transferEventHandlers';
 import MALaunchConnectTransfer from '../../../../src/containers/ConnectTransfer/MALaunchConnectTransfer';
 import { complete } from '../../../../src/services/api/complete';
 import { resetData } from '../../../../src/redux/slices/authenticationSlice';
@@ -25,7 +25,7 @@ jest.mock('../../../../src/containers/ConnectTransfer/transferEventEnums', () =>
   SEARCH_COMPANY: 'search_company'
 }));
 
-jest.mock('../../../../src/containers/ConnectTransfer/transferEventHandlers');
+jest.mock('../../../../src/events/transferEventHandlers');
 
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),

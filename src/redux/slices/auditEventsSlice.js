@@ -10,14 +10,14 @@ const initialState = {
   error: null
 };
 
-export const errorTranslation = createApiActions(API_KEYS.errorTranslation);
+export const auditEvents = createApiActions(API_KEYS.auditEvents);
 
-const errorTranslationSlice = createSlice({
-  name: 'errorTranslation',
+const auditEventsSlice = createSlice({
+  name: 'auditEvents',
   initialState,
   extraReducers: builder => {
-    handleAsyncActions(builder, errorTranslation);
+    handleAsyncActions(builder, auditEvents);
   }
 });
 
-export default errorTranslationSlice.reducer;
+export default auditEventsSlice.reducer;
