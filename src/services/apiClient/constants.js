@@ -1,4 +1,4 @@
-export const TIMEOUT = 60 * 1000;
+export const TIMEOUT = 3 * 60 * 1000; // 3 minutes
 
 export const HEADERS = {
   'Content-Type': 'application/json',

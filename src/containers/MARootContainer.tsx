@@ -75,7 +75,10 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
   };
 
   const renderConditionalViews = () => {
-    if (isError) return <MAErrorView isExperienceError={isExperienceError(data)} />;
+    if (isError)
+      return (
+        <MAErrorView isExperienceError={isExperienceError(data)} isInvalidUrl={!isValidUrlData} />
+      );
     if (isRedirecting) return <MARedirectingView />;
     if (!isError && data) return <MALandingView onNextPress={() => setShowRedirecting(true)} />;
 

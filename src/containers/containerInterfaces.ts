@@ -30,4 +30,5 @@ export interface MALandingViewProps {
 
 export interface MAErrorViewProps {
   isExperienceError?: boolean;
+  isInvalidUrl?: boolean;
 }
