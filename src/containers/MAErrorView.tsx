@@ -11,15 +11,14 @@ import {
   ListenerType,
   RedirectReason,
   TransferActionCodes,
-  TransferActionEvents
-} from '../events/transferEventEnums';
+  TransferActionEvents,
+  type MAErrorViewProps
+} from '../constants';
 import { useTransferEventResponse } from '../events/transferEventHandlers';
 import { AppDispatch, type RootState } from '../redux/store';
 import { getTranslation } from '../utility/utils';
 import { resetData } from '../redux/slices/authenticationSlice';
-import { type MAErrorViewProps } from './containerInterfaces';
-import { useAuditEventsMapper } from '../events/auditEventsMapper';
-import { eventQueue, queueAuditEvent } from '../events/auditEventQueue';
+import { eventQueue, useSendAuditData } from '../events/auditEventQueue';
 
 const MAErrorView: React.FC<MAErrorViewProps> = ({
   isExperienceError = false,
@@ -44,7 +43,7 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
   );
 
   const { getResponseForClose, getResponseForError } = useTransferEventResponse();
-  const mapAuditEvent = useAuditEventsMapper();
+  const sendAuditData = useSendAuditData();
 
   const FIVE_MINUTES = 5 * 60 * 1000;
   const { code, user_message } = errorData;
@@ -54,10 +53,7 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
 
   useEffect(() => {
     transferEventHandler?.onErrorEvent(getResponseForError(finalCode));
-    if (auditServiceToken) {
-      const data = mapAuditEvent(TransferActionEvents.ERROR, { code: finalCode });
-      queueAuditEvent(data);
-    }
+    auditServiceToken && sendAuditData(TransferActionEvents.ERROR, { code: finalCode });
 
     timeoutRef.current = setTimeout(() => {
       onExitPressed();
@@ -88,14 +84,12 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
 
   const onExitPressed = () => {
     transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.ERROR, finalCode));
-    if (auditServiceToken) {
-      const data = mapAuditEvent(TransferActionEvents.END, {
+    auditServiceToken &&
+      sendAuditData(TransferActionEvents.END, {
         code: finalCode,
         reason: RedirectReason.ERROR,
         listenerType: ListenerType.CLOSE
       });
-      queueAuditEvent(data);
-    }
     eventQueue.destroy();
     dispatch(resetData());
     clearTimeoutRef();

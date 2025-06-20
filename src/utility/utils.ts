@@ -2,7 +2,7 @@ import 'react-native-url-polyfill/auto';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 
 import { generateRoute } from '../services/api/routes';
-import { WEBPAGE_API_KEYS } from '../services/api/apiKeys';
+import { WEBPAGE_API_KEYS } from '../constants';
 
 /**
  * Extracts base URL, query parameters string, and query parameters as an object from a given partner URL.

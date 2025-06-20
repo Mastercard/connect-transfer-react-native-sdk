@@ -1,19 +1,40 @@
-/**
- * transferEventEnums.ts
- *
- * This file defines enums related to event names, action types, codes, and statuses
- * used in the Connect Transfer module.
- *
- * Enums included:
- * - TransferEventDataName: Keys for event data payloads.
- * - TransferActionEvents: Action event types sent from the Transfer module.
- * - TransferActionCodes: Status or result codes for actions or errors.
- * - UserEvents: User interaction event types during the Transfer flow.
- * - RedirectReason: Reasons for redirection or flow termination.
- * - AtomicEvents: Granular UI events for tracking user behavior in the Transfer flow.
- * - TransferModuleType: Defines the module type(s), e.g., Payroll Deposit Switch (PDS).
- */
+// SDK platform identifier used in audit tracking.
+export const SDK_PLATFORM = 'reactNative';
 
+// Below constants are used for redux / services / api calls.
+export const TIMEOUT = 3 * 60 * 1000; // 3 minutes
+
+export const HEADERS = {
+  'Content-Type': 'application/json',
+  Accept: 'application/json'
+};
+
+export const METHODS = {
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
+  OPTIONS: 'OPTIONS'
+};
+
+export const DEFAULT_LANGUAGE_EN = 'en';
+
+export const API_KEYS = {
+  authenticateUser: 'authenticationSlice/authenticateUser',
+  termsAndPolicies: 'termsAndPoliciesSlice/termsAndPolicies',
+  complete: 'completeSlice/complete',
+  errorTranslation: 'errorTranslationSlice/errorTranslation',
+  auditEvents: 'auditEventsSlice/auditEvents'
+};
+
+export const WEBPAGE_API_KEYS = {
+  privacy_EN: 'privacy_EN',
+  privacy_ES: 'privacy_ES',
+  termsOfUse_EN: 'termsOfUse_EN',
+  termsOfUse_ES: 'termsOfUse_ES'
+};
+
+// Below Enums are used for events in the Connect Transfer module.
 export enum TransferEventDataName {
   CUSTOMER_ID = 'customerId',
   PARTNER_ID = 'partnerId',
@@ -96,3 +117,46 @@ export enum ListenerType {
   CLOSE = 'CLOSE',
   FINISH = 'FINISH'
 }
+
+// Below are interfaces used across the Connect Transfer Container module.
+export interface ConnectTransferEventHandler {
+  onInitializeConnectTransfer(data?: Record<string, any>): void;
+  onTermsAndConditionsAccepted(data?: Record<string, any>): void;
+  onLaunchTransferSwitch(data?: Record<string, any>): void;
+  onTransferEnd(data?: Record<string, any>): void;
+  onUserEvent(data?: Record<string, any>): void;
+  onErrorEvent(data?: Record<string, any>): void;
+}
+
+export interface ConnectTransferProps {
+  connectTransferUrl: string;
+  eventHandlers: ConnectTransferEventHandler;
+}
+
+export interface MALandingViewProps {
+  onNextPress: () => void;
+}
+
+export interface MAErrorViewProps {
+  isExperienceError?: boolean;
+  isInvalidUrl?: boolean;
+}
+
+/**
+ * Represents the structure of an audit event data object
+ * that will be queued and dispatched to the audit events API.
+ *
+ * - `eventType`: The category/type of the event (e.g., "transferDepositSwitch").
+ * - `eventName`: The specific event name (e.g., "InitializeDepositSwitch").
+ * - `eventData`: Dynamic key-value pairs containing event-specific details.
+ * - `metadata`: Additional contextual information like customerId, sessionId, etc.
+ */
+export interface AuditEventData {
+  eventType: string;
+  eventName: string;
+  eventData: Record<string, any>;
+  metadata: Record<string, any>;
+}
+
+// Represents the task stored in the event queue.
+export type EventTask = AuditEventData;

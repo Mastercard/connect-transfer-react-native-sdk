@@ -1,6 +1,6 @@
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 
-import { WEBPAGE_API_KEYS } from '../../../src/services/api/apiKeys';
+import { WEBPAGE_API_KEYS } from '../../../src/constants';
 import {
   extractUrlData,
   formatCurrentDateTime,

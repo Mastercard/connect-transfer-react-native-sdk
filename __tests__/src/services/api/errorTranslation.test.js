@@ -1,7 +1,7 @@
 import api from '../../../../src/services/apiClient';
 import { errorTranslation } from '../../../../src/services/api/errorTranslation';
 import { generateRoute } from '../../../../src/services/api/routes';
-import { API_KEYS } from '../../../../src/services/api/apiKeys';
+import { API_KEYS } from '../../../../src/constants';
 
 jest.mock('../../../../src/services/apiClient');
 jest.mock('../../../../src/services/api/routes');

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { createApiActions } from '../../services/api/routes';
-import { API_KEYS } from '../../services/api/apiKeys';
+import { API_KEYS } from '../../constants';
 import { handleAsyncActions } from './asyncHelper';
 
 const initialState = {

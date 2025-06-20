@@ -2,8 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import api from '../apiClient';
 import { generateRoute, requestHeaders } from './routes';
-import { METHODS } from '../apiClient/constants';
-import { API_KEYS } from './apiKeys';
+import { METHODS } from '../../constants';
 
 export const auditEvents = (key, data) => {
   return createAsyncThunk(key, (_, { getState, rejectWithValue }) => {

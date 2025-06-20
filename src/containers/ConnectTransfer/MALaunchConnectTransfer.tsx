@@ -6,8 +6,9 @@ import {
   AtomicEvents,
   ListenerType,
   TransferActionEvents,
-  UserEvents
-} from '../../events/transferEventEnums';
+  UserEvents,
+  API_KEYS
+} from '../../constants';
 import {
   useTransferEventResponse,
   getUserEventMappingForPDS,
@@ -16,10 +17,8 @@ import {
 } from '../../events/transferEventHandlers';
 import { type AppDispatch, type RootState } from '../../redux/store';
 import { complete } from '../../services/api/complete';
-import { API_KEYS } from '../../services/api/apiKeys';
 import { resetData } from '../../redux/slices/authenticationSlice';
-import { useAuditEventsMapper } from '../../events/auditEventsMapper';
-import { eventQueue, queueAuditEvent } from '../../events/auditEventQueue';
+import { eventQueue, useSendAuditData } from '../../events/auditEventQueue';
 
 const BRAND_COLOR = '#CF4500';
 const SEARCH_COMPANY = 'search-company';
@@ -34,7 +33,7 @@ const MALaunchConnectTransfer = () => {
   const { getResponseForInitializeDepositSwitch, getResponseForFinish, getResponseForClose } =
     useTransferEventResponse();
   const commonData = useTransferEventCommonData();
-  const mapAuditEvent = useAuditEventsMapper();
+  const sendAuditData = useSendAuditData();
 
   const { userToken, product, metadata } = (data as any)?.data || {};
 
@@ -64,15 +63,13 @@ const MALaunchConnectTransfer = () => {
       transferEventHandler?.onLaunchTransferSwitch(
         getResponseForInitializeDepositSwitch(interaction?.value?.product)
       );
-      const data = mapAuditEvent(UserEvents.INITIALIZE_DEPOSIT_SWITCH);
-      queueAuditEvent(data);
+      sendAuditData(UserEvents.INITIALIZE_DEPOSIT_SWITCH);
     } else {
       const userEventData = getUserEventMappingForPDS(interaction, commonData);
 
       if (userEventData) {
         transferEventHandler?.onUserEvent(getUserEventMappingForPDS(interaction, commonData));
-        const data = mapAuditEvent(userEventData.action, userEventData);
-        queueAuditEvent(data);
+        sendAuditData(userEventData.action, userEventData);
       }
     }
   };
@@ -86,21 +83,19 @@ const MALaunchConnectTransfer = () => {
     }
 
     transferEventHandler?.onTransferEnd(getResponseForClose(reason));
-    const data = mapAuditEvent(TransferActionEvents.END, {
+    sendAuditData(TransferActionEvents.END, {
       reason,
       listenerType: ListenerType.CLOSE
     });
-    queueAuditEvent(data);
     completeAndReset();
   };
 
   const handleFinishEvent = (response: any) => {
     transferEventHandler?.onTransferEnd(getResponseForFinish(response));
-    const data = mapAuditEvent(TransferActionEvents.END, {
+    sendAuditData(TransferActionEvents.END, {
       ...response,
       listenerType: ListenerType.FINISH
     });
-    queueAuditEvent(data);
     completeAndReset();
   };
 

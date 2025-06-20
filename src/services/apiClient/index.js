@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { METHODS, TIMEOUT } from './constants';
+import { METHODS, TIMEOUT } from '../../constants';
 
 // options can contain the following arguments:
 // url, data, headers, method, timeout, signal etc

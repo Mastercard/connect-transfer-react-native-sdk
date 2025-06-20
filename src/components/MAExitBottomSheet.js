@@ -6,13 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import MACrossDismiss from './MACrossDismiss';
 import MAButton from './MAButton';
 import { MAExitBottomSheetStyle as styles } from './ComponentStyles';
-import { ListenerType, RedirectReason, TransferActionEvents } from '../events/transferEventEnums';
+import { ListenerType, RedirectReason, TransferActionEvents, API_KEYS } from '../constants';
 import { useTransferEventResponse } from '../events/transferEventHandlers';
 import { resetData } from '../redux/slices/authenticationSlice';
 import { auditEvents } from '../services/api/auditEvents';
-import { API_KEYS } from '../services/api/apiKeys';
-import { eventQueue, queueAuditEvent } from '../events/auditEventQueue';
-import { useAuditEventsMapper } from '../events/auditEventsMapper';
+import { eventQueue, useSendAuditData } from '../events/auditEventQueue';
 
 const MAExitBottomSheet = ({ bottomSheetRef, onClose }) => {
   const dispatch = useDispatch();
@@ -23,15 +21,14 @@ const MAExitBottomSheet = ({ bottomSheetRef, onClose }) => {
   const { eventHandler: transferEventHandler } = useSelector(state => state.event) || '';
 
   const { getResponseForClose } = useTransferEventResponse();
-  const mapAuditEvent = useAuditEventsMapper();
+  const sendAuditData = useSendAuditData();
 
   const onExitPressed = () => {
     transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.EXIT));
-    const data = mapAuditEvent(TransferActionEvents.END, {
+    sendAuditData(TransferActionEvents.END, {
       reason: RedirectReason.EXIT,
       listenerType: ListenerType.CLOSE
     });
-    queueAuditEvent(data);
     eventQueue.destroy();
     dispatch(resetData());
   };

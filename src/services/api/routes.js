@@ -1,18 +1,18 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { API_KEYS, WEBPAGE_API_KEYS } from './apiKeys';
-import { HEADERS } from '../apiClient/constants';
+import { API_KEYS, WEBPAGE_API_KEYS, HEADERS, DEFAULT_LANGUAGE_EN } from '../../constants';
 
 const FINICITY_BASE_URL = 'https://www.finicity.com/';
 const CONNECT_BASE_URL = 'https://connect2.finicity.com';
 const API_VERSION = 'v2';
+const APPLICATION_ID = 'connect-mobile-sdk';
 
 // Generate route based on the provided key
 export const generateRoute = (key, state) => {
   const {
     baseURL = '',
     queryParams = '',
-    language = 'en',
+    language = DEFAULT_LANGUAGE_EN,
     data,
     queryParamsObject
   } = state?.user || {};
@@ -69,7 +69,7 @@ export const requestHeaders = (key, state) => {
       headers = {
         ...headers,
         Token: auditServiceDetails?.token,
-        'application-id': 'connect-mobile-sdk'
+        'application-id': APPLICATION_ID
       };
       break;
 

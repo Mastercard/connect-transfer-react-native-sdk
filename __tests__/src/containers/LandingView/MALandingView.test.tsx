@@ -2,8 +2,8 @@ import { render, fireEvent } from '@testing-library/react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import MALandingView from '../../../../src/containers/LandingView/MALandingView';
-import { API_KEYS } from '../../../../src/services/api/apiKeys';
 import { termsAndPolicies } from '../../../../src/services/api/termsAndPolicies';
+import { API_KEYS } from '../../../../src/constants';
 
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),

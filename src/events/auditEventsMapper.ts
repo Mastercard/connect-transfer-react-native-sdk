@@ -16,12 +16,11 @@ import {
   TransferActionEvents,
   TransferEventDataName,
   UserEvents
-} from './transferEventEnums';
+} from '../constants';
 import { RootState } from '../redux/store';
-import { SDK_VERSION } from '../utility/version';
 import { getTransferProductType } from './transferEventHandlers';
-
-const SDK_PLATFORM = 'reactNative';
+import { SDK_PLATFORM } from '../constants';
+import { SDK_VERSION } from '../utility/version';
 
 /**
  * Extracts and returns common event fields used across audit events.

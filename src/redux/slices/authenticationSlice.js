@@ -1,10 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 import { createApiActions } from '../../services/api/routes';
-import { API_KEYS } from '../../services/api/apiKeys';
+import { API_KEYS, DEFAULT_LANGUAGE_EN } from '../../constants';
 import { handleAsyncActions } from './asyncHelper';
-
-const EN = 'en';
 
 const initialState = {
   modalVisible: false,
@@ -12,7 +10,7 @@ const initialState = {
   baseURL: '',
   queryParams: '',
   queryParamsObject: {},
-  language: EN, // Default language
+  language: DEFAULT_LANGUAGE_EN,
   loading: false,
   data: null,
   error: null
@@ -36,7 +34,7 @@ const authenticationSlice = createSlice({
       state.baseURL = baseURL;
       state.queryParams = queryParams;
       state.queryParamsObject = queryParamsObject;
-      state.language = queryParamsObject?.language || EN;
+      state.language = queryParamsObject?.language || DEFAULT_LANGUAGE_EN;
     },
     resetData: () => initialState
   },

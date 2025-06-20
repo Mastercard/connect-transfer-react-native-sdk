@@ -7,9 +7,9 @@
  */
 
 import store from '../redux/store';
-import { API_KEYS } from '../services/api/apiKeys';
 import { auditEvents } from '../services/api/auditEvents';
-import { EventTask, AuditEventData } from './auditEvent.types';
+import { API_KEYS, EventTask, AuditEventData } from '../constants';
+import { useAuditEventsMapper } from './auditEventsMapper';
 
 class EventQueue {
   private queue: EventTask[] = [];
@@ -63,7 +63,7 @@ class EventQueue {
 }
 
 /**
- * 👇 Singleton instance of the EventQueue
+ * Singleton instance of the EventQueue
  * This ensures all events are handled in one centralized queue
  * even if `queueAuditEvent` is called from multiple parts of the app.
  */
@@ -71,14 +71,23 @@ export const eventQueue = new EventQueue();
 
 /**
  * Call this function instead of directly dispatching auditEvents.
- *
- * Example usage:
- *   queueAuditEvent(eventData);
- *
  * This ensures the audit event api is queued and processed sequentially.
  */
 export const queueAuditEvent = (data: AuditEventData) => {
   eventQueue.enqueue(data, async data => {
     await store.dispatch(auditEvents(API_KEYS.auditEvents, data));
   });
+};
+
+/**
+ * Hook to map and queue audit events in one call.
+ * Can be used inside React components only.
+ */
+export const useSendAuditData = () => {
+  const mapAuditEvent = useAuditEventsMapper();
+
+  return (eventName: string, eventData?: Record<string, any>) => {
+    const data = mapAuditEvent(eventName, eventData);
+    queueAuditEvent(data);
+  };
 };

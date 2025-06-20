@@ -6,7 +6,7 @@ import * as handlers from '../../../../src/events/transferEventHandlers';
 import MALaunchConnectTransfer from '../../../../src/containers/ConnectTransfer/MALaunchConnectTransfer';
 import { complete } from '../../../../src/services/api/complete';
 import { resetData } from '../../../../src/redux/slices/authenticationSlice';
-import { API_KEYS } from '../../../../src/services/api/apiKeys';
+import { API_KEYS } from '../../../../src/constants';
 
 jest.mock('@atomicfi/transact-react-native', () => ({
   Atomic: {
@@ -17,7 +17,7 @@ jest.mock('@atomicfi/transact-react-native', () => ({
   }
 }));
 
-jest.mock('../../../../src/containers/ConnectTransfer/transferEventEnums', () => ({
+jest.mock('../../../../src/constants', () => ({
   AtomicEvents: {
     INITIALIZED_TRANSACT: 'INITIALIZED_TRANSACT'
   },
