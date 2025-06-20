@@ -1,19 +1,41 @@
-/**
- * transferEventEnums.ts
- *
- * This file defines enums related to event names, action types, codes, and statuses
- * used in the Connect Transfer module.
- *
- * Enums included:
- * - TransferEventDataName: Keys for event data payloads.
- * - TransferActionEvents: Action event types sent from the Transfer module.
- * - TransferActionCodes: Status or result codes for actions or errors.
- * - UserEvents: User interaction event types during the Transfer flow.
- * - RedirectReason: Reasons for redirection or flow termination.
- * - AtomicEvents: Granular UI events for tracking user behavior in the Transfer flow.
- * - TransferModuleType: Defines the module type(s), e.g., Payroll Deposit Switch (PDS).
- */
+// SDK platform identifier used in audit tracking.
+export const SDK_PLATFORM = 'reactNative';
 
+// Below constants are used for redux / services / api calls.
+export const TIMEOUT = 3 * 60 * 1000; // 3 minutes
+
+export const HEADERS = {
+  'Content-Type': 'application/json',
+  Accept: 'application/json'
+};
+
+export const METHODS = {
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
+  OPTIONS: 'OPTIONS'
+};
+
+// Default fallback to English
+export const DEFAULT_LANGUAGE_EN = 'en';
+
+export const API_KEYS = {
+  authenticateUser: 'authenticationSlice/authenticateUser',
+  termsAndPolicies: 'termsAndPoliciesSlice/termsAndPolicies',
+  complete: 'completeSlice/complete',
+  errorTranslation: 'errorTranslationSlice/errorTranslation',
+  auditEvents: 'auditEventsSlice/auditEvents'
+};
+
+export const WEBPAGE_API_KEYS = {
+  privacy_EN: 'privacy_EN',
+  privacy_ES: 'privacy_ES',
+  termsOfUse_EN: 'termsOfUse_EN',
+  termsOfUse_ES: 'termsOfUse_ES'
+};
+
+// Below Enums are used for events in the Connect Transfer module.
 export enum TransferEventDataName {
   CUSTOMER_ID = 'customerId',
   PARTNER_ID = 'partnerId',
@@ -43,16 +65,6 @@ export enum TransferActionEvents {
   ERROR = 'Error'
 }
 
-export enum TransferActionCodes {
-  BAD_REQUEST = '400',
-  INVALID_EXPERIENCE = '-1',
-  ATOMIC_ERROR = '500',
-  USER_INITIATED_EXIT = '100',
-  INVALID_URL = '401',
-  API_TIMEOUT = '1440',
-  SUCCESS = '200'
-}
-
 export enum UserEvents {
   INITIALIZE_DEPOSIT_SWITCH = 'InitializeDepositSwitch',
   SEARCH_PAYROLL_PROVIDER = 'SearchPayrollProvider',
@@ -63,6 +75,16 @@ export enum UserEvents {
   SUBMIT_ALLOCATION = 'SubmitAllocation',
   TASK_COMPLETED = 'TaskCompleted',
   UNAUTHORIZED = 'Unauthorized'
+}
+
+export enum TransferActionCodes {
+  BAD_REQUEST = '400',
+  INVALID_EXPERIENCE = '-1',
+  ATOMIC_ERROR = '500',
+  USER_INITIATED_EXIT = '100',
+  INVALID_URL = '401',
+  API_TIMEOUT = '1440',
+  SUCCESS = '200'
 }
 
 export enum RedirectReason {
@@ -90,4 +112,9 @@ export enum AtomicEvents {
 
 export enum TransferModuleType {
   PDS = 'PDS'
+}
+
+export enum ListenerType {
+  CLOSE = 'CLOSE',
+  FINISH = 'FINISH'
 }

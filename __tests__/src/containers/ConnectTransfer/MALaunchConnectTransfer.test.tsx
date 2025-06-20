@@ -2,11 +2,11 @@ import { Atomic } from '@atomicfi/transact-react-native';
 import { render } from '@testing-library/react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
-import * as handlers from '../../../../src/containers/ConnectTransfer/transferEventHandlers';
+import * as handlers from '../../../../src/events/transferEventHandlers';
 import MALaunchConnectTransfer from '../../../../src/containers/ConnectTransfer/MALaunchConnectTransfer';
 import { complete } from '../../../../src/services/api/complete';
 import { resetData } from '../../../../src/redux/slices/authenticationSlice';
-import { API_KEYS } from '../../../../src/services/api/apiKeys';
+import { API_KEYS } from '../../../../src/constants';
 
 jest.mock('@atomicfi/transact-react-native', () => ({
   Atomic: {
@@ -17,7 +17,7 @@ jest.mock('@atomicfi/transact-react-native', () => ({
   }
 }));
 
-jest.mock('../../../../src/containers/ConnectTransfer/transferEventEnums', () => ({
+jest.mock('../../../../src/constants', () => ({
   AtomicEvents: {
     INITIALIZED_TRANSACT: 'INITIALIZED_TRANSACT'
   },
@@ -25,7 +25,7 @@ jest.mock('../../../../src/containers/ConnectTransfer/transferEventEnums', () =>
   SEARCH_COMPANY: 'search_company'
 }));
 
-jest.mock('../../../../src/containers/ConnectTransfer/transferEventHandlers');
+jest.mock('../../../../src/events/transferEventHandlers');
 
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),

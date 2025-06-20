@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
 
 import { type RootState, type AppDispatch } from '../redux/store';
-import { API_KEYS } from '../services/api/apiKeys';
 import { authenticateUser } from '../services/api/authenticate';
 import { errorTranslation } from '../services/api/errorTranslation';
 import {
@@ -15,14 +14,21 @@ import {
 } from '../redux/slices/authenticationSlice';
 import { extractUrlData } from '../utility/utils';
 import { setEventHandlers } from '../redux/slices/eventHandlerSlice';
-import { useTransferEventResponse } from './ConnectTransfer/transferEventHandlers';
-import { RedirectReason, TransferModuleType } from './ConnectTransfer/transferEventEnums';
-import { type ConnectTransferProps } from './containerInterfaces';
+import { useTransferEventResponse } from '../events/transferEventHandlers';
+import {
+  ListenerType,
+  RedirectReason,
+  TransferActionEvents,
+  TransferModuleType,
+  API_KEYS
+} from '../constants';
+import { type ConnectTransferProps } from '../intefaces';
 import { MARootContainerStyle as styles } from './ContainerStyles';
 import MALandingView from './LandingView/MALandingView';
 import MARedirectingView from './MARedirectingView';
 import MAErrorView from './MAErrorView';
 import MALoader from '../components/MALoader';
+import { eventQueue, useSendAuditData } from '../events/auditEventQueue';
 
 const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, eventHandlers }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -38,14 +44,18 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
   const [showRedirecting, setShowRedirecting] = useState(false);
 
   const { getResponseForInitializeTransfer, getResponseForClose } = useTransferEventResponse();
+  const sendAuditData = useSendAuditData();
+
   const skipLandingPage = isSkipLandingPageEnabled(data);
   const isRedirecting = skipLandingPage || showRedirecting;
   const isValidUrlData = extractUrlData(connectTransferUrl);
   const isError = error || !connectTransferUrl || isExperienceError(data) || !isValidUrlData;
+  const auditServiceToken = (data as any)?.auditServiceDetails?.token;
 
   useEffect(() => {
     dispatch(setModalVisible());
     eventHandlers && dispatch(setEventHandlers(eventHandlers));
+    eventQueue.reset();
 
     if (isValidUrlData) {
       dispatch(setUrl(connectTransferUrl));
@@ -64,13 +74,21 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
   useEffect(() => {
     if (!isError && data && !hasInitializedRef.current) {
       transferEventHandler?.onInitializeConnectTransfer(getResponseForInitializeTransfer());
+      sendAuditData(TransferActionEvents.INITIALIZE_TRANSFER);
       hasInitializedRef.current = true;
     }
   }, [data, isError]);
 
   const closeModal = () => {
     transferEventHandler?.onTransferEnd(getResponseForClose(RedirectReason.EXIT));
+    auditServiceToken &&
+      sendAuditData(TransferActionEvents.END, {
+        reason: RedirectReason.EXIT,
+        listenerType: ListenerType.CLOSE
+      });
+
     setShowRedirecting(false);
+    eventQueue.destroy();
     dispatch(resetData());
   };
 

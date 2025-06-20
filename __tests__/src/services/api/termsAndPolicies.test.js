@@ -1,8 +1,7 @@
 import api from '../../../../src/services/apiClient';
 import { termsAndPolicies, getData } from '../../../../src/services/api/termsAndPolicies';
 import { generateRoute, requestHeaders } from '../../../../src/services/api/routes';
-import { METHODS } from '../../../../src/services/apiClient/constants';
-import { API_KEYS } from '../../../../src/services/api/apiKeys';
+import { METHODS, API_KEYS } from '../../../../src/constants';
 import { formatCurrentDateTime } from '../../../../src/utility/utils';
 
 jest.mock('../../../../src/services/apiClient');

@@ -2,8 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import api from '../apiClient';
 import { generateRoute, requestHeaders } from './routes';
-import { METHODS, TIMEOUT } from '../apiClient/constants';
-import { TransferActionCodes } from '../../containers/ConnectTransfer/transferEventEnums';
+import { METHODS, TIMEOUT, TransferActionCodes } from '../../constants';
 
 export const authenticateUser = key => {
   return createAsyncThunk(key, async (_, { getState, rejectWithValue }) => {

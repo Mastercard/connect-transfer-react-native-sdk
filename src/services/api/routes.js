@@ -1,15 +1,23 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { API_KEYS, WEBPAGE_API_KEYS } from './apiKeys';
-import { HEADERS } from '../apiClient/constants';
+import { API_KEYS, WEBPAGE_API_KEYS, HEADERS, DEFAULT_LANGUAGE_EN } from '../../constants';
 
 const FINICITY_BASE_URL = 'https://www.finicity.com/';
 const CONNECT_BASE_URL = 'https://connect2.finicity.com';
 const API_VERSION = 'v2';
+const APPLICATION_ID = 'connect-mobile-sdk';
 
 // Generate route based on the provided key
 export const generateRoute = (key, state) => {
-  const { baseURL = '', queryParams = '', language = 'en' } = state?.user || {};
+  const {
+    baseURL = '',
+    queryParams = '',
+    language = DEFAULT_LANGUAGE_EN,
+    data,
+    queryParamsObject
+  } = state?.user || {};
+  const { endpoint = '' } = data?.auditServiceDetails || {};
+  const { partnerId = '', customerId = '' } = queryParamsObject;
 
   switch (key) {
     case API_KEYS.authenticateUser:
@@ -17,6 +25,9 @@ export const generateRoute = (key, state) => {
 
     case API_KEYS.errorTranslation:
       return `${baseURL}/transfer/assets/i18n/errors/${language}.json`;
+
+    case API_KEYS.auditEvents:
+      return `${endpoint}/partners/${partnerId}/customers/${customerId}/events`;
 
     case API_KEYS.termsAndPolicies:
       return `${baseURL}/server/terms-and-policies`;
@@ -43,13 +54,22 @@ export const generateRoute = (key, state) => {
 
 export const requestHeaders = (key, state) => {
   let headers = { ...HEADERS };
+  const { token = '', auditServiceDetails = {} } = state.user?.data || {};
 
   switch (key) {
     case API_KEYS.termsAndPolicies:
     case API_KEYS.complete:
       headers = {
         ...headers,
-        authorization: `Bearer ${state.user?.data?.token}`
+        authorization: `Bearer ${token}`
+      };
+      break;
+
+    case API_KEYS.auditEvents:
+      headers = {
+        ...headers,
+        Token: auditServiceDetails?.token,
+        'application-id': APPLICATION_ID
       };
       break;
 

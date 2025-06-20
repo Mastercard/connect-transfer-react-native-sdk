@@ -1,8 +1,7 @@
 import api from '../../../../src/services/apiClient';
 import { authenticateUser } from '../../../../src/services/api/authenticate';
 import { generateRoute, requestHeaders } from '../../../../src/services/api/routes';
-import { METHODS } from '../../../../src/services/apiClient/constants';
-import { API_KEYS } from '../../../../src/services/api/apiKeys';
+import { METHODS, API_KEYS } from '../../../../src/constants';
 
 jest.mock('../../../../src/services/apiClient');
 jest.mock('../../../../src/services/api/routes');

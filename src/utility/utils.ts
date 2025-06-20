@@ -2,7 +2,7 @@ import 'react-native-url-polyfill/auto';
 import { InAppBrowser } from 'react-native-inappbrowser-reborn';
 
 import { generateRoute } from '../services/api/routes';
-import { WEBPAGE_API_KEYS } from '../services/api/apiKeys';
+import { WEBPAGE_API_KEYS } from '../constants';
 
 /**
  * Extracts base URL, query parameters string, and query parameters as an object from a given partner URL.
@@ -25,14 +25,14 @@ export const extractUrlData = (
   | undefined => {
   try {
     if (!url) {
-      console.error('Invalid URL: URL is empty/null/undefined');
+      console.warn('Invalid URL: URL is empty/null/undefined');
       return;
     }
 
     const urlPattern = /^https:\/\//i;
 
     if (!urlPattern.test(url)) {
-      console.error('Invalid URL: Must start with https://');
+      console.warn('Invalid URL: Must start with https://');
       return;
     }
 
@@ -53,7 +53,7 @@ export const extractUrlData = (
 
     return { baseURL, queryParams, queryParamsObject };
   } catch (error) {
-    console.error('Error parsing URL:', error);
+    console.warn('Error parsing URL:', error);
     return;
   }
 };
@@ -92,7 +92,7 @@ export const openLink = async (url: string): Promise<void> => {
       await InAppBrowser.open(url);
     }
   } catch (error) {
-    console.error('Failed to open link:', error);
+    console.warn('Failed to open link:', error);
   }
 };
 

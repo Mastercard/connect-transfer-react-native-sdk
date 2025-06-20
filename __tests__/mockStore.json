@@ -1,4 +1,9 @@
 {
+  "auditEvents": {
+    "data": null,
+    "error": null,
+    "loading": false
+  },
   "complete": {
     "data": null,
     "error": null,
@@ -43,10 +48,14 @@
     "loading": false
   },
   "user": {
-    "baseURL": "https://connect2.finicitystg.com",
+    "baseURL": "https://abcd.stg.com",
     "data": {
       "data": {},
-      "token": "eyJlbmMiOiJBMTI4Q0JDLUhTMjU2IiwiYWxnIjoiQTI1NktXIiwia2lkIjoiMGYtV2ROcEtfS1pzRXNOa1RueS13U0h5ZzFJT1ZjQVRXSE55YW9KazV4WSJ9.LzsEJ4BGAKAQN9NMysHZngxOLkel8KDrxT0SpjroxzYqiOzKEPU2cg.nYMZDyx19TLRXr9egyTdDQ.sj3PKsHQq1eWBWs51REKrncVcU12EDi-P8RZGI6dcb9zu0s1uBqe4PWdrQJeOGxZmI9n88byhVqvunun4t-i99R9wASJ2tq1ayPUs20AHgLmLjzLXieQ4Pumz7OvhxJSYCYzU64lo0j6PHEpM0ApVoQrcmHcFm7RuryVCuFLteAsh1wRizedj1sYaKsITyFGv533PZZdyq3Zpwlkyxw6GDVAd37TwH4Dg9jvnxSeJmGHW_3KyFDz9xaWq5PKU9Z5WxLVhAV-Ii4c1tufoLEIXnKcdYWlTyjIHwwY0oYyIpvtRNulxCa4t7OlCNiKLn5NV2dzuDjI7mQUgOy0TXoTfwlH-6Uhz0s39zP0Hz9XXRQqF0s1sY_zqWBbtwzFj9IFxod96zwTb3MeQdq-k2u8Fk0HZv1lGYlR5T9x0-bo0cwE-dwaa7Dg-SrYapt1WbaYFnYPFwu54CAyQjRPz-_DrJNoKroxuVLlIa4vfj4-kE_ZlQJDK_tWpR_RNRAIRe_mAtURwJzbajrSyBrMdzTqeVQxfy8_F470oomGFcDmXFsTpQxfDY3orbBw75W1ROOMb0V8KosD5-PsN_F5GOfOP8AiQ44SrtQUdt696U9w75IjgvnhNzHtkyjw4tRbKlMlQkZoXTQUGEwwjxLKHdGAbEWWcJAy47WeS7kzPKFdHcrXHpn-Cp9i2ZfJZT83FQctl19KQuhujIGq_X8IBu_f6EY6XiclA6yXiCujgiys2SCw09XiKRzY3PRlmn-XY2ineu4l6q8AoX3S6CNchc4QnzEIm7ag2AIk7m2TptEHItzxd61G0SR5DSbdeJcjtT7gsXKJ5Z1n5Ld8_sjc5DuKnuQJsoa_V-2hkbJo91OrvMTcvY_fmB5OKHkcjRSreTmix_NJyCv4ONKFbDM-RDfz6w.5A--ZEJ5-mbreWrkqWGW0w"
+      "token": "eyJlbmMiOiJBMTI4Q0JDLUhT***",
+      "auditServiceDetails": {
+        "token": "eyJhbGciOiJIUzI1***",
+        "endpoint": "https://abcd.audit-service.stg"
+      }
     },
     "error": null,
     "language": "en",
@@ -63,6 +72,6 @@
       "ttl": "1745646512400",
       "type": "transferDepositSwitch"
     },
-    "url": "https://connect2.finicitystg.com/transfer?customerId=7002706064&language=en&origin=url&partnerId=2445582169622&signature=a00de67c112fd1c3b0f66439f071ce0001548a1a87a49c1c221ce273d440f541&timestamp=1745560112400&ttl=1745646512400&type=transferDepositSwitch"
+    "url": "https://abcd.stg.com/transfer?customerId=7002706064&language=en&origin=url&partnerId=2445582169622&signature=a00de67c112fd1c3b0f66439f071ce0001548a1a87a49c1c221ce273d440f541&timestamp=1745560112400&ttl=1745646512400&type=transferDepositSwitch"
   }
 }

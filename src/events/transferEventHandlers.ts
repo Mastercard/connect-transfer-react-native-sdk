@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Product } from '@atomicfi/transact-react-native';
 
-import { type RootState } from '../../redux/store';
+import { type RootState } from '../redux/store';
 import {
   AtomicEvents,
   RedirectReason,
@@ -9,7 +9,7 @@ import {
   TransferActionEvents,
   TransferEventDataName,
   UserEvents
-} from './transferEventEnums';
+} from '../constants';
 
 // @ts-ignore
 export const getTransferProductType = product => {
@@ -184,7 +184,9 @@ export const getCommonUserEventMapping = (interactionResponse: any, commonData: 
         ...commonResponse,
         [TransferEventDataName.ACTION]: UserEvents.CHANGE_DEFAULT_ALLOCATION,
         [TransferEventDataName.DEPOSIT_OPTION]: value?.distributionType,
-        [TransferEventDataName.DEPOSIT_ALLOCATION]: value?.distributionAmount
+        ...(value?.distributionAmount !== undefined && {
+          [TransferEventDataName.DEPOSIT_ALLOCATION]: value?.distributionAmount
+        })
       };
 
     case AtomicEvents.CLICKED_BUTTON_TO_START_AUTHENTICATION:
@@ -192,7 +194,9 @@ export const getCommonUserEventMapping = (interactionResponse: any, commonData: 
         ...commonResponse,
         [TransferEventDataName.ACTION]: UserEvents.SUBMIT_ALLOCATION,
         [TransferEventDataName.DEPOSIT_OPTION]: value?.distributionType,
-        [TransferEventDataName.DEPOSIT_ALLOCATION]: value?.distributionAmount
+        ...(value?.distributionAmount !== undefined && {
+          [TransferEventDataName.DEPOSIT_ALLOCATION]: value?.distributionAmount
+        })
       };
 
     case AtomicEvents.VIEWED_TASK_COMPLETED_PAGE:

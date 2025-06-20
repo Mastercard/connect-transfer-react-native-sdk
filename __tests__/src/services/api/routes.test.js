@@ -3,8 +3,7 @@ import {
   requestHeaders,
   createApiActions
 } from '../../../../src/services/api/routes';
-import { API_KEYS, WEBPAGE_API_KEYS } from '../../../../src/services/api/apiKeys';
-import { HEADERS } from '../../../../src/services/apiClient/constants';
+import { API_KEYS, WEBPAGE_API_KEYS, HEADERS } from '../../../../src/constants';
 
 const stateMock = {
   user: {

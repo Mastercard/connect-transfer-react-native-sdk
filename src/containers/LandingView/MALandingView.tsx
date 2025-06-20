@@ -5,13 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import MAScrollableView from './MAScrollableView';
 import MAFooterView from './MAFooterView';
 import { MALandingViewStyle as styles } from './MALandingViewStyles';
-import { type MALandingViewProps } from '../containerInterfaces';
+import { TransferActionEvents, API_KEYS } from '../../constants';
+import { type MALandingViewProps } from '../../intefaces';
+
 import MAExitBottomSheet from '../../components/MAExitBottomSheet';
 import MACrossDismiss from '../../components/MACrossDismiss';
 import { termsAndPolicies } from '../../services/api/termsAndPolicies';
-import { API_KEYS } from '../../services/api/apiKeys';
-import { useTransferEventResponse } from '../ConnectTransfer/transferEventHandlers';
+import { useTransferEventResponse } from '../../events/transferEventHandlers';
 import { AppDispatch, RootState } from '../../redux/store';
+import { useSendAuditData } from '../../events/auditEventQueue';
 
 const MALandingView: React.FC<MALandingViewProps> = ({ onNextPress }) => {
   const dispatch: AppDispatch = useDispatch();
@@ -24,6 +26,7 @@ const MALandingView: React.FC<MALandingViewProps> = ({ onNextPress }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const { getResponseForTermsAndConditionsAccepted } = useTransferEventResponse();
+  const sendAuditData = useSendAuditData();
 
   const onCrossPress = () => {
     setIsVisible(true);
@@ -38,6 +41,7 @@ const MALandingView: React.FC<MALandingViewProps> = ({ onNextPress }) => {
   const onNextButtonPressed = () => {
     dispatch(termsAndPolicies(API_KEYS.termsAndPolicies));
     transferEventHandler?.onTermsAndConditionsAccepted(getResponseForTermsAndConditionsAccepted());
+    sendAuditData(TransferActionEvents.TERMS_ACCEPTED);
     onNextPress();
   };
 

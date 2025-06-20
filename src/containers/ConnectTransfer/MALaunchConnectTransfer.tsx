@@ -2,17 +2,23 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Atomic, Scope } from '@atomicfi/transact-react-native';
 
-import { AtomicEvents } from './transferEventEnums';
+import {
+  AtomicEvents,
+  ListenerType,
+  TransferActionEvents,
+  UserEvents,
+  API_KEYS
+} from '../../constants';
 import {
   useTransferEventResponse,
   getUserEventMappingForPDS,
   useTransferEventCommonData,
   getTransferProductType
-} from './transferEventHandlers';
+} from '../../events/transferEventHandlers';
 import { type AppDispatch, type RootState } from '../../redux/store';
 import { complete } from '../../services/api/complete';
-import { API_KEYS } from '../../services/api/apiKeys';
 import { resetData } from '../../redux/slices/authenticationSlice';
+import { eventQueue, useSendAuditData } from '../../events/auditEventQueue';
 
 const BRAND_COLOR = '#CF4500';
 const SEARCH_COMPANY = 'search-company';
@@ -27,6 +33,8 @@ const MALaunchConnectTransfer = () => {
   const { getResponseForInitializeDepositSwitch, getResponseForFinish, getResponseForClose } =
     useTransferEventResponse();
   const commonData = useTransferEventCommonData();
+  const sendAuditData = useSendAuditData();
+
   const { userToken, product, metadata } = (data as any)?.data || {};
 
   useEffect(() => {
@@ -55,10 +63,14 @@ const MALaunchConnectTransfer = () => {
       transferEventHandler?.onLaunchTransferSwitch(
         getResponseForInitializeDepositSwitch(interaction?.value?.product)
       );
+      sendAuditData(UserEvents.INITIALIZE_DEPOSIT_SWITCH);
     } else {
       const userEventData = getUserEventMappingForPDS(interaction, commonData);
-      userEventData &&
+
+      if (userEventData) {
         transferEventHandler?.onUserEvent(getUserEventMappingForPDS(interaction, commonData));
+        sendAuditData(userEventData.action, userEventData);
+      }
     }
   };
 
@@ -71,16 +83,25 @@ const MALaunchConnectTransfer = () => {
     }
 
     transferEventHandler?.onTransferEnd(getResponseForClose(reason));
+    sendAuditData(TransferActionEvents.END, {
+      reason,
+      listenerType: ListenerType.CLOSE
+    });
     completeAndReset();
   };
 
   const handleFinishEvent = (response: any) => {
     transferEventHandler?.onTransferEnd(getResponseForFinish(response));
+    sendAuditData(TransferActionEvents.END, {
+      ...response,
+      listenerType: ListenerType.FINISH
+    });
     completeAndReset();
   };
 
   function completeAndReset() {
     dispatch(complete(API_KEYS.complete));
+    eventQueue.destroy();
     dispatch(resetData());
   }
 

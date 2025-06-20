@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import api from '../apiClient';
 import { generateRoute, requestHeaders } from './routes';
-import { METHODS } from '../apiClient/constants';
+import { METHODS } from '../../constants';
 import { formatCurrentDateTime } from '../../utility/utils';
 
 const PARTNER = 'partner';
