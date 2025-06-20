@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
-import { type ConnectTransferEventHandler } from '../../constants';
+import { type ConnectTransferEventHandler } from '../../intefaces';
 
 export interface EventHandlersState {
   eventHandler: ConnectTransferEventHandler | null;

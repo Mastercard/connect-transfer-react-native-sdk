@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import MAScrollableView from './MAScrollableView';
 import MAFooterView from './MAFooterView';
 import { MALandingViewStyle as styles } from './MALandingViewStyles';
-import { TransferActionEvents, API_KEYS, type MALandingViewProps } from '../../constants';
+import { TransferActionEvents, API_KEYS } from '../../constants';
+import { type MALandingViewProps } from '../../intefaces';
+
 import MAExitBottomSheet from '../../components/MAExitBottomSheet';
 import MACrossDismiss from '../../components/MACrossDismiss';
 import { termsAndPolicies } from '../../services/api/termsAndPolicies';

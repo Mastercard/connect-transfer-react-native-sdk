@@ -5,7 +5,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import store from './redux/store';
 import i18next from './locale/i18n';
-import { type ConnectTransferProps, type ConnectTransferEventHandler } from './constants';
+import { type ConnectTransferProps, type ConnectTransferEventHandler } from './intefaces';
 import MARootContainer from './containers/MARootContainer';
 
 const defaultEventHandlers: ConnectTransferEventHandler = {

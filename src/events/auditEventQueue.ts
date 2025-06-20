@@ -8,7 +8,8 @@
 
 import store from '../redux/store';
 import { auditEvents } from '../services/api/auditEvents';
-import { API_KEYS, EventTask, AuditEventData } from '../constants';
+import { API_KEYS } from '../constants';
+import { AuditEventData, EventTask } from '../intefaces';
 import { useAuditEventsMapper } from './auditEventsMapper';
 
 class EventQueue {

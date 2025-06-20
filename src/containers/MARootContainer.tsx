@@ -20,9 +20,9 @@ import {
   RedirectReason,
   TransferActionEvents,
   TransferModuleType,
-  API_KEYS,
-  type ConnectTransferProps
+  API_KEYS
 } from '../constants';
+import { type ConnectTransferProps } from '../intefaces';
 import { MARootContainerStyle as styles } from './ContainerStyles';
 import MALandingView from './LandingView/MALandingView';
 import MARedirectingView from './MARedirectingView';

@@ -11,9 +11,9 @@ import {
   ListenerType,
   RedirectReason,
   TransferActionCodes,
-  TransferActionEvents,
-  type MAErrorViewProps
+  TransferActionEvents
 } from '../constants';
+import { type MAErrorViewProps } from '../intefaces';
 import { useTransferEventResponse } from '../events/transferEventHandlers';
 import { AppDispatch, type RootState } from '../redux/store';
 import { getTranslation } from '../utility/utils';
