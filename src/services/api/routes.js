@@ -17,7 +17,7 @@ export const generateRoute = (key, state) => {
     queryParamsObject
   } = state?.user || {};
   const { endpoint = '' } = data?.auditServiceDetails || {};
-  const { partnerId = '', customerId = '' } = queryParamsObject;
+  const { partnerId = '', customerId = '' } = queryParamsObject || {};
 
   switch (key) {
     case API_KEYS.authenticateUser:
