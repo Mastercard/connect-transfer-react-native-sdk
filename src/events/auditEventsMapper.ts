@@ -23,25 +23,6 @@ import { SDK_PLATFORM } from '../constants';
 import { SDK_VERSION } from '../utility/version';
 
 /**
- * Extracts and returns common event fields used across audit events.
- *
- * @param queryParams - Object containing query parameters, including origin, timestamp, and ttl.
- * @returns An object containing platform, SDK version, and timestamp-related metadata.
- */
-const getCommonFields = (queryParams: Record<string, any>) => {
-  const { origin, timestamp, ttl } = queryParams;
-
-  return {
-    origin,
-    platform: SDK_PLATFORM,
-    release: SDK_VERSION,
-    sdkVersion: SDK_VERSION,
-    [TransferEventDataName.TIMESTAMP]: timestamp,
-    [TransferEventDataName.TTL]: ttl
-  };
-};
-
-/**
  * Maps event-specific parameters to structured audit event data.
  *
  * @param eventParams - Object containing eventName, eventData, queryParams, and product.
@@ -49,7 +30,7 @@ const getCommonFields = (queryParams: Record<string, any>) => {
  */
 const mapEventData = (eventParams: any): Record<string, any> => {
   const { eventName, eventData, queryParams, product } = eventParams;
-  const COMMON_FIELDS = getCommonFields(queryParams);
+  const COMMON_FIELDS = { [TransferEventDataName.TTL]: queryParams?.ttl };
 
   switch (eventName) {
     case TransferActionEvents.INITIALIZE_TRANSFER:
@@ -73,6 +54,13 @@ const mapEventData = (eventParams: any): Record<string, any> => {
       return {
         ...COMMON_FIELDS,
         payrollProvider: eventData.payrollProvider
+      };
+
+    case UserEvents.SELECTED_COMPANY_THROUGH_FRANCHISE_PAGE:
+    case UserEvents.SELECTED_COMPANY_THROUGH_PAYROLL_PROVIDER:
+      return {
+        ...COMMON_FIELDS,
+        company: eventData.company
       };
 
     case UserEvents.SUBMIT_CREDENTIALS:
@@ -152,6 +140,10 @@ const mapEventData = (eventParams: any): Record<string, any> => {
  */
 function getMetadata(queryParams: any) {
   const metaData: Record<string, string | undefined> = {
+    origin: queryParams.origin,
+    platform: SDK_PLATFORM,
+    sdkVersion: SDK_VERSION,
+    [TransferEventDataName.TIMESTAMP]: queryParams[TransferEventDataName.TIMESTAMP],
     [TransferEventDataName.CUSTOMER_ID]: queryParams[TransferEventDataName.CUSTOMER_ID],
     [TransferEventDataName.PARTNER_ID]: queryParams[TransferEventDataName.PARTNER_ID],
     [TransferEventDataName.SESSION_ID]: queryParams.signature
