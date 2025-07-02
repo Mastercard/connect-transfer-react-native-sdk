@@ -21,7 +21,10 @@ jest.mock('react-redux', () => ({
   useDispatch: () => mockDispatch,
   useSelector: jest.fn(fn =>
     fn({
-      user: { data: { data: { metadata: { applicationName: 'TestApp' } } } },
+      user: {
+        data: { data: { metadata: { applicationName: 'TestApp' } } },
+        queryParamsObject: { type: 'transferDepositSwitch' }
+      },
       event: { eventHandler: { onTransferEnd: mockOnTransferEnd } }
     })
   )
@@ -37,6 +40,7 @@ jest.mock('react-i18next', () => ({
 }));
 
 jest.mock('../../../src/events/transferEventHandlers', () => ({
+  getTransferProductType: jest.fn(() => 'mockProduct'),
   useTransferEventResponse: () => ({
     getResponseForClose: () => 'mockedResponse'
   })

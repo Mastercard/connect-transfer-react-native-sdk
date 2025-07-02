@@ -30,9 +30,10 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
 
   const { t } = useTranslation();
 
-  const { eventHandler: transferEventHandler } =
-    useSelector((state: RootState) => state.event) || null;
-  const { data } = useSelector((state: RootState) => state.errorTranslation) ?? {};
+  const { eventHandler: transferEventHandler } = useSelector(
+    (state: RootState) => state.event || {}
+  );
+  const { data } = useSelector((state: RootState) => state.errorTranslation || {});
   const errorData = useSelector(
     (state: RootState) => (state.user?.error as any)?.response?.data ?? {},
     shallowEqual

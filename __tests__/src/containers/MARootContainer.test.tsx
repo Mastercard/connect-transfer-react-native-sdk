@@ -31,6 +31,7 @@ jest.mock('i18next', () => ({
 }));
 
 jest.mock('../../../src/events/transferEventHandlers', () => ({
+  getTransferProductType: jest.fn(() => 'mockProduct'),
   useTransferEventResponse: () => ({
     getResponseForInitializeTransfer: jest.fn(() => ({ transfer: 'initialize' })),
     getResponseForClose: jest.fn(() => ({ transfer: 'close' }))

@@ -20,8 +20,9 @@ const MALandingView: React.FC<MALandingViewProps> = ({ onNextPress }) => {
 
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const { eventHandler: transferEventHandler } =
-    useSelector((state: RootState) => state.event) || null;
+  const { eventHandler: transferEventHandler } = useSelector(
+    (state: RootState) => state.event || {}
+  );
 
   const [isVisible, setIsVisible] = useState(false);
 

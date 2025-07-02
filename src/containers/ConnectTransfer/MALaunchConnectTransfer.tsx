@@ -26,9 +26,10 @@ const SEARCH_COMPANY = 'search-company';
 const MALaunchConnectTransfer = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  const { data, language } = useSelector((state: RootState) => state.user) || '';
-  const { eventHandler: transferEventHandler } =
-    useSelector((state: RootState) => state.event) || null;
+  const { data, language } = useSelector((state: RootState) => state.user || {});
+  const { eventHandler: transferEventHandler } = useSelector(
+    (state: RootState) => state.event || {}
+  );
 
   const { getResponseForInitializeDepositSwitch, getResponseForFinish, getResponseForClose } =
     useTransferEventResponse();

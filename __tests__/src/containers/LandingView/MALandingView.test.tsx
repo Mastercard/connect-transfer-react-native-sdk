@@ -47,6 +47,7 @@ jest.mock('../../../../src/services/api/termsAndPolicies', () => ({
 }));
 
 jest.mock('../../../../src/events/transferEventHandlers', () => ({
+  getTransferProductType: jest.fn(() => 'mockProduct'),
   useTransferEventResponse: jest.fn(() => ({
     getResponseForTermsAndConditionsAccepted: jest.fn()
   }))
@@ -61,6 +62,11 @@ describe('MALandingView', () => {
 
     (useSelector as unknown as jest.Mock).mockImplementation(callback =>
       callback({
+        user: {
+          data: { data: { metadata: { applicationName: 'TestApp' } } },
+          queryParamsObject: { type: 'transferDepositSwitch' }
+        },
+
         event: {
           eventHandler: {
             onTermsAndConditionsAccepted: jest.fn()

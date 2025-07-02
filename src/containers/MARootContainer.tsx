@@ -36,10 +36,11 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
   const hasInitializedRef = useRef(false);
 
   const { modalVisible, language, error, data, baseURL } = useSelector(
-    (state: RootState) => state.user
+    (state: RootState) => state.user || {}
   );
-  const { eventHandler: transferEventHandler } =
-    useSelector((state: RootState) => state.event) || null;
+  const { eventHandler: transferEventHandler } = useSelector(
+    (state: RootState) => state.event || {}
+  );
 
   const [showRedirecting, setShowRedirecting] = useState(false);
 
