@@ -49,6 +49,7 @@ export enum TransferEventDataName {
   ACTION = 'action',
   SEARCH_TERM = 'searchTerm',
   PAYROLL_PROVIDER = 'payrollProvider',
+  COMPANY = 'company',
   INPUT_TYPE = 'inputType',
   BUTTON_NAME = 'buttonName',
   DEPOSIT_OPTION = 'depositOption',
@@ -74,7 +75,9 @@ export enum UserEvents {
   CHANGE_DEFAULT_ALLOCATION = 'ChangeDefaultAllocation',
   SUBMIT_ALLOCATION = 'SubmitAllocation',
   TASK_COMPLETED = 'TaskCompleted',
-  UNAUTHORIZED = 'Unauthorized'
+  UNAUTHORIZED = 'Unauthorized',
+  SELECTED_COMPANY_THROUGH_FRANCHISE_PAGE = 'SelectedCompanyThroughFranchisePage',
+  SELECTED_COMPANY_THROUGH_PAYROLL_PROVIDER = 'SelectedCompanyThroughPayrollProvider'
 }
 
 export enum TransferActionCodes {
@@ -107,7 +110,10 @@ export enum AtomicEvents {
   CLICKED_BUTTON_TO_START_AUTHENTICATION = 'Clicked Button To Start Authentication',
   VIEWED_TASK_COMPLETED_PAGE = 'Viewed Task Completed Page',
   VIEWED_ACCESS_UNAUTHORIZED_PAGE = 'Viewed Access Unauthorized Page',
-  VIEWED_EXPIRED_TOKEN_PAGE = 'Viewed Expired Token Page'
+  VIEWED_EXPIRED_TOKEN_PAGE = 'Viewed Expired Token Page',
+  SELECTED_COMPANY_FROM_SEARCH_BY_FRANCHISE_PAGE = 'Selected Company From Search By Franchise Page',
+  SELECTED_COMPANY_FROM_TYPEAHEAD_SEARCH_BY_CONFIGURABLE_CONNECTOR_PAGE = 'Selected Company From Typeahead Search By Configurable Connector Page',
+  CLICKED_DISTRIBUTION_TYPE_FROM_SELECT_FROM_DEPOSIT_OPTIONS_PAGE = 'Clicked Distribution Type From Select From Deposit Options Page'
 }
 
 export enum TransferModuleType {

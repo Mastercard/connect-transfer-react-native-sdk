@@ -153,6 +153,20 @@ export const getUserEventMappingForPDS = (interactionResponse: any, commonData: 
         [TransferEventDataName.PAYROLL_PROVIDER]: value?.company
       };
 
+    case AtomicEvents.SELECTED_COMPANY_FROM_SEARCH_BY_FRANCHISE_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.SELECTED_COMPANY_THROUGH_FRANCHISE_PAGE,
+        [TransferEventDataName.COMPANY]: value?.company
+      };
+
+    case AtomicEvents.SELECTED_COMPANY_FROM_TYPEAHEAD_SEARCH_BY_CONFIGURABLE_CONNECTOR_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.SELECTED_COMPANY_THROUGH_PAYROLL_PROVIDER,
+        [TransferEventDataName.COMPANY]: value?.company
+      };
+
     default:
       return getCommonUserEventMapping(interactionResponse, commonData);
   }
@@ -187,6 +201,13 @@ export const getCommonUserEventMapping = (interactionResponse: any, commonData: 
         ...(value?.distributionAmount !== undefined && {
           [TransferEventDataName.DEPOSIT_ALLOCATION]: value?.distributionAmount
         })
+      };
+
+    case AtomicEvents.CLICKED_DISTRIBUTION_TYPE_FROM_SELECT_FROM_DEPOSIT_OPTIONS_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.CHANGE_DEFAULT_ALLOCATION,
+        [TransferEventDataName.DEPOSIT_OPTION]: value?.depositOption
       };
 
     case AtomicEvents.CLICKED_BUTTON_TO_START_AUTHENTICATION:

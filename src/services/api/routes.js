@@ -5,7 +5,7 @@ import { API_KEYS, WEBPAGE_API_KEYS, HEADERS, DEFAULT_LANGUAGE_EN } from '../../
 const FINICITY_BASE_URL = 'https://www.finicity.com/';
 const CONNECT_BASE_URL = 'https://connect2.finicity.com';
 const API_VERSION = 'v2';
-const APPLICATION_ID = 'connect-mobile-sdk';
+const APPLICATION_ID = 'connect-transfer-sdk';
 
 // Generate route based on the provided key
 export const generateRoute = (key, state) => {
