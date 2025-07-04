@@ -145,7 +145,7 @@ describe('auditEventsMapper', () => {
   test('should handle ERROR event with missing code', () => {
     const { result } = setup();
     const event = result.current(TransferActionEvents.ERROR, {});
-    expect(event.eventData.code).toBe(TransferActionCodes.BAD_REQUEST);
+    expect(event.eventData.code).toBe(TransferActionCodes.API_OR_ATOMIC_ERROR);
     expect(event.eventData.reason).toBe(RedirectReason.ERROR);
   });
 

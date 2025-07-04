@@ -123,7 +123,7 @@ const mapEventData = (eventParams: any): Record<string, any> => {
     case TransferActionEvents.ERROR:
       return {
         ...COMMON_FIELDS,
-        code: eventData.code || TransferActionCodes.BAD_REQUEST,
+        code: eventData.code || TransferActionCodes.API_OR_ATOMIC_ERROR,
         reason: RedirectReason.ERROR
       };
 

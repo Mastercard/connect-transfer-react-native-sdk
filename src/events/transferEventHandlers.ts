@@ -86,7 +86,7 @@ export const useTransferEventResponse = () => {
     ...commonData,
     [TransferEventDataName.ACTION]: TransferActionEvents.ERROR,
     [TransferEventDataName.REASON]: RedirectReason.ERROR,
-    [TransferEventDataName.CODE]: errorCode || TransferActionCodes.BAD_REQUEST
+    [TransferEventDataName.CODE]: errorCode || TransferActionCodes.API_OR_ATOMIC_ERROR
   });
 
   const getResponseForClose = (
@@ -103,7 +103,7 @@ export const useTransferEventResponse = () => {
       [TransferEventDataName.REASON]: isExitReason ? RedirectReason.EXIT : reason,
       [TransferEventDataName.CODE]: isExitReason
         ? TransferActionCodes.USER_INITIATED_EXIT
-        : errorCode || TransferActionCodes.ATOMIC_ERROR
+        : errorCode || TransferActionCodes.API_OR_ATOMIC_ERROR
     };
   };
 

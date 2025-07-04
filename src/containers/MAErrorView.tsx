@@ -107,7 +107,7 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
 
   const getErrorText = () => {
     let title = t('ErrorTitle');
-    let subTitle = t('ErrorSubtitle');
+    let subTitle = `${t('ErrorSubtitle')} (${TransferActionCodes.API_OR_ATOMIC_ERROR})`;
 
     if (isInvalidUrl) {
       subTitle = `${t('InvalidUrlErrorSubtitle')} (${TransferActionCodes.INVALID_URL})`;
