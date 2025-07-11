@@ -103,7 +103,7 @@ describe('transferEventHandlers', () => {
       expect(getResponseForClose('CUSTOM_REASON')).toMatchObject({
         action: TransferActionEvents.END,
         reason: 'CUSTOM_REASON',
-        code: TransferActionCodes.ATOMIC_ERROR
+        code: TransferActionCodes.API_OR_ATOMIC_ERROR
       });
 
       expect(getResponseForClose('CUSTOM_REASON', '404')).toMatchObject({

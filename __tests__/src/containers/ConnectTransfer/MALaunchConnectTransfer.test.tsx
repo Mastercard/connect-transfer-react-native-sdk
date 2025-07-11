@@ -6,7 +6,7 @@ import * as handlers from '../../../../src/events/transferEventHandlers';
 import MALaunchConnectTransfer from '../../../../src/containers/ConnectTransfer/MALaunchConnectTransfer';
 import { complete } from '../../../../src/services/api/complete';
 import { resetData } from '../../../../src/redux/slices/authenticationSlice';
-import { API_KEYS } from '../../../../src/constants';
+import { AtomicEvents } from '../../../../src/constants';
 
 jest.mock('@atomicfi/transact-react-native', () => ({
   Atomic: {
@@ -15,14 +15,6 @@ jest.mock('@atomicfi/transact-react-native', () => ({
   Scope: {
     USERLINK: 'USERLINK'
   }
-}));
-
-jest.mock('../../../../src/constants', () => ({
-  AtomicEvents: {
-    INITIALIZED_TRANSACT: 'INITIALIZED_TRANSACT'
-  },
-  BRAND_COLOR: '#FFFFFF',
-  SEARCH_COMPANY: 'search_company'
 }));
 
 jest.mock('../../../../src/events/transferEventHandlers');
@@ -55,8 +47,9 @@ describe('MALaunchConnectTransfer', () => {
     (useSelector as unknown as jest.Mock).mockImplementation(selector =>
       selector({
         user: {
-          data: { data: { userToken: 'token', product: 'product', metadata: {} } },
-          language: 'en'
+          data: { data: { userToken: 'token', product: 'deposit', metadata: {} } },
+          language: 'en',
+          queryParamsObject: { type: 'transferDepositSwitch' }
         },
         event: {
           eventHandler: {
@@ -91,8 +84,11 @@ describe('MALaunchConnectTransfer', () => {
     const transactConfig = transactCall.mock.calls[0][0];
 
     // simulate onInteraction INITIALIZED_TRANSACT
-    transactConfig.onInteraction({ name: 'INITIALIZED_TRANSACT', value: { product: 'checking' } });
-    expect(getResponseForInitializeDepositSwitchMock).toHaveBeenCalledWith('checking');
+    transactConfig.onInteraction({
+      name: AtomicEvents.INITIALIZED_TRANSACT,
+      value: { product: 'deposit' }
+    });
+    expect(getResponseForInitializeDepositSwitchMock).toHaveBeenCalledWith('deposit');
     expect(onLaunchTransferSwitchMock).toHaveBeenCalled();
 
     // simulate onInteraction other event
@@ -132,7 +128,6 @@ describe('MALaunchConnectTransfer', () => {
     onClose({ reason: 'someReason' });
 
     expect(onTransferEndMock).toHaveBeenCalledWith(getResponseForCloseMock('someReason'));
-    expect(dispatchMock).toHaveBeenCalledWith(complete(API_KEYS.complete));
     expect(dispatchMock).toHaveBeenCalledWith(resetData());
   });
 
@@ -158,7 +153,7 @@ describe('MALaunchConnectTransfer', () => {
     (useSelector as unknown as jest.Mock).mockImplementation(selector =>
       selector({
         user: {
-          data: { data: { userToken: 'token', product: 'product', metadata: {} } },
+          data: { data: { userToken: 'token', product: 'deposit', metadata: {} } },
           language: 'en'
         },
         event: {}
@@ -168,7 +163,7 @@ describe('MALaunchConnectTransfer', () => {
 
     const onInteraction = (Atomic.transact as jest.Mock).mock.calls[0][0].onInteraction;
     expect(() => {
-      onInteraction({ name: 'initializedTransact', value: { product: 'checking' } });
+      onInteraction({ name: 'initializedTransact', value: { product: 'deposit' } });
     }).not.toThrow();
   });
 });

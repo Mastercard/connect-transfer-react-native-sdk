@@ -7,6 +7,7 @@ import mockStoreData from '../../mockStore.json';
 import { resetData } from '../../../src/redux/slices/authenticationSlice';
 import MAErrorView from '../../../src/containers/MAErrorView';
 import { type RootState } from '../../../src/redux/store';
+import { TransferActionCodes } from '../../../src/constants';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -164,7 +165,9 @@ describe('MAErrorView', () => {
       </Provider>
     );
 
-    expect(screen.getByText(t('ErrorSubtitle'))).toBeTruthy();
+    expect(
+      screen.getByText(`${t('ErrorSubtitle')} (${TransferActionCodes.API_OR_ATOMIC_ERROR})`)
+    ).toBeTruthy();
   });
 
   it('should call resetData when experience error is true and exit is pressed', () => {
@@ -212,8 +215,10 @@ describe('MAErrorView', () => {
     const exitButton = screen.getByText(t('Exit'));
     fireEvent.press(exitButton);
 
-    expect(screen.getByText('Looks like there was an issue')).toBeTruthy();
-    expect(screen.getByText('We weren’t able to connect to your data.')).toBeTruthy();
+    expect(screen.getByText(t('ErrorTitle'))).toBeTruthy();
+    expect(
+      screen.getByText(`${t('ErrorSubtitle')} (${TransferActionCodes.API_OR_ATOMIC_ERROR})`)
+    ).toBeTruthy();
   });
 
   it('should render experience error and call onTransferEnd with code -1', () => {
@@ -260,7 +265,9 @@ describe('MAErrorView', () => {
     const exitButton = screen.getByText(t('Exit'));
     fireEvent.press(exitButton);
 
-    expect(screen.getByText('Looks like there was an issue')).toBeTruthy();
-    expect(screen.getByText('We weren’t able to connect to your data.')).toBeTruthy();
+    expect(screen.getByText(t('ErrorTitle'))).toBeTruthy();
+    expect(
+      screen.getByText(`${t('ErrorSubtitle')} (${TransferActionCodes.API_OR_ATOMIC_ERROR})`)
+    ).toBeTruthy();
   });
 });

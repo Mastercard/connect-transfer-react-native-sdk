@@ -10,9 +10,11 @@ const stateMock = {
     data: { token: 'token' },
     baseURL: 'https://mock.com',
     queryParams: '?partnerId=123',
+    queryParamsObject: { partnerId: 123, customerId: 345 },
     language: 'en',
     data: {
-      token: 'mock-token'
+      token: 'mock-token',
+      auditServiceDetails: { token: 'audit-token', endpoint: 'https://www.audit.com/' }
     }
   }
 };
@@ -82,6 +84,11 @@ describe('generateRoute', () => {
     });
     expect(result3).toBe('/transfer/assets/i18n/errors/en.json');
   });
+
+  it('should return auditEvents route', () => {
+    const result = generateRoute(API_KEYS.auditEvents, stateMock);
+    expect(result).toBe('https://www.audit.com//partners/123/customers/345/events');
+  });
 });
 
 describe('requestHeaders', () => {
@@ -111,7 +118,16 @@ describe('requestHeaders', () => {
     const result = requestHeaders(API_KEYS.complete, noTokenState);
     expect(result).toEqual({
       ...HEADERS,
-      authorization: 'Bearer undefined'
+      authorization: 'Bearer '
+    });
+  });
+
+  it('should return headers for auditEvents', () => {
+    const result = requestHeaders(API_KEYS.auditEvents, stateMock);
+    expect(result).toEqual({
+      ...HEADERS,
+      Token: 'audit-token',
+      'application-id': 'connect-transfer-sdk'
     });
   });
 });

@@ -30,9 +30,10 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
 
   const { t } = useTranslation();
 
-  const { eventHandler: transferEventHandler } =
-    useSelector((state: RootState) => state.event) || null;
-  const { data } = useSelector((state: RootState) => state.errorTranslation) ?? {};
+  const { eventHandler: transferEventHandler } = useSelector(
+    (state: RootState) => state.event || {}
+  );
+  const { data } = useSelector((state: RootState) => state.errorTranslation || {});
   const errorData = useSelector(
     (state: RootState) => (state.user?.error as any)?.response?.data ?? {},
     shallowEqual
@@ -106,7 +107,7 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
 
   const getErrorText = () => {
     let title = t('ErrorTitle');
-    let subTitle = t('ErrorSubtitle');
+    let subTitle = `${t('ErrorSubtitle')} (${TransferActionCodes.API_OR_ATOMIC_ERROR})`;
 
     if (isInvalidUrl) {
       subTitle = `${t('InvalidUrlErrorSubtitle')} (${TransferActionCodes.INVALID_URL})`;

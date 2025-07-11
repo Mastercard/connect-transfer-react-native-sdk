@@ -17,8 +17,8 @@ const MAExitBottomSheet = ({ bottomSheetRef, onClose }) => {
 
   const { t } = useTranslation();
 
-  const { applicationName } = useSelector(state => state.user?.data?.data?.metadata) || '';
-  const { eventHandler: transferEventHandler } = useSelector(state => state.event) || '';
+  const { applicationName = '' } = useSelector(state => state.user?.data?.data?.metadata || {});
+  const { eventHandler: transferEventHandler } = useSelector(state => state.event || {});
 
   const { getResponseForClose } = useTransferEventResponse();
   const sendAuditData = useSendAuditData();

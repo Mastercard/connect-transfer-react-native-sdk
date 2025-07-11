@@ -123,7 +123,7 @@ const mapEventData = (eventParams: any): Record<string, any> => {
     case TransferActionEvents.ERROR:
       return {
         ...COMMON_FIELDS,
-        code: eventData.code || TransferActionCodes.BAD_REQUEST,
+        code: eventData.code || TransferActionCodes.API_OR_ATOMIC_ERROR,
         reason: RedirectReason.ERROR
       };
 
@@ -161,13 +161,13 @@ function getMetadata(queryParams: any) {
  * @returns A function that accepts eventName and eventData, and returns a structured event object.
  */
 export const useAuditEventsMapper = () => {
-  const { queryParamsObject: queryParams, data }: Record<string, any> = useSelector(
-    (state: RootState) => state.user
+  const { queryParamsObject: queryParams = {}, data = {} }: Record<string, any> = useSelector(
+    (state: RootState) => state.user || {}
   );
-  const product = getTransferProductType((data as any)?.data?.product);
+  const product = getTransferProductType(data?.data?.product);
 
   return (eventName: string, eventData?: any) => ({
-    eventType: queryParams.type,
+    eventType: queryParams?.type,
     eventName,
     eventData: mapEventData({ eventName, eventData, queryParams, product }),
     metadata: getMetadata(queryParams)
