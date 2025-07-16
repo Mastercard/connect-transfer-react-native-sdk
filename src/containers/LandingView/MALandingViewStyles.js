@@ -80,7 +80,8 @@ export const MAFooterViewStyle = StyleSheet.create({
   safeAreaView: { flex: 1, backgroundColor: 'white' },
   linkIcon: {
     width: 16,
-    height: 16
+    height: 16,
+    transform: [{ translateY: Platform.OS === 'ios' ? 1 : 2 }]
   },
   footerContainer: {
     marginHorizontal: 24,

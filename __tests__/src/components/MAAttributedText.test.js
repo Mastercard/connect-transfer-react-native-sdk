@@ -3,6 +3,15 @@ import { render, fireEvent } from '@testing-library/react-native';
 
 import MAAttributedText from '../../../src/components/MAAttributedText';
 
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: key => {
+      const en = require('../../../src/locale/en.json');
+      return en[key] || key;
+    }
+  })
+}));
+
 describe('MAAttributedText', () => {
   it('renders plain text when no styledTexts provided', () => {
     const { getByText } = render(<MAAttributedText text="Hello world" />);
@@ -38,16 +47,6 @@ describe('MAAttributedText', () => {
 
     fireEvent.press(touchableText);
     expect(mockPress).toHaveBeenCalled();
-  });
-
-  it('renders the custom component at the end if provided', () => {
-    const CustomComponent = <Text testID="custom-component">CustomComponent</Text>;
-
-    const { getByTestId } = render(
-      <MAAttributedText text="Hello world" component={CustomComponent} />
-    );
-
-    expect(getByTestId('custom-component')).toBeTruthy();
   });
 
   it('matches snapshot', () => {

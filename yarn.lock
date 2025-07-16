@@ -2664,9 +2664,9 @@
   integrity sha512-HX7Em5NYQAXKW+1T+FiuG27NGwzJfCX3s1GjOa7ujxZa52kjJLOr4FUxT+giF6Tgxv1e+/czV/iTtBw27WTU9g==
 
 "@types/node-forge@^1.3.0":
-  version "1.3.11"
-  resolved "https://registry.npmjs.org/@types/node-forge/-/node-forge-1.3.11.tgz"
-  integrity sha512-FQx220y22OKNTqaByeBGqHWYz4cl94tpcxeFdvBo3wjG6XPBuZ0BNgNZRV5J5TFmmcsJ4IzsLkmGRiQbnYsBEQ==
+  version "1.3.13"
+  resolved "https://registry.npmjs.org/@types/node-forge/-/node-forge-1.3.13.tgz"
+  integrity sha512-zePQJSW5QkwSHKRApqWCVKeKoSOt4xvEnLENZPjyvm9Ezdf/EyDeJM7jqLzOwjVICQQzvLZ63T55MKdJB5H6ww==
   dependencies:
     "@types/node" "*"
 
@@ -2694,17 +2694,17 @@
   dependencies:
     react-native "*"
 
-"@types/react-test-renderer@^19.0.0":
-  version "19.1.0"
-  resolved "https://registry.npmjs.org/@types/react-test-renderer/-/react-test-renderer-19.1.0.tgz"
-  integrity sha512-XD0WZrHqjNrxA/MaR9O22w/RNidWR9YZmBdRGI7wcnWGrv/3dA8wKCJ8m63Sn+tLJhcjmuhOi629N66W6kgWzQ==
+"@types/react-test-renderer@19.0.0":
+  version "19.0.0"
+  resolved "https://registry.npmjs.org/@types/react-test-renderer/-/react-test-renderer-19.0.0.tgz"
+  integrity sha512-qDVnNybqFm2eZKJ4jD34EvRd6VHD67KjgnWaEMM0Id9L22EpWe3nOSVKHWL1XWRCxUWe3lhXwlEeCKD1BlJCQA==
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^18.2.25 || ^19", "@types/react@^18.2.6", "@types/react@~19.0.10":
-  version "19.0.14"
-  resolved "https://registry.npmjs.org/@types/react/-/react-19.0.14.tgz"
-  integrity sha512-ixLZ7zG7j1fM0DijL9hDArwhwcCb4vqmePgwtV0GfnkHRSCUEv4LvzarcTdhoqgyMznUx/EhoTUv31CKZzkQlw==
+"@types/react@*", "@types/react@^18.2.25 || ^19", "@types/react@^18.2.6", "@types/react@19.0.10":
+  version "19.0.10"
+  resolved "https://registry.npmjs.org/@types/react/-/react-19.0.10.tgz"
+  integrity sha512-JuRQ9KXLEjaUNjTWpzuR231Z2WpIwczOkBEIvbHNCzQefFIT0L8IqE6NV6ULLyC1SI/i234JnDoMkfg+RjQj2g==
   dependencies:
     csstype "^3.0.2"
 
@@ -8348,9 +8348,9 @@ rc@1.2.8:
     strip-json-comments "~2.0.1"
 
 react-devtools-core@^6.0.1:
-  version "6.1.1"
-  resolved "https://registry.npmjs.org/react-devtools-core/-/react-devtools-core-6.1.1.tgz"
-  integrity sha512-TFo1MEnkqE6hzAbaztnyR5uLTMoz6wnEWwWBsCUzNt+sVXJycuRJdDqvL078M4/h65BI/YO5XWTaxZDWVsW0fw==
+  version "6.1.5"
+  resolved "https://registry.npmjs.org/react-devtools-core/-/react-devtools-core-6.1.5.tgz"
+  integrity sha512-ePrwPfxAnB+7hgnEr8vpKxL9cmnp7F322t8oqcPshbIQQhDKgFDW4tjhF2wjVbdXF9O/nyuy3sQWd9JGpiLPvA==
   dependencies:
     shell-quote "^1.6.1"
     ws "^7"

@@ -14,27 +14,29 @@ const MAFooterView = ({ onNextPress }) => {
 
   const language = useSelector(state => state.user.language);
 
+  const STYLED_TEXT = [
+    {
+      text: t('NextText'),
+      style: styles.footerHighlight
+    },
+    {
+      text: t('TermsAndConditionsText'),
+      style: styles.footerLink,
+      onPress: () => openLink(getURL(language, 'termsOfUse'))
+    },
+    {
+      text: t('PrivacyNoticeText'),
+      style: styles.footerLink,
+      onPress: () => openLink(getURL(language, 'privacy'))
+    }
+  ];
+
   return (
     <View style={styles.footerContainer}>
       <MAAttributedText
         text={`${t('LandingPageTermsAndConditionsInfoText')} `}
         textStyle={styles.footerText}
-        styledTexts={[
-          {
-            text: t('NextText'),
-            style: styles.footerHighlight
-          },
-          {
-            text: t('TermsAndConditionsText'),
-            style: styles.footerLink,
-            onPress: () => openLink(getURL(language, 'termsOfUse'))
-          },
-          {
-            text: t('PrivacyNoticeText'),
-            style: styles.footerLink,
-            onPress: () => openLink(getURL(language, 'privacy'))
-          }
-        ]}
+        styledTexts={STYLED_TEXT}
         component={<Image source={LinkIcon} style={styles.linkIcon} testID="link-icon" />}
       />
       <MAButton

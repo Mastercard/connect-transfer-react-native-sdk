@@ -2,6 +2,7 @@
 
 exports[`MAAttributedText matches snapshot 1`] = `
 <Text>
+  <Text />
   <View
     accessibilityState={
       {
@@ -23,18 +24,15 @@ exports[`MAAttributedText matches snapshot 1`] = `
     accessible={true}
     collapsable={false}
     focusable={true}
+    onBlur={[Function]}
     onClick={[Function]}
+    onFocus={[Function]}
     onResponderGrant={[Function]}
     onResponderMove={[Function]}
     onResponderRelease={[Function]}
     onResponderTerminate={[Function]}
     onResponderTerminationRequest={[Function]}
     onStartShouldSetResponder={[Function]}
-    style={
-      {
-        "opacity": 1,
-      }
-    }
   >
     <Text
       style={
@@ -46,7 +44,9 @@ exports[`MAAttributedText matches snapshot 1`] = `
       Click
     </Text>
   </View>
-   here to 
+  <Text>
+     here to 
+  </Text>
   <Text
     style={
       {
@@ -56,5 +56,6 @@ exports[`MAAttributedText matches snapshot 1`] = `
   >
     continue
   </Text>
+  <Text />
 </Text>
 `;
