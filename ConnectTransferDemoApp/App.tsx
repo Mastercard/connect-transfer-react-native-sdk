@@ -3,6 +3,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -57,43 +58,40 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.gradientBackground}>
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
         >
-          <Text style={styles.title}>Connect Transfer Demo App</Text>
-          <Text style={styles.instructions}>
-            To get started, enter a Generate URL value into the field below.
-          </Text>
-          <TextInput
-            ref={urlInputRef}
-            style={styles.input}
-            placeholder="Paste Generate URL here"
-            onChangeText={handleUrl}
-          />
-          <TouchableOpacity
-            disabled={!pressable}
-            style={[
-              styles.buttonFrame,
-              pressable ? styles.buttonFrameEnabled : styles.buttonFrameDisabled
-            ]}
-            onPress={onPressHandler}
-          >
-            <Text
-              style={[
-                styles.buttonText,
-                pressable ? styles.buttonTextEnabled : styles.buttonTextDisabled
-              ]}
+          <View style={styles.card}>
+            <Text style={styles.title}>Connect Transfer Demo App</Text>
+            <Text style={styles.subtitle}>Paste the Generate URL below</Text>
+
+            <TextInput
+              ref={urlInputRef}
+              style={styles.input}
+              placeholder="https://test.xyz/generate-url"
+              placeholderTextColor="#999"
+              onChangeText={handleUrl}
+            />
+
+            <TouchableOpacity
+              disabled={!pressable}
+              style={[styles.button, { backgroundColor: pressable ? '#007bff' : '#ccc' }]}
+              onPress={onPressHandler}
             >
-              Launch Connect Transfer
-            </Text>
-          </TouchableOpacity>
-        </KeyboardAvoidingView>
+              <Text style={styles.buttonText}>Launch Connect Transfer</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
         {isConnectTransferEnabled && (
           <ConnectTransfer connectTransferUrl={url} eventHandlers={eventHandlers} />
         )}
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -101,86 +99,55 @@ const App = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#ffe5b4'
+    backgroundColor: '#f2f2f2'
   },
-  gradientBackground: {
-    flex: 1,
-    backgroundColor: '#ffe5b4',
-    paddingTop: 50,
-    paddingBottom: 100,
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    padding: 20
   },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    width: '90%',
-    backgroundColor: '#ffffe0',
-    borderRadius: 20,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 6,
-    shadowOffset: { height: 4, width: 0 },
-    paddingVertical: 30
-  },
-  title: {
-    color: '#2c3e50',
-    fontSize: 30,
-    fontWeight: 'bold',
-    width: '85%',
-    marginTop: 30,
-    marginBottom: 40
-  },
-  instructions: {
-    color: '#34495e',
-    fontSize: 17,
-    width: '85%',
-    marginBottom: 30
-  },
-  input: {
-    height: 56,
-    fontSize: 15,
-    width: '90%',
-    marginBottom: 50,
-    borderColor: '#C6CDD4',
-    borderWidth: 1,
-    borderRadius: 8,
-    padding: 10,
-    backgroundColor: '#FEFEFE',
-    color: '#2c3e50'
-  },
-  buttonFrame: {
-    height: 55,
-    width: '95%',
-    borderRadius: 30,
-    justifyContent: 'center',
-    alignItems: 'center',
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 12,
+    padding: 24,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4
-  },
-  buttonFrameDisabled: {
-    backgroundColor: '#d1d8e0',
     shadowOpacity: 0.1,
-    elevation: 1
+    shadowRadius: 8,
+    elevation: 5
   },
-  buttonFrameEnabled: {
-    backgroundColor: '#6ab04c',
-    shadowOpacity: 0.2,
-    elevation: 2
-  },
-  buttonText: {
-    fontSize: 18,
+  title: {
+    fontSize: 22,
     fontWeight: 'bold',
+    marginBottom: 8,
+    color: '#333',
     textAlign: 'center'
   },
-  buttonTextDisabled: {
-    color: '#606060'
+  subtitle: {
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 20,
+    textAlign: 'center'
   },
-  buttonTextEnabled: {
-    color: '#ffffff'
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    fontSize: 16,
+    color: '#000',
+    marginBottom: 20
+  },
+  button: {
+    borderRadius: 8,
+    paddingVertical: 12,
+    alignItems: 'center'
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: 16
   }
 });
 

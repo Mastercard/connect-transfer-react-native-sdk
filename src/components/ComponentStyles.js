@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 
 export const MASecuredByStyle = StyleSheet.create({
   footer: {
@@ -7,7 +7,8 @@ export const MASecuredByStyle = StyleSheet.create({
     right: 0,
     padding: 10,
     flexDirection: 'row',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    ...Platform.select({ android: { marginBottom: 10 } })
   },
   logoContainer: {
     flexDirection: 'row',
@@ -18,7 +19,8 @@ export const MASecuredByStyle = StyleSheet.create({
   securedText: {
     fontSize: 14,
     fontWeight: '350',
-    marginRight: 5
+    marginRight: 5,
+    color: '#141413'
   },
   logo: { resizeMode: 'contain' }
 });
