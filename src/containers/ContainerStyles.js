@@ -65,9 +65,6 @@ export const MAErrorViewStyles = StyleSheet.create({
     position: 'absolute',
     width: '100%'
   },
-  tryAgainButton: {
-    marginHorizontal: 0
-  },
   returnToPartnerButton: {
     marginTop: -10,
     marginHorizontal: 0,

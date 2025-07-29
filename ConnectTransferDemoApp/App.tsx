@@ -81,7 +81,7 @@ const App = () => {
 
             <TouchableOpacity
               disabled={!pressable}
-              style={[styles.button, { backgroundColor: pressable ? '#007bff' : '#ccc' }]}
+              style={[styles.button, { backgroundColor: pressable ? '#007BFF' : '#CCC' }]}
               onPress={onPressHandler}
             >
               <Text style={styles.buttonText}>Launch Connect Transfer</Text>
@@ -99,7 +99,7 @@ const App = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#f2f2f2'
+    backgroundColor: '#F2F2F2'
   },
   scrollContainer: {
     flexGrow: 1,
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     padding: 20
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFF',
     borderRadius: 12,
     padding: 24,
     shadowColor: '#000',
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: '#CCC',
     borderRadius: 8,
     paddingVertical: 10,
     paddingHorizontal: 15,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   buttonText: {
-    color: '#fff',
+    color: '#FFF',
     fontWeight: '600',
     fontSize: 16
   }

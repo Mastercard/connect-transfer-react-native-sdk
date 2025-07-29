@@ -16,7 +16,6 @@ export const MAScrollableViewStyle = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    alignSelf: 'center',
     marginTop: 20,
     lineHeight: 24,
     marginBottom: 20,
@@ -35,7 +34,7 @@ export const MAScrollableViewStyle = StyleSheet.create({
     padding: 16,
     paddingBottom: 7,
     borderRadius: 8,
-    marginBottom: 14,
+    marginBottom: 22,
     borderColor: '#DFDFDF',
     borderWidth: 1
   },
@@ -57,6 +56,8 @@ export const MAScrollableViewStyle = StyleSheet.create({
     marginRight: 14
   },
   stepText: {
+    flex: 1,
+    flexShrink: 1,
     fontSize: 13,
     color: '#141413',
     lineHeight: 20

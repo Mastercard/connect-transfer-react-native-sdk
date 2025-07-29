@@ -35,10 +35,13 @@
     "Mastercard",
     "Mastercard Open Banking Connect"
   ],
+  "publishConfig": {
+    "registry": "https://repo.fini.city/artifactory/api/npm/npm-private/"
+  },
   "dependencies": {
     "@gorhom/bottom-sheet": "5.1.1",
     "@reduxjs/toolkit": "2.5.1",
-    "axios": "1.8.4",
+    "axios": "1.11.0",
     "i18next": "24.2.2",
     "react-i18next": "15.4.1",
     "react-native-url-polyfill": "2.0.0",

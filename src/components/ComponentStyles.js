@@ -2,19 +2,15 @@ import { StyleSheet, Platform } from 'react-native';
 
 export const MASecuredByStyle = StyleSheet.create({
   footer: {
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-around',
-    ...Platform.select({ android: { marginBottom: 10 } })
+    ...Platform.select({ android: { marginBottom: 15 } })
   },
   logoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     width: 119,
-    height: 18
+    ...Platform.select({ android: { height: 19 } }, { ios: { height: 18 } })
   },
   securedText: {
     fontSize: 14,
@@ -27,7 +23,7 @@ export const MASecuredByStyle = StyleSheet.create({
 
 export const MAButtonStyle = StyleSheet.create({
   button: {
-    height: 58,
+    height: 47,
     backgroundColor: '#CF4500',
     borderRadius: 100,
     justifyContent: 'center',
@@ -35,7 +31,7 @@ export const MAButtonStyle = StyleSheet.create({
     marginBottom: 24
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#FFFFFF',
     fontWeight: 'bold',
     lineHeight: 24,
@@ -56,8 +52,8 @@ export const LoaderStyle = StyleSheet.create({
   },
   box: {
     borderStyle: 'solid',
-    borderRightColor: '#ffffff',
-    borderBottomColor: '#ffffff',
+    borderRightColor: '#FFF',
+    borderBottomColor: '#FFF',
     borderRadius: 40
   }
 });
@@ -86,23 +82,14 @@ export const MAExitBottomSheetStyle = StyleSheet.create({
     lineHeight: 24
   },
   exitButton: {
-    paddingVertical: 12,
-    alignItems: 'center',
     marginBottom: 20
-  },
-  exitButtonText: {
-    color: '#FFF',
-    fontWeight: 'bold'
   },
   stayButton: {
     backgroundColor: '#FFF',
     borderWidth: 1,
-    borderColor: '#CF4500',
-    paddingVertical: 12,
-    alignItems: 'center'
+    borderColor: '#CF4500'
   },
   stayButtonText: {
-    color: '#CF4500',
-    fontWeight: 'bold'
+    color: '#CF4500'
   }
 });

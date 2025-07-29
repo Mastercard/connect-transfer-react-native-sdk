@@ -45,7 +45,7 @@ const MALaunchConnectTransfer = () => {
         scope: Scope.USERLINK,
         // @ts-ignore
         tasks: [{ product: getTransferProductType(product) }],
-        theme: { brandColor: BRAND_COLOR },
+        theme: { brandColor: BRAND_COLOR, dark: false },
         language: language,
         deeplink: {
           step: SEARCH_COMPANY

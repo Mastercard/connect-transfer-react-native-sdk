@@ -99,7 +99,7 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
   const errorScreenFooter = () => {
     return (
       <View style={styles.footerView}>
-        <MAButton text={t('Exit')} style={styles.tryAgainButton} onPress={onExitPressed} />
+        <MAButton text={t('Exit')} onPress={onExitPressed} />
         <MASecuredBy />
       </View>
     );
