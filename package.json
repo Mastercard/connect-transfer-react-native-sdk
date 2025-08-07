@@ -35,9 +35,6 @@
     "Mastercard",
     "Mastercard Open Banking Connect"
   ],
-  "publishConfig": {
-    "registry": "https://repo.fini.city/artifactory/api/npm/npm-private/"
-  },
   "dependencies": {
     "@gorhom/bottom-sheet": "5.1.1",
     "@reduxjs/toolkit": "2.5.1",
