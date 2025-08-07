@@ -1,6 +1,6 @@
 # Connect Transfer React Native SDK Changelog
 
-### 1.0.0 (July 30, 2025)
+### 1.0.0 (August 7, 2025)
 
 Initial Release:
 
