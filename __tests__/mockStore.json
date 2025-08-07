@@ -1,0 +1,77 @@
+{
+  "auditEvents": {
+    "data": null,
+    "error": null,
+    "loading": false
+  },
+  "complete": {
+    "data": null,
+    "error": null,
+    "loading": false
+  },
+  "errorTranslation": {
+    "data": {
+      "Account Status is Closed on the Bank Website.": "Account Status is Closed on the Bank Website.",
+      "Account list not returned by Credential Payroll": "Account list not returned by Credential Payroll"
+    },
+    "error": null,
+    "loading": false
+  },
+  "event": {
+    "eventHandler": {
+      "onInitializeConnectTransfer": "function onInitializeConnectTransfer",
+      "onLaunchTransferSwitch": "function onLaunchTransferSwitch",
+      "onTermsAndConditionsAccepted": "function onTermsAndConditionsAccepted",
+      "onTransferEnd": "function onTransferEnd",
+      "onUserEvent": "function onUserEvent"
+    }
+  },
+  "termsAndPolicies": {
+    "data": {
+      "context": "partner",
+      "customerId": "7002706064",
+      "id": "dabdfdf3-ec6d-4dd8-b113-c2b75ee5638f",
+      "language": "en",
+      "partnerId": "2445582169622",
+      "privacyPolicy": {},
+      "privacyPolicyAcceptedDate": "2025-04-25T05:49:20Z",
+      "privacyPolicyStatus": "active",
+      "privacyPolicyVersion": "20230102",
+      "state": "current",
+      "termsAndConditionsAcceptedDate": "2025-04-25T05:49:20Z",
+      "termsAndConditionsStatus": "active",
+      "termsAndConditionsVersion": "20201202",
+      "termsConditions": {},
+      "workflow": "CONNECT_PDS"
+    },
+    "error": null,
+    "loading": false
+  },
+  "user": {
+    "baseURL": "https://abcd.stg.com",
+    "data": {
+      "data": {},
+      "token": "eyJlbmMiOiJBMTI4Q0JDLUhT***",
+      "auditServiceDetails": {
+        "token": "eyJhbGciOiJIUzI1***",
+        "endpoint": "https://abcd.audit-service.stg"
+      }
+    },
+    "error": null,
+    "language": "en",
+    "loading": false,
+    "modalVisible": true,
+    "queryParams": "?customerId=7002706064&language=en&origin=url&partnerId=2445582169622&signature=a00de67c112fd1c3b0f66439f071ce0001548a1a87a49c1c221ce273d440f541&timestamp=1745560112400&ttl=1745646512400&type=transferDepositSwitch",
+    "queryParamsObject": {
+      "customerId": "7002706064",
+      "language": "en",
+      "origin": "url",
+      "partnerId": "2445582169622",
+      "signature": "a00de67c112fd1c3b0f66439f071ce0001548a1a87a49c1c221ce273d440f541",
+      "timestamp": "1745560112400",
+      "ttl": "1745646512400",
+      "type": "transferDepositSwitch"
+    },
+    "url": "https://abcd.stg.com/transfer?customerId=7002706064&language=en&origin=url&partnerId=2445582169622&signature=a00de67c112fd1c3b0f66439f071ce0001548a1a87a49c1c221ce273d440f541&timestamp=1745560112400&ttl=1745646512400&type=transferDepositSwitch"
+  }
+}
