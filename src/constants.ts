@@ -117,7 +117,13 @@ export enum AtomicEvents {
 }
 
 export enum TransferModuleType {
-  PDS = 'PDS'
+  PDS = 'PDS',
+  BPS = 'BPS'
+}
+
+export enum TransferSwitchType {
+  DEPOSIT_SWITCH = 'transferDepositSwitch',
+  BILL_PAY_SWITCH = 'transferBillPaySwitch'
 }
 
 export enum ListenerType {

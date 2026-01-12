@@ -24,7 +24,7 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prebuild": "node scripts/generate-version.js",
-    "build": "bob build",
+    "build": "bob build && npm pack",
     "prettier-check": "prettier --config .prettierrc.js --check ./src/",
     "prettier-fix": "prettier --config .prettierrc.js --write ./src/",
     "release": "release-it",

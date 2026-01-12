@@ -9,23 +9,38 @@
   "Exit": "Salida",
   "ExitPopUpSubtitle": "Si sales, volverás a {{applicationName}}, y tus datos financieros no se conectarán ni se guardarán.",
   "ExitPopUpTitle": "¿Confirmas que quieres salir?",
-  "FinicityMastercardCompanyText": "Finicity, una empresa de Mastercard",
-  "FinicityPermissionText": "Finicity solo utiliza los datos con tu permiso",
-  "LandingPageInstructionFirstStepText": "Busca a tu empleador o proveedor de nómina",
-  "LandingPageInstructionSecondStepText": "Inicia sesión en tu proveedor de nómina",
-  "LandingPageInstructionThirdStepText": "Confirma tu nueva asignación de depósito directo",
-  "LandingPageStepInstructionText": "Tendrás que",
-  "LandingPageSubtitle": "Permite que Finicity, una empresa de Mastercard te dirija a Atomic para conectarte de forma segura con tu proveedor de nómina y administrar los cambios en tu depósito directo.",
-  "Atomic": "Atomic",
-  "LandingPageTermsAndConditionsInfoText": "Al presionar Siguiente, aceptas los Términos de uso y el Aviso de privacidad de Finicity.",
-  "LandingPageTitle": "Gestionemos tu depósito directo",
-  "NextText": "Siguiente",
-  "NoStay": "No, continuar",
-  "PrivacyNoticeText": "Aviso de privacidad",
-  "RedirectingText": "Redirigiendo...",
+  "LandingPage": {
+    "transferDepositSwitch": {
+      "Title": "Gestionemos tu depósito directo",
+      "SubTitle": "Permite que Finicity, una empresa de Mastercard te dirija a Atomic para conectarte de forma segura con tu proveedor de nómina y administrar los cambios en tu depósito directo.",
+      "Steps": [
+        "Busca a tu empleador o proveedor de nómina",
+        "Inicia sesión en tu proveedor de nómina",
+        "Confirma tu nueva asignación de depósito directo"
+      ]
+    },
+    "transferBillPaySwitch": {
+      "Title": "Gestionemos tus pagos de facturas",
+      "SubTitle": "Permite que Finicity, una empresa de Mastercard, te dirija a Atomic para conectarte de forma segura con tus comerciantes y actualizar tu método de pago registrado.",
+      "Steps": [
+        "Selecciona uno o más pagos recurrentes",
+        "Inicia sesión en tus cuentas y vincula tu tarjeta o cuenta bancaria a cada pago",
+        "¡Listo!"
+      ]
+    },
+    "FinicityMastercardCompany": "Finicity, una empresa de Mastercard",
+    "FinicityPermission": "Finicity solo utiliza los datos con tu permiso",
+    "StepInstruction": "Tendrás que",
+    "Atomic": "Atomic",
+    "TermsAndConditionsInfo": "Al presionar Siguiente, aceptas los Términos de uso y el Aviso de privacidad de Finicity.",
+    "Next": "Siguiente",
+    "PrivacyNotice": "Aviso de privacidad",
+    "TermsAndConditions": "Términos de uso"
+  },
+  "Redirecting": "Redirigiendo...",
   "ReturnToPartner": "Volver a {{partnerName}}",
-  "SecuredByText": "Protegido por",
-  "TermsAndConditionsText": "Términos de uso",
+  "SecuredBy": "Protegido por",
   "TryAgain": "Volver a intentarlo",
-  "YesExit": "Sí, salir"
+  "YesExit": "Sí, salir",
+  "NoStay": "No, continuar"
 }

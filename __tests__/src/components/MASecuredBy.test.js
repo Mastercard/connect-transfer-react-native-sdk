@@ -20,14 +20,14 @@ describe('MASecuredBy Component', () => {
   it('should render the component correctly', () => {
     const { getByText, getByTestId } = render(<MASecuredBy />);
 
-    expect(getByText(t('SecuredByText'))).toBeTruthy();
+    expect(getByText(t('SecuredBy'))).toBeTruthy();
     expect(getByTestId('logo')).toBeTruthy();
   });
 
   it('should call useTranslation and render translated text', () => {
     const { getByText } = render(<MASecuredBy />);
 
-    expect(getByText(t('SecuredByText'))).toBeTruthy();
+    expect(getByText(t('SecuredBy'))).toBeTruthy();
   });
 
   it('should render image with correct source', () => {

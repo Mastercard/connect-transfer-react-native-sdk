@@ -20,7 +20,7 @@ const MARedirectingView = () => {
             resizeMode="contain"
             testID="tick-image"
           />
-          <Text style={styles.text}>{t('RedirectingText')}</Text>
+          <Text style={styles.text}>{t('Redirecting')}</Text>
         </View>
         <MALoader />
       </View>
