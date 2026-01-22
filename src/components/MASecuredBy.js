@@ -10,7 +10,7 @@ const MASecuredBy = () => {
   return (
     <View style={styles.footer} testID="securedby">
       <View style={styles.logoContainer}>
-        <Text style={styles.securedText}>{t('SecuredByText')}</Text>
+        <Text style={styles.securedText}>{t('SecuredBy')}</Text>
         <Image source={Logo} style={styles.logo} testID="logo" />
       </View>
     </View>

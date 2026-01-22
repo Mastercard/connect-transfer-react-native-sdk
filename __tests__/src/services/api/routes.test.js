@@ -3,14 +3,17 @@ import {
   requestHeaders,
   createApiActions
 } from '../../../../src/services/api/routes';
-import { API_KEYS, WEBPAGE_API_KEYS, HEADERS } from '../../../../src/constants';
+import { API_KEYS, WEBPAGE_API_KEYS, HEADERS, TransferSwitchType } from '../../../../src/constants';
 
 const stateMock = {
   user: {
     data: { token: 'token' },
     baseURL: 'https://mock.com',
     queryParams: '?partnerId=123',
-    queryParamsObject: { partnerId: 123, customerId: 345 },
+    queryParamsObject: {
+      partnerId: 123,
+      customerId: 345
+    },
     language: 'en',
     data: {
       token: 'mock-token',
@@ -20,10 +23,35 @@ const stateMock = {
 };
 
 describe('generateRoute', () => {
-  it('should return authenticateUser route', () => {
-    const result = generateRoute(API_KEYS.authenticateUser, stateMock);
+  it('should return authenticateUser route for PDS', () => {
+    const result = generateRoute(API_KEYS.authenticateUser, {
+      ...stateMock,
+      user: {
+        ...stateMock.user,
+        queryParamsObject: {
+          ...stateMock.user.queryParamsObject,
+          type: TransferSwitchType.DEPOSIT_SWITCH
+        }
+      }
+    });
     expect(result).toBe(
       'https://mock.com/server/authenticate/v2/transfer/deposit-switch?partnerId=123'
+    );
+  });
+
+  it('should return authenticateUser route for BPS', () => {
+    const result = generateRoute(API_KEYS.authenticateUser, {
+      ...stateMock,
+      user: {
+        ...stateMock.user,
+        queryParamsObject: {
+          ...stateMock.user.queryParamsObject,
+          type: TransferSwitchType.BILL_PAY_SWITCH
+        }
+      }
+    });
+    expect(result).toBe(
+      'https://mock.com/server/authenticate/v2/transfer/bill-pay-switch?partnerId=123'
     );
   });
 
