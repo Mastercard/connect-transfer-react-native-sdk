@@ -123,8 +123,10 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
 
 export function isSkipLandingPageEnabled(data: any) {
   const { transferModule, customizations } = data?.data?.experience ?? {};
+
   return (
-    transferModule?.moduleType?.toUpperCase?.() === TransferModuleType.PDS &&
+    (transferModule?.moduleType?.toUpperCase?.() === TransferModuleType.PDS ||
+      transferModule?.moduleType?.toUpperCase?.() === TransferModuleType.BPS) &&
     transferModule?.enabled &&
     customizations?.skipLandingPage
   );
@@ -132,11 +134,13 @@ export function isSkipLandingPageEnabled(data: any) {
 
 export function isExperienceError(data: any) {
   const { id, transferModule } = data?.data?.experience ?? {};
+
   return (
     !!id &&
     (!transferModule ||
       Object.keys(transferModule).length === 0 ||
-      transferModule.moduleType?.toUpperCase?.() !== TransferModuleType.PDS ||
+      (transferModule.moduleType?.toUpperCase?.() !== TransferModuleType.PDS &&
+        transferModule.moduleType?.toUpperCase?.() !== TransferModuleType.BPS) ||
       transferModule.enabled !== true)
   );
 }
