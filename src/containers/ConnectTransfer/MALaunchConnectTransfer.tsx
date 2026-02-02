@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Atomic, Scope } from '@atomicfi/transact-react-native';
+import { Atomic } from '@atomicfi/transact-react-native';
 
 import {
   AtomicEvents,
@@ -13,7 +13,8 @@ import {
   useTransferEventResponse,
   getUserEventMappingForPDS,
   useTransferEventCommonData,
-  getTransferProductType
+  getTransferProductType,
+  getTransferProductScope
 } from '../../events/transferEventHandlers';
 import { type AppDispatch, type RootState } from '../../redux/store';
 import { complete } from '../../services/api/complete';
@@ -42,7 +43,8 @@ const MALaunchConnectTransfer = () => {
     Atomic.transact({
       config: {
         publicToken: userToken,
-        scope: Scope.USERLINK,
+        // @ts-ignore
+        scope: getTransferProductScope(product),
         // @ts-ignore
         tasks: [{ product: getTransferProductType(product) }],
         theme: { brandColor: BRAND_COLOR, dark: false },
