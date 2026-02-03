@@ -1,5 +1,6 @@
 {
   "ErrorSubtitle": "No pudimos conectar con tus datos",
+  "ErrorSubtitleBPS": "No pudimos conectarnos con tu proveedor de nómina. Vuelve a intentarlo más tarde.",
   "ErrorTitle": "Parece que hubo un problema",
   "ExperienceErrorSubtitle": "Experiencia inválida",
   "ExperienceErrorTitle": "Enlace de conexión no válido",

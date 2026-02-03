@@ -11,6 +11,10 @@ import {
   UserEvents
 } from '../constants';
 
+export const isPDSFlowActive = (product: string) => product === Product.DEPOSIT;
+
+export const isBPSFlowActive = (product: string) => product === Product.SWITCH;
+
 // @ts-ignore
 export const getTransferProductType = product =>
   product === Product.DEPOSIT || product === Product.SWITCH ? product : null;

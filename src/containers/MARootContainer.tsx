@@ -14,7 +14,11 @@ import {
 } from '../redux/slices/authenticationSlice';
 import { extractUrlData } from '../utility/utils';
 import { setEventHandlers } from '../redux/slices/eventHandlerSlice';
-import { useTransferEventResponse } from '../events/transferEventHandlers';
+import {
+  isBPSFlowActive,
+  isPDSFlowActive,
+  useTransferEventResponse
+} from '../events/transferEventHandlers';
 import {
   ListenerType,
   RedirectReason,
@@ -134,12 +138,15 @@ export function isSkipLandingPageEnabled(data: any) {
 
 export function isExperienceError(data: any) {
   const { id, transferModule } = data?.data?.experience ?? {};
+  const { product } = (data as any)?.data || {};
 
   return (
     !!id &&
     (!transferModule ||
       Object.keys(transferModule).length === 0 ||
-      (transferModule.moduleType?.toUpperCase?.() !== TransferModuleType.PDS &&
+      (isPDSFlowActive(product) &&
+        transferModule.moduleType?.toUpperCase?.() !== TransferModuleType.PDS) ||
+      (isBPSFlowActive(product) &&
         transferModule.moduleType?.toUpperCase?.() !== TransferModuleType.BPS) ||
       transferModule.enabled !== true)
   );
