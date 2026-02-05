@@ -21,12 +21,13 @@ export const getTransferProductType = product =>
 
 // @ts-ignore
 export const getTransferProductScope = product => {
-  if (product === Product.DEPOSIT) {
+  if (isPDSFlowActive(product)) {
     return Scope.USERLINK;
   }
-  if (product === Product.SWITCH) {
+  if (isBPSFlowActive(product)) {
     return Scope.PAYLINK;
   }
+  return null;
 };
 
 export const useTransferEventCommonData = (): Record<string, string | undefined> => {
