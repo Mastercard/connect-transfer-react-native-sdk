@@ -15,6 +15,7 @@ import {
 import { extractUrlData } from '../utility/utils';
 import { setEventHandlers } from '../redux/slices/eventHandlerSlice';
 import {
+  getTransferProductType,
   isBPSFlowActive,
   isPDSFlowActive,
   useTransferEventResponse
@@ -54,8 +55,14 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
   const skipLandingPage = isSkipLandingPageEnabled(data);
   const isRedirecting = skipLandingPage || showRedirecting;
   const isValidUrlData = extractUrlData(connectTransferUrl);
-  const isError = error || !connectTransferUrl || isExperienceError(data) || !isValidUrlData;
   const auditServiceToken = (data as any)?.auditServiceDetails?.token;
+  let { userToken, product } = (data as any)?.data || {};
+  const isError =
+    error ||
+    !connectTransferUrl ||
+    isExperienceError(data) ||
+    !isValidUrlData ||
+    (data && (!userToken || !getTransferProductType(product)));
 
   useEffect(() => {
     dispatch(setModalVisible());
