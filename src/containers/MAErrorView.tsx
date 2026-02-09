@@ -14,7 +14,7 @@ import {
   TransferActionEvents
 } from '../constants';
 import { type MAErrorViewProps } from '../intefaces';
-import { useTransferEventResponse } from '../events/transferEventHandlers';
+import { isBPSFlowActive, useTransferEventResponse } from '../events/transferEventHandlers';
 import { AppDispatch, type RootState } from '../redux/store';
 import { getTranslation } from '../utility/utils';
 import { resetData } from '../redux/slices/authenticationSlice';
@@ -42,6 +42,7 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
   const auditServiceToken = useSelector(
     (state: RootState) => (state.user?.data as any)?.auditServiceDetails?.token
   );
+  const product = useSelector((state: RootState) => (state.user?.data as any)?.data?.product);
 
   const { getResponseForClose, getResponseForError } = useTransferEventResponse();
   const sendAuditData = useSendAuditData();
@@ -107,7 +108,9 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
 
   const getErrorText = () => {
     let title = t('ErrorTitle');
-    let subTitle = `${t('ErrorSubtitle')} (${TransferActionCodes.API_OR_ATOMIC_ERROR})`;
+    let subTitle = isBPSFlowActive(product)
+      ? `${t('ErrorSubtitleBPS')} (${TransferActionCodes.API_OR_ATOMIC_ERROR})`
+      : `${t('ErrorSubtitle')} (${TransferActionCodes.API_OR_ATOMIC_ERROR})`;
 
     if (isInvalidUrl) {
       subTitle = `${t('InvalidUrlErrorSubtitle')} (${TransferActionCodes.INVALID_URL})`;

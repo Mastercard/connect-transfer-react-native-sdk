@@ -1,5 +1,6 @@
 {
   "ErrorSubtitle": "We weren’t able to connect to your data.",
+  "ErrorSubtitleBPS": "We weren’t able to connect to your payroll provider. Please try again.",
   "ErrorTitle": "Looks like there was an issue",
   "ExperienceErrorSubtitle": "Invalid Experience",
   "ExperienceErrorTitle": "Invalid connection link",

@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Product } from '@atomicfi/transact-react-native';
+import { Product, Scope } from '@atomicfi/transact-react-native';
 
 import { type RootState } from '../redux/store';
 import {
@@ -11,13 +11,20 @@ import {
   UserEvents
 } from '../constants';
 
-// @ts-ignore
-export const getTransferProductType = product => {
-  if (product === 'deposit') {
-    return Product.DEPOSIT;
-  }
+export const isPDSFlowActive = (product: string) => product === Product.DEPOSIT;
 
-  return null;
+export const isBPSFlowActive = (product: string) => product === Product.SWITCH;
+
+// @ts-ignore
+export const getTransferProductType = product =>
+  product === Product.DEPOSIT || product === Product.SWITCH ? product : null;
+
+// @ts-ignore
+export const getTransferProductScope = product => {
+  if (isBPSFlowActive(product)) {
+    return Scope.PAYLINK;
+  }
+  return Scope.USERLINK;
 };
 
 export const useTransferEventCommonData = (): Record<string, string | undefined> => {

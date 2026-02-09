@@ -14,7 +14,12 @@ import {
 } from '../redux/slices/authenticationSlice';
 import { extractUrlData } from '../utility/utils';
 import { setEventHandlers } from '../redux/slices/eventHandlerSlice';
-import { useTransferEventResponse } from '../events/transferEventHandlers';
+import {
+  getTransferProductType,
+  isBPSFlowActive,
+  isPDSFlowActive,
+  useTransferEventResponse
+} from '../events/transferEventHandlers';
 import {
   ListenerType,
   RedirectReason,
@@ -50,8 +55,14 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
   const skipLandingPage = isSkipLandingPageEnabled(data);
   const isRedirecting = skipLandingPage || showRedirecting;
   const isValidUrlData = extractUrlData(connectTransferUrl);
-  const isError = error || !connectTransferUrl || isExperienceError(data) || !isValidUrlData;
   const auditServiceToken = (data as any)?.auditServiceDetails?.token;
+  let { userToken, product } = (data as any)?.data || {};
+  const isError =
+    error ||
+    !connectTransferUrl ||
+    isExperienceError(data) ||
+    !isValidUrlData ||
+    (data && (!userToken || !getTransferProductType(product)));
 
   useEffect(() => {
     dispatch(setModalVisible());
@@ -123,8 +134,10 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
 
 export function isSkipLandingPageEnabled(data: any) {
   const { transferModule, customizations } = data?.data?.experience ?? {};
+
   return (
-    transferModule?.moduleType?.toUpperCase?.() === TransferModuleType.PDS &&
+    (transferModule?.moduleType?.toUpperCase?.() === TransferModuleType.PDS ||
+      transferModule?.moduleType?.toUpperCase?.() === TransferModuleType.BPS) &&
     transferModule?.enabled &&
     customizations?.skipLandingPage
   );
@@ -132,11 +145,16 @@ export function isSkipLandingPageEnabled(data: any) {
 
 export function isExperienceError(data: any) {
   const { id, transferModule } = data?.data?.experience ?? {};
+  const { product } = (data as any)?.data || {};
+
   return (
     !!id &&
     (!transferModule ||
       Object.keys(transferModule).length === 0 ||
-      transferModule.moduleType?.toUpperCase?.() !== TransferModuleType.PDS ||
+      (isPDSFlowActive(product) &&
+        transferModule.moduleType?.toUpperCase?.() !== TransferModuleType.PDS) ||
+      (isBPSFlowActive(product) &&
+        transferModule.moduleType?.toUpperCase?.() !== TransferModuleType.BPS) ||
       transferModule.enabled !== true)
   );
 }
