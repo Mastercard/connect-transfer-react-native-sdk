@@ -146,13 +146,6 @@ export const getUserEventMappingForPDS = (interactionResponse: any, commonData: 
   const commonResponse = commonData;
 
   switch (eventName) {
-    case AtomicEvents.SEARCH_BY_COMPANY:
-      return {
-        ...commonResponse,
-        [TransferEventDataName.ACTION]: UserEvents.SEARCH_PAYROLL_PROVIDER,
-        [TransferEventDataName.SEARCH_TERM]: value?.query
-      };
-
     case AtomicEvents.SELECTED_COMPANY_FROM_SEARCH_BY_COMPANY_PAGE:
       return {
         ...commonResponse,
@@ -179,11 +172,76 @@ export const getUserEventMappingForPDS = (interactionResponse: any, commonData: 
   }
 };
 
+export const getUserEventMappingForBPS = (interactionResponse: any, commonData: any): any => {
+  const { name: eventName, value } = interactionResponse;
+  const commonResponse = commonData;
+
+  switch (eventName) {
+    case AtomicEvents.VIEWED_SEARCH_BY_COMPANY_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.VIEW_SEARCH_PAYLINK_COMPANIES
+      };
+
+    case AtomicEvents.SEARCH_PAYLINK_COMPANIES:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.SEARCH_PAYLINK_COMPANIES,
+        [TransferEventDataName.SEARCH_TERM]: value?.query
+      };
+
+    case AtomicEvents.SELECTED_COMPANY_FROM_SEARCH_BY_COMPANY_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.SELECT_PAYLINK_COMPANIES,
+        [TransferEventDataName.BILL_PAY_PROVIDER]: value?.company
+      };
+
+    case AtomicEvents.VIEWED_LOGIN_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.VIEWED_LOGIN_PAGE,
+        [TransferEventDataName.BILL_PAY_PROVIDER]: value?.company
+      };
+
+    case AtomicEvents.NATIVE_SDK_USER_AUTHENTICATED:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.USER_AUTHENTICATED,
+        [TransferEventDataName.BILL_PAY_USER_AUTHENTICATED]: value?.payroll
+      };
+
+    case AtomicEvents.CHANGED_PAYMENT_METHOD:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.CHANGED_PAYMENT,
+        [TransferEventDataName.PAYMENT_METHOD_TYPE]: value?.payroll
+      };
+
+    case AtomicEvents.CLICKED_RETURN_TO_CUSTOMER_FROM_SELECTIONS_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.RETURN_TO_CUSTOMER,
+        [TransferEventDataName.BILL_PAY_PROVIDER]: value?.company
+      };
+
+    default:
+      return getCommonUserEventMapping(interactionResponse, commonData);
+  }
+};
+
 export const getCommonUserEventMapping = (interactionResponse: any, commonData: any): any => {
   const { name: eventName, value } = interactionResponse;
   const commonResponse = commonData;
 
   switch (eventName) {
+    case AtomicEvents.SEARCH_BY_COMPANY:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.SEARCH_PAYROLL_PROVIDER,
+        [TransferEventDataName.SEARCH_TERM]: value?.query
+      };
+
     case AtomicEvents.CLICKED_CONTINUE_FROM_FORM_ON_LOGIN_PAGE:
     case AtomicEvents.CLICKED_CONTINUE_FROM_FORM_ON_INTERRUPT_PAGE:
       return {
@@ -251,4 +309,98 @@ export const getCommonUserEventMapping = (interactionResponse: any, commonData: 
     default:
       break;
   }
+};
+
+export const mapTransactCompany = (company: any) => {
+  return {
+    id: company._id,
+    name: company.name,
+    branding: company.branding
+      ? {
+          color: company.branding.color,
+          logo: {
+            url: company.branding.logo.url,
+            backgroundColor: company.branding.logo.backgroundColor
+          }
+        }
+      : null
+  };
+};
+
+export const mapTransactAuthStatusUpdate = (authStatus: any) => {
+  return {
+    company: mapTransactCompany(authStatus.company),
+    status: authStatus.status || 'authenticated'
+  };
+};
+
+export const getAuthStatusUpdateEvent = (authStatus: any, commonData: any) => {
+  const commonResponse = { ...commonData };
+  const transactAuthStatusUpdate = mapTransactAuthStatusUpdate(authStatus);
+
+  commonResponse[TransferEventDataName.ACTION] = UserEvents.ON_AUTH_STATUS_UPDATE;
+  commonResponse[TransferEventDataName.OAUTH_STATUS] = transactAuthStatusUpdate.status;
+  commonResponse[TransferEventDataName.TRANSACT_AUTH_STATUS_UPDATE] = transactAuthStatusUpdate;
+  return commonResponse;
+};
+
+const mapPaymentMethod = (paymentMethod: any) => {
+  const isCard = paymentMethod.type === 'card';
+
+  return {
+    id: paymentMethod.id,
+    title: paymentMethod.title,
+    type: paymentMethod.type || 'bank',
+    brand: paymentMethod.brand,
+    bankIdentifier: paymentMethod.routingNumber,
+    accountType: paymentMethod.accountType,
+    endsWith: isCard ? paymentMethod.lastFour : undefined,
+    accountNumberEndsWith: !isCard ? paymentMethod.lastFourAccountNumber : undefined
+  };
+};
+
+export const mapTransactSwitchStatusUpdate = (switchStatus: any) => {
+  return {
+    switchId: switchStatus.taskId,
+    product: switchStatus.product,
+    company: mapTransactCompany(switchStatus.company),
+    status: switchStatus.status || 'completed',
+    failReason: switchStatus.failReason ?? undefined,
+    switchData: switchStatus.switchData
+      ? {
+          paymentMethod: mapPaymentMethod(switchStatus.switchData.paymentMethod)
+        }
+      : undefined,
+    depositData: switchStatus.depositData
+      ? {
+          accountType: switchStatus.depositData.accountType,
+          distributionAmount: switchStatus.depositData.distributionAmount,
+          distributionType: switchStatus.depositData.distributionType,
+          lastFour: switchStatus.depositData.lastFour,
+          routingNumber: switchStatus.depositData.routingNumber,
+          title: switchStatus.depositData.title
+        }
+      : undefined,
+    managedBy: switchStatus.managedBy
+      ? {
+          company: mapTransactCompany(switchStatus.managedBy.company)
+        }
+      : undefined
+  };
+};
+
+export const getSwitchStatusUpdateEvent = (switchStatus: any, commonData: any) => {
+  const commonResponse = { ...commonData };
+  const transactSwitchStatusUpdate = mapTransactSwitchStatusUpdate(switchStatus);
+
+  commonResponse[TransferEventDataName.ACTION] = UserEvents.ON_TASK_STATUS_UPDATE;
+  commonResponse[TransferEventDataName.SWITCH_ID] = transactSwitchStatusUpdate.switchId;
+  commonResponse[TransferEventDataName.SWITCH_STATUS] = transactSwitchStatusUpdate.status;
+  commonResponse[TransferEventDataName.TRANSACT_SWITCH_STATUS_UPDATE] = transactSwitchStatusUpdate;
+
+  if (transactSwitchStatusUpdate.status === 'failed') {
+    commonResponse[TransferEventDataName.SWITCH_FAIL_REASON] =
+      transactSwitchStatusUpdate.failReason;
+  }
+  return commonResponse;
 };
