@@ -14,7 +14,12 @@ import {
   getUserEventMappingForPDS,
   useTransferEventCommonData,
   getTransferProductType,
-  getTransferProductScope
+  getTransferProductScope,
+  isPDSFlowActive,
+  isBPSFlowActive,
+  getUserEventMappingForBPS,
+  getAuthStatusUpdateEvent,
+  getSwitchStatusUpdateEvent
 } from '../../events/transferEventHandlers';
 import { type AppDispatch, type RootState } from '../../redux/store';
 import { complete } from '../../services/api/complete';
@@ -56,6 +61,8 @@ const MALaunchConnectTransfer = () => {
         customer: { name: metadata?.applicationName || '' }
       },
       onInteraction: (interaction: any) => handleInteractionEvents(interaction),
+      onAuthStatusUpdate: (status: any) => handleAuthStatusUpdateEvent(status),
+      onTaskStatusUpdate: (status: any) => handleSwitchStatusUpdateEvent(status),
       onFinish: (response: any) => handleFinishEvent(response),
       onClose: (response: any) => handleCloseEvent(response)
     });
@@ -68,12 +75,37 @@ const MALaunchConnectTransfer = () => {
       );
       sendAuditData(UserEvents.INITIALIZE_DEPOSIT_SWITCH);
     } else {
-      const userEventData = getUserEventMappingForPDS(interaction, commonData);
+      const userEventDataForPDS =
+        isPDSFlowActive(product) && getUserEventMappingForPDS(interaction, commonData);
+      const userEventDataForBPS =
+        isBPSFlowActive(product) && getUserEventMappingForBPS(interaction, commonData);
 
-      if (userEventData) {
-        transferEventHandler?.onUserEvent(getUserEventMappingForPDS(interaction, commonData));
-        sendAuditData(userEventData.action, userEventData);
+      if (userEventDataForPDS) {
+        transferEventHandler?.onUserEvent(userEventDataForPDS);
+        sendAuditData(userEventDataForPDS.action, userEventDataForPDS);
       }
+      if (userEventDataForBPS) {
+        transferEventHandler?.onUserEvent(userEventDataForBPS);
+        sendAuditData(userEventDataForBPS.action, userEventDataForBPS);
+      }
+    }
+  };
+
+  const handleAuthStatusUpdateEvent = ({ status }: any) => {
+    const userEventData = getAuthStatusUpdateEvent(status, commonData);
+
+    if (userEventData) {
+      transferEventHandler?.onUserEvent(userEventData);
+      sendAuditData(UserEvents.ON_AUTH_STATUS_UPDATE, userEventData);
+    }
+  };
+
+  const handleSwitchStatusUpdateEvent = ({ status }: any) => {
+    const userEventData = getSwitchStatusUpdateEvent(status, commonData);
+
+    if (userEventData) {
+      transferEventHandler?.onUserEvent(userEventData);
+      sendAuditData(UserEvents.ON_TASK_STATUS_UPDATE, userEventData);
     }
   };
 
