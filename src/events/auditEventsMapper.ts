@@ -33,18 +33,14 @@ const mapEventData = (eventParams: any): Record<string, any> => {
   const COMMON_FIELDS = { [TransferEventDataName.TTL]: queryParams?.ttl };
 
   switch (eventName) {
-    case TransferActionEvents.INITIALIZE_TRANSFER:
-    case TransferActionEvents.TERMS_ACCEPTED:
-    case UserEvents.TASK_COMPLETED:
-      return COMMON_FIELDS;
-
     case UserEvents.INITIALIZE_DEPOSIT_SWITCH:
       return {
         ...COMMON_FIELDS,
         product
       };
 
-    case UserEvents.SEARCH_PAYROLL_PROVIDER:
+    case UserEvents.SEARCH_PAYROLL_PROVIDER: // PDS Event
+    case UserEvents.SEARCH_PAYLINK_COMPANIES: // BPS Event
       return {
         ...COMMON_FIELDS,
         searchTerms: eventData.searchTerm
@@ -53,20 +49,21 @@ const mapEventData = (eventParams: any): Record<string, any> => {
     case UserEvents.SELECT_PAYROLL_PROVIDER:
       return {
         ...COMMON_FIELDS,
-        payrollProvider: eventData.payrollProvider
+        [TransferEventDataName.PAYROLL_PROVIDER]: eventData.payrollProvider
       };
 
-    case UserEvents.SELECTED_COMPANY_THROUGH_FRANCHISE_PAGE:
-    case UserEvents.SELECTED_COMPANY_THROUGH_PAYROLL_PROVIDER:
+    case UserEvents.SELECTED_COMPANY_THROUGH_FRANCHISE_PAGE: // PDS Event
+    case UserEvents.SELECTED_COMPANY_THROUGH_PAYROLL_PROVIDER: // PDS Event
+    case UserEvents.RETURN_TO_CUSTOMER: // BPS Event
       return {
         ...COMMON_FIELDS,
-        company: eventData.company
+        [TransferEventDataName.COMPANY]: eventData.company
       };
 
     case UserEvents.SUBMIT_CREDENTIALS:
       return {
         ...COMMON_FIELDS,
-        inputType: eventData.inputType
+        [TransferEventDataName.INPUT_TYPE]: eventData.inputType
       };
 
     case UserEvents.CHANGE_DEFAULT_ALLOCATION:
@@ -125,6 +122,41 @@ const mapEventData = (eventParams: any): Record<string, any> => {
         ...COMMON_FIELDS,
         code: eventData.code || TransferActionCodes.API_OR_ATOMIC_ERROR,
         reason: RedirectReason.ERROR
+      };
+
+    // BPS Events
+    case UserEvents.SELECT_PAYLINK_COMPANIES:
+    case UserEvents.VIEWED_LOGIN_PAGE:
+      return {
+        ...COMMON_FIELDS,
+        [TransferEventDataName.BILL_PAY_PROVIDER]: eventData.billPayProvider
+      };
+
+    case UserEvents.CHANGED_PAYMENT:
+      return {
+        ...COMMON_FIELDS,
+        [TransferEventDataName.PAYMENT_METHOD_TYPE]: eventData.paymentMethodType
+      };
+
+    case UserEvents.USER_AUTHENTICATED:
+      return {
+        ...COMMON_FIELDS,
+        [TransferEventDataName.BILL_PAY_USER_AUTHENTICATED]: eventData.billPayUserAuthenticated
+      };
+
+    case UserEvents.ON_AUTH_STATUS_UPDATE:
+      return {
+        ...COMMON_FIELDS,
+        [TransferEventDataName.OAUTH_STATUS]: eventData.oauthStatus,
+        [TransferEventDataName.TRANSACT_AUTH_STATUS_UPDATE]: eventData.transactAuthStatusUpdate
+      };
+
+    case UserEvents.ON_TASK_STATUS_UPDATE:
+      return {
+        ...COMMON_FIELDS,
+        [TransferEventDataName.SWITCH_ID]: eventData.switchId,
+        [TransferEventDataName.SWITCH_STATUS]: eventData.switchStatus,
+        [TransferEventDataName.TRANSACT_SWITCH_STATUS_UPDATE]: eventData.transactSwitchStatusUpdate
       };
 
     default:

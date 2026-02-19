@@ -6,10 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import MACrossDismiss from './MACrossDismiss';
 import MAButton from './MAButton';
 import { MAExitBottomSheetStyle as styles } from './ComponentStyles';
-import { ListenerType, RedirectReason, TransferActionEvents, API_KEYS } from '../constants';
+import { ListenerType, RedirectReason, TransferActionEvents } from '../constants';
 import { useTransferEventResponse } from '../events/transferEventHandlers';
 import { resetData } from '../redux/slices/authenticationSlice';
-import { auditEvents } from '../services/api/auditEvents';
 import { eventQueue, useSendAuditData } from '../events/auditEventQueue';
 
 const MAExitBottomSheet = ({ bottomSheetRef, onClose }) => {

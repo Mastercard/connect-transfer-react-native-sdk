@@ -78,14 +78,16 @@ export const useTransferEventResponse = () => {
   };
 
   const getResponseForInitializeDepositSwitch = (
-    productType?: string
+    product: string
   ): Record<string, any> | undefined => {
     if (isEmpty) return;
 
     return {
       ...commonData,
-      [TransferEventDataName.ACTION]: UserEvents.INITIALIZE_DEPOSIT_SWITCH,
-      ...(productType && { [TransferEventDataName.PRODUCT]: productType })
+      [TransferEventDataName.ACTION]: isBPSFlowActive(product)
+        ? UserEvents.INITIALIZE_BILLPAY_SWITCH
+        : UserEvents.INITIALIZE_DEPOSIT_SWITCH,
+      ...(product && { [TransferEventDataName.PRODUCT]: product })
     };
   };
 
@@ -238,7 +240,9 @@ export const getCommonUserEventMapping = (interactionResponse: any, commonData: 
     case AtomicEvents.SEARCH_BY_COMPANY:
       return {
         ...commonResponse,
-        [TransferEventDataName.ACTION]: UserEvents.SEARCH_PAYROLL_PROVIDER,
+        [TransferEventDataName.ACTION]: isBPSFlowActive(value?.product)
+          ? UserEvents.SEARCH_PAYLINK_COMPANIES
+          : UserEvents.SEARCH_PAYROLL_PROVIDER,
         [TransferEventDataName.SEARCH_TERM]: value?.query
       };
 

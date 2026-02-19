@@ -87,8 +87,6 @@ describe('transferEventHandlers', () => {
         'action',
         TransferActionEvents.TERMS_ACCEPTED
       );
-
-      expect(getResponseForInitializeDepositSwitch()).not.toHaveProperty('product');
       expect(getResponseForInitializeDepositSwitch('deposit')).toMatchObject({
         action: UserEvents.INITIALIZE_DEPOSIT_SWITCH,
         product: 'deposit'

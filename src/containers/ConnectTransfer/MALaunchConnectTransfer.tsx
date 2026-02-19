@@ -73,7 +73,9 @@ const MALaunchConnectTransfer = () => {
       transferEventHandler?.onLaunchTransferSwitch(
         getResponseForInitializeDepositSwitch(interaction?.value?.product)
       );
-      sendAuditData(UserEvents.INITIALIZE_DEPOSIT_SWITCH);
+      isBPSFlowActive(product)
+        ? sendAuditData(UserEvents.INITIALIZE_BILLPAY_SWITCH)
+        : sendAuditData(UserEvents.INITIALIZE_DEPOSIT_SWITCH);
     } else {
       const userEventDataForPDS =
         isPDSFlowActive(product) && getUserEventMappingForPDS(interaction, commonData);
