@@ -319,15 +319,17 @@ export const mapTransactCompany = (company: any) => {
   return {
     id: company._id,
     name: company.name,
-    branding: company.branding
-      ? {
-          color: company.branding.color,
-          logo: {
-            url: company.branding.logo.url,
+    ...(company.branding && {
+      branding: {
+        color: company.branding.color,
+        logo: {
+          url: company.branding.logo.url,
+          ...(company.branding.logo.backgroundColor && {
             backgroundColor: company.branding.logo.backgroundColor
-          }
+          })
         }
-      : null
+      }
+    })
   };
 };
 
@@ -352,14 +354,24 @@ const mapPaymentMethod = (paymentMethod: any) => {
   const isCard = paymentMethod.type === 'card';
 
   return {
-    id: paymentMethod.id,
+    id: paymentMethod._id,
     title: paymentMethod.title,
     type: paymentMethod.type || 'bank',
     brand: paymentMethod.brand,
-    bankIdentifier: paymentMethod.routingNumber,
-    accountType: paymentMethod.accountType,
-    endsWith: isCard ? paymentMethod.lastFour : undefined,
-    accountNumberEndsWith: !isCard ? paymentMethod.lastFourAccountNumber : undefined
+    ...(paymentMethod.routingNumber && {
+      bankIdentifier: paymentMethod.routingNumber
+    }),
+    ...(paymentMethod.accountType && {
+      accountType: paymentMethod.accountType
+    }),
+    ...(isCard &&
+      paymentMethod.lastFour && {
+        endsWith: paymentMethod.lastFour
+      }),
+    ...(!isCard &&
+      paymentMethod.lastFourAccountNumber && {
+        accountNumberEndsWith: paymentMethod.lastFourAccountNumber
+      })
   };
 };
 
@@ -369,27 +381,41 @@ export const mapTransactSwitchStatusUpdate = (switchStatus: any) => {
     product: switchStatus.product,
     company: mapTransactCompany(switchStatus.company),
     status: switchStatus.status || 'completed',
-    failReason: switchStatus.failReason ?? undefined,
-    switchData: switchStatus.switchData
-      ? {
-          paymentMethod: mapPaymentMethod(switchStatus.switchData.paymentMethod)
-        }
-      : undefined,
-    depositData: switchStatus.depositData
-      ? {
-          accountType: switchStatus.depositData.accountType,
-          distributionAmount: switchStatus.depositData.distributionAmount,
-          distributionType: switchStatus.depositData.distributionType,
-          lastFour: switchStatus.depositData.lastFour,
-          routingNumber: switchStatus.depositData.routingNumber,
+    ...(switchStatus.failReason && {
+      failReason: switchStatus.failReason
+    }),
+    ...(switchStatus.switchData && {
+      switchData: {
+        paymentMethod: mapPaymentMethod(switchStatus.switchData.paymentMethod)
+      }
+    }),
+    ...(switchStatus.depositData && {
+      depositData: {
+        ...(switchStatus.depositData.accountType && {
+          accountType: switchStatus.depositData.accountType
+        }),
+        ...(switchStatus.depositData.distributionAmount && {
+          distributionAmount: switchStatus.depositData.distributionAmount
+        }),
+        ...(switchStatus.depositData.distributionType && {
+          distributionType: switchStatus.depositData.distributionType
+        }),
+        ...(switchStatus.depositData.lastFour && {
+          lastFour: switchStatus.depositData.lastFour
+        }),
+        ...(switchStatus.depositData.routingNumber && {
+          routingNumber: switchStatus.depositData.routingNumber
+        }),
+        ...(switchStatus.depositData.title && {
           title: switchStatus.depositData.title
-        }
-      : undefined,
-    managedBy: switchStatus.managedBy
-      ? {
-          company: mapTransactCompany(switchStatus.managedBy.company)
-        }
-      : undefined
+        })
+      }
+    }),
+    ...(switchStatus.managedBy && {
+      managedBy: {
+        company: mapTransactCompany(switchStatus.managedBy.company)
+      }
+    })
   };
 };
 
@@ -406,5 +432,6 @@ export const getSwitchStatusUpdateEvent = (switchStatus: any, commonData: any) =
     commonResponse[TransferEventDataName.SWITCH_FAIL_REASON] =
       transactSwitchStatusUpdate.failReason;
   }
+
   return commonResponse;
 };

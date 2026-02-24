@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Atomic } from '@atomicfi/transact-react-native';
 
@@ -93,8 +94,9 @@ const MALaunchConnectTransfer = () => {
     }
   };
 
-  const handleAuthStatusUpdateEvent = ({ status }: any) => {
-    const userEventData = getAuthStatusUpdateEvent(status, commonData);
+  const handleAuthStatusUpdateEvent = (status: any) => {
+    const authStatus = Platform.OS === 'ios' ? status?.status : status;
+    const userEventData = getAuthStatusUpdateEvent(authStatus, commonData);
 
     if (userEventData) {
       transferEventHandler?.onUserEvent(userEventData);
@@ -102,8 +104,9 @@ const MALaunchConnectTransfer = () => {
     }
   };
 
-  const handleSwitchStatusUpdateEvent = ({ status }: any) => {
-    const userEventData = getSwitchStatusUpdateEvent(status, commonData);
+  const handleSwitchStatusUpdateEvent = (status: any) => {
+    const switchStatus = Platform.OS === 'ios' ? status?.status : status;
+    const userEventData = getSwitchStatusUpdateEvent(switchStatus, commonData);
 
     if (userEventData) {
       transferEventHandler?.onUserEvent(userEventData);
