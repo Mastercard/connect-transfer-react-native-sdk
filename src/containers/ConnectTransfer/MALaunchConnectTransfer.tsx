@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { Atomic } from '@atomicfi/transact-react-native';
 
@@ -20,7 +19,8 @@ import {
   isBPSFlowActive,
   getUserEventMappingForBPS,
   getAuthStatusUpdateEvent,
-  getSwitchStatusUpdateEvent
+  getSwitchStatusUpdateEvent,
+  extractEventPayload
 } from '../../events/transferEventHandlers';
 import { type AppDispatch, type RootState } from '../../redux/store';
 import { complete } from '../../services/api/complete';
@@ -62,8 +62,8 @@ const MALaunchConnectTransfer = () => {
         customer: { name: metadata?.applicationName || '' }
       },
       onInteraction: (interaction: any) => handleInteractionEvents(interaction),
-      onAuthStatusUpdate: (status: any) => handleAuthStatusUpdateEvent(status),
-      onTaskStatusUpdate: (status: any) => handleSwitchStatusUpdateEvent(status),
+      onAuthStatusUpdate: (response: any) => handleAuthStatusUpdateEvent(response),
+      onTaskStatusUpdate: (response: any) => handleSwitchStatusUpdateEvent(response),
       onFinish: (response: any) => handleFinishEvent(response),
       onClose: (response: any) => handleCloseEvent(response)
     });
@@ -94,8 +94,8 @@ const MALaunchConnectTransfer = () => {
     }
   };
 
-  const handleAuthStatusUpdateEvent = (status: any) => {
-    const authStatus = Platform.OS === 'ios' ? status?.status : status;
+  const handleAuthStatusUpdateEvent = (response: any) => {
+    const authStatus = extractEventPayload(response);
     const userEventData = getAuthStatusUpdateEvent(authStatus, commonData);
 
     if (userEventData) {
@@ -104,8 +104,8 @@ const MALaunchConnectTransfer = () => {
     }
   };
 
-  const handleSwitchStatusUpdateEvent = (status: any) => {
-    const switchStatus = Platform.OS === 'ios' ? status?.status : status;
+  const handleSwitchStatusUpdateEvent = (response: any) => {
+    const switchStatus = extractEventPayload(response);
     const userEventData = getSwitchStatusUpdateEvent(switchStatus, commonData);
 
     if (userEventData) {
