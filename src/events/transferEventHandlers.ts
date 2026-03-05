@@ -28,9 +28,15 @@ export const getTransferProductScope = product => {
 };
 
 export const extractEventPayload = (response: any) => {
-  if (response && typeof response.status === 'object' && response.status !== null) {
-    return response.status;
+  const status = response?.status;
+
+  if (response && typeof status === 'object' && status !== null) {
+    if (Array.isArray(status)) {
+      return {};
+    }
+    return status;
   }
+
   return response;
 };
 
