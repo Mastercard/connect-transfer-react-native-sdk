@@ -27,6 +27,19 @@ export const getTransferProductScope = product => {
   return Scope.USERLINK;
 };
 
+export const extractEventPayload = (response: any) => {
+  const status = response?.status;
+
+  if (response && typeof status === 'object' && status !== null) {
+    if (Array.isArray(status)) {
+      return {};
+    }
+    return status;
+  }
+
+  return response;
+};
+
 export const useTransferEventCommonData = (): Record<string, string | undefined> => {
   const queryParams: Record<string, any> = useSelector(
     (state: RootState) => state.user.queryParamsObject
@@ -354,7 +367,7 @@ const mapPaymentMethod = (paymentMethod: any) => {
   const isCard = paymentMethod.type === 'card';
 
   return {
-    id: paymentMethod._id,
+    id: paymentMethod._id ?? paymentMethod.id,
     title: paymentMethod.title,
     type: paymentMethod.type || 'bank',
     brand: paymentMethod.brand,
@@ -386,7 +399,9 @@ export const mapTransactSwitchStatusUpdate = (switchStatus: any) => {
     }),
     ...(switchStatus.switchData && {
       switchData: {
-        paymentMethod: mapPaymentMethod(switchStatus.switchData.paymentMethod)
+        paymentMethod:
+          switchStatus.switchData.paymentMethod &&
+          mapPaymentMethod(switchStatus.switchData.paymentMethod)
       }
     }),
     ...(switchStatus.depositData && {

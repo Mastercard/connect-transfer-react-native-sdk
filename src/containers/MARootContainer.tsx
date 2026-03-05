@@ -66,6 +66,9 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
 
   useEffect(() => {
     dispatch(resetData());
+  }, []);
+
+  useEffect(() => {
     dispatch(setModalVisible());
     eventHandlers && dispatch(setEventHandlers(eventHandlers));
     eventQueue.reset();
