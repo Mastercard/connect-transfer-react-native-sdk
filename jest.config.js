@@ -30,6 +30,8 @@ module.exports = {
       '|react-native-gesture-handler' +
       '|@react-native-community' +
       '|react-native-url-polyfill' +
+      '|@reduxjs/toolkit' +
+      '|immer' +
       ')/)'
   ]
 };

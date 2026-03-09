@@ -1,19 +1,26 @@
 import { useSelector } from 'react-redux';
-import { Product } from '@atomicfi/transact-react-native';
+import { Product, Scope } from '@atomicfi/transact-react-native';
 
 import {
   TransferActionEvents,
   RedirectReason,
   AtomicEvents,
   UserEvents,
-  TransferActionCodes
+  TransferActionCodes,
+  TransferEventDataName
 } from '../../../../src/constants';
 import {
   getTransferProductType,
   useTransferEventCommonData,
   useTransferEventResponse,
   getUserEventMappingForPDS,
-  getCommonUserEventMapping
+  getCommonUserEventMapping,
+  isPDSFlowActive,
+  isBPSFlowActive,
+  getTransferProductScope,
+  getUserEventMappingForBPS,
+  getAuthStatusUpdateEvent,
+  getSwitchStatusUpdateEvent
 } from '../../../../src/events/transferEventHandlers';
 
 jest.mock('react-redux', () => ({
@@ -46,6 +53,22 @@ describe('transferEventHandlers', () => {
     expect(getTransferProductType('deposit')).toBe(Product.DEPOSIT);
     expect(getTransferProductType('unknown')).toBe(null);
     expect(getTransferProductType(undefined)).toBe(null);
+    expect(getTransferProductType('switch')).toBe(Product.SWITCH);
+  });
+
+  it('Test isPDSFlowActive and isBPSFlowActive for switch type', () => {
+    expect(isPDSFlowActive('deposit')).toBe(true);
+    expect(isPDSFlowActive('unknown')).toBe(false);
+    expect(isPDSFlowActive('')).toBe(false);
+    expect(isBPSFlowActive('switch')).toBe(true);
+    expect(isBPSFlowActive('unknown')).toBe(false);
+    expect(isBPSFlowActive('')).toBe(false);
+  });
+
+  it('Test getTransferProductScope', () => {
+    expect(getTransferProductScope('deposit')).toBe(Scope.USERLINK);
+    expect(getTransferProductScope('')).toBe(Scope.USERLINK);
+    expect(getTransferProductScope('switch')).toBe(Scope.PAYLINK);
   });
 
   it('useTransferEventCommonData returns expected values with experience', () => {
@@ -92,6 +115,11 @@ describe('transferEventHandlers', () => {
         product: 'deposit'
       });
 
+      expect(getResponseForInitializeDepositSwitch('switch')).toMatchObject({
+        action: UserEvents.INITIALIZE_BILLPAY_SWITCH,
+        product: 'switch'
+      });
+
       expect(getResponseForClose(RedirectReason.EXIT)).toMatchObject({
         action: TransferActionEvents.END,
         reason: RedirectReason.EXIT,
@@ -118,18 +146,6 @@ describe('transferEventHandlers', () => {
   });
 
   describe('getUserEventMappingForPDS', () => {
-    it('handles SEARCH_BY_COMPANY', () => {
-      const result = getUserEventMappingForPDS(
-        { name: AtomicEvents.SEARCH_BY_COMPANY, value: { query: 'Google' } },
-        commonData
-      );
-      expect(result).toMatchObject({
-        ...commonData,
-        action: UserEvents.SEARCH_PAYROLL_PROVIDER,
-        searchTerm: 'Google'
-      });
-    });
-
     it('handles SELECTED_COMPANY_FROM_SEARCH_BY_COMPANY_PAGE', () => {
       const result = getUserEventMappingForPDS(
         {
@@ -142,6 +158,36 @@ describe('transferEventHandlers', () => {
         ...commonData,
         action: UserEvents.SELECT_PAYROLL_PROVIDER,
         payrollProvider: 'Google Inc.'
+      });
+    });
+
+    it('handles SELECTED_COMPANY_FROM_SEARCH_BY_FRANCHISE_PAGE', () => {
+      const result = getUserEventMappingForPDS(
+        {
+          name: AtomicEvents.SELECTED_COMPANY_FROM_SEARCH_BY_FRANCHISE_PAGE,
+          value: { company: 'Google Inc.' }
+        },
+        commonData
+      );
+      expect(result).toMatchObject({
+        ...commonData,
+        action: UserEvents.SELECTED_COMPANY_THROUGH_FRANCHISE_PAGE,
+        company: 'Google Inc.'
+      });
+    });
+
+    it('handles SELECTED_COMPANY_FROM_TYPEAHEAD_SEARCH_BY_CONFIGURABLE_CONNECTOR_PAGE', () => {
+      const result = getUserEventMappingForPDS(
+        {
+          name: AtomicEvents.SELECTED_COMPANY_FROM_TYPEAHEAD_SEARCH_BY_CONFIGURABLE_CONNECTOR_PAGE,
+          value: { company: 'Google Inc.' }
+        },
+        commonData
+      );
+      expect(result).toMatchObject({
+        ...commonData,
+        action: UserEvents.SELECTED_COMPANY_THROUGH_PAYROLL_PROVIDER,
+        company: 'Google Inc.'
       });
     });
 
@@ -162,6 +208,30 @@ describe('transferEventHandlers', () => {
   });
 
   describe('getCommonUserEventMapping', () => {
+    it('handles SEARCH_BY_COMPANY for product deposit', () => {
+      const result = getCommonUserEventMapping(
+        { name: AtomicEvents.SEARCH_BY_COMPANY, value: { query: 'Google', product: 'deposit' } },
+        commonData
+      );
+      expect(result).toMatchObject({
+        ...commonData,
+        action: UserEvents.SEARCH_PAYROLL_PROVIDER,
+        searchTerm: 'Google'
+      });
+    });
+
+    it('handles SEARCH_BY_COMPANY for product switch', () => {
+      const result = getCommonUserEventMapping(
+        { name: AtomicEvents.SEARCH_BY_COMPANY, value: { query: 'Google', product: 'switch' } },
+        commonData
+      );
+      expect(result).toMatchObject({
+        ...commonData,
+        action: UserEvents.SEARCH_PAYLINK_COMPANIES,
+        searchTerm: 'Google'
+      });
+    });
+
     it('handles CLICKED_EXTERNAL_LOGIN_RECOVERY_LINK_FROM_LOGIN_HELP_PAGE', () => {
       const result = getCommonUserEventMapping(
         {
@@ -253,6 +323,267 @@ describe('transferEventHandlers', () => {
       );
 
       expect(result).toBeUndefined();
+    });
+  });
+
+  describe('getUserEventMappingForBPS', () => {
+    it('handles VIEWED_SEARCH_BY_COMPANY_PAGE', () => {
+      const result = getUserEventMappingForBPS(
+        { name: AtomicEvents.VIEWED_SEARCH_BY_COMPANY_PAGE },
+        commonData
+      );
+      expect(result).toMatchObject({
+        ...commonData,
+        action: UserEvents.VIEW_SEARCH_PAYLINK_COMPANIES
+      });
+    });
+
+    it('handles SEARCH_PAYLINK_COMPANIES', () => {
+      const result = getUserEventMappingForBPS(
+        { name: AtomicEvents.SEARCH_PAYLINK_COMPANIES, value: { query: 'Google' } },
+        commonData
+      );
+      expect(result).toMatchObject({
+        ...commonData,
+        action: UserEvents.SEARCH_PAYLINK_COMPANIES,
+        searchTerm: 'Google'
+      });
+    });
+
+    it('handles SELECTED_COMPANY_FROM_SEARCH_BY_COMPANY_PAGE', () => {
+      const result = getUserEventMappingForBPS(
+        {
+          name: AtomicEvents.SELECTED_COMPANY_FROM_SEARCH_BY_COMPANY_PAGE,
+          value: { company: 'Google' }
+        },
+        commonData
+      );
+      expect(result).toMatchObject({
+        ...commonData,
+        action: UserEvents.SELECT_PAYLINK_COMPANIES,
+        billPayProvider: 'Google'
+      });
+    });
+
+    it('handles VIEWED_LOGIN_PAGE', () => {
+      const result = getUserEventMappingForBPS(
+        {
+          name: AtomicEvents.VIEWED_LOGIN_PAGE,
+          value: { company: 'Google' }
+        },
+        commonData
+      );
+      expect(result).toMatchObject({
+        ...commonData,
+        action: UserEvents.VIEWED_LOGIN_PAGE,
+        billPayProvider: 'Google'
+      });
+    });
+
+    it('handles NATIVE_SDK_USER_AUTHENTICATED', () => {
+      const result = getUserEventMappingForBPS(
+        {
+          name: AtomicEvents.NATIVE_SDK_USER_AUTHENTICATED,
+          value: { payroll: 'Google' }
+        },
+        commonData
+      );
+      expect(result).toMatchObject({
+        ...commonData,
+        action: UserEvents.USER_AUTHENTICATED,
+        billPayUserAuthenticated: 'Google'
+      });
+    });
+
+    it('handles CHANGED_PAYMENT_METHOD', () => {
+      const result = getUserEventMappingForBPS(
+        {
+          name: AtomicEvents.CHANGED_PAYMENT_METHOD,
+          value: { payroll: 'Google' }
+        },
+        commonData
+      );
+      expect(result).toMatchObject({
+        ...commonData,
+        action: UserEvents.CHANGED_PAYMENT,
+        paymentMethodType: 'Google'
+      });
+    });
+
+    it('handles CLICKED_RETURN_TO_CUSTOMER_FROM_SELECTIONS_PAGE', () => {
+      const result = getUserEventMappingForBPS(
+        {
+          name: AtomicEvents.CLICKED_RETURN_TO_CUSTOMER_FROM_SELECTIONS_PAGE,
+          value: { company: 'Google' }
+        },
+        commonData
+      );
+      expect(result).toMatchObject({
+        ...commonData,
+        action: UserEvents.RETURN_TO_CUSTOMER,
+        billPayProvider: 'Google'
+      });
+    });
+
+    it('handles default case for unhandled event names', () => {
+      const result = getUserEventMappingForBPS(
+        {
+          name: 'UNKNOWN_EVENT',
+          value: { company: 'Google' }
+        },
+        commonData
+      );
+      expect(result).toBeUndefined();
+    });
+  });
+
+  describe('getAuthStatusUpdateEvent', () => {
+    const authStatus = {
+      company: {
+        _id: '65298dfc2c00c70008a87746',
+        branding: {
+          color: '#00A1DC',
+          logo: {
+            url: 'https://example.com/logo.png',
+            backgroundColor: '#FFFFFF'
+          }
+        },
+        name: 'AT&T'
+      },
+      status: 'authenticated'
+    };
+
+    it('Test getAuthStatusUpdateEvent', () => {
+      const result = getAuthStatusUpdateEvent(authStatus, commonData);
+
+      expect(result).toEqual({
+        ...commonData,
+        [TransferEventDataName.ACTION]: UserEvents.ON_AUTH_STATUS_UPDATE,
+        [TransferEventDataName.OAUTH_STATUS]: 'authenticated',
+        [TransferEventDataName.TRANSACT_AUTH_STATUS_UPDATE]: {
+          company: {
+            id: '65298dfc2c00c70008a87746',
+            name: 'AT&T',
+            branding: {
+              color: '#00A1DC',
+              logo: {
+                url: 'https://example.com/logo.png',
+                backgroundColor: '#FFFFFF'
+              }
+            }
+          },
+          status: 'authenticated'
+        }
+      });
+    });
+  });
+
+  describe('getSwitchStatusUpdateEvent', () => {
+    const switchStatusSuccess = {
+      company: {
+        _id: '65272c415d8a530008e972df',
+        name: 'Amazon',
+        branding: {
+          color: '#AF6408',
+          logo: {
+            url: 'https://cdn-public.atomicfi.com/348195d5-7de7-499a-b5a7-f7535f62368f_amazon.png',
+            backgroundColor: '#EDBB80'
+          }
+        }
+      },
+      product: 'switch',
+      status: 'completed',
+      switchId: '69a01748ae7188682f653460',
+      switchData: {
+        paymentMethod: {
+          title: 'Mastercard super card',
+          type: 'card',
+          brand: 'mastercard',
+          lastFour: '4444'
+        }
+      }
+    };
+
+    const switchStatusFailed = {
+      company: {
+        _id: '65298dfc2c00c70008a87746',
+        name: 'AT&T',
+        branding: {
+          color: '#00A1DC',
+          logo: {
+            url: 'https://example.com/logo.png',
+            backgroundColor: '#FFFFFF'
+          }
+        }
+      },
+      product: 'switch',
+      status: 'failed',
+      failReason: 'Insufficient balance'
+    };
+
+    it('should return formatted switch status event for success case', () => {
+      const result = getSwitchStatusUpdateEvent(switchStatusSuccess, commonData);
+
+      expect(result).toEqual({
+        ...commonData,
+        [TransferEventDataName.ACTION]: UserEvents.ON_TASK_STATUS_UPDATE,
+        [TransferEventDataName.SWITCH_STATUS]: 'completed',
+        [TransferEventDataName.TRANSACT_SWITCH_STATUS_UPDATE]: {
+          product: 'switch',
+          company: {
+            id: '65272c415d8a530008e972df',
+            name: 'Amazon',
+            branding: {
+              color: '#AF6408',
+              logo: {
+                url: 'https://cdn-public.atomicfi.com/348195d5-7de7-499a-b5a7-f7535f62368f_amazon.png',
+                backgroundColor: '#EDBB80'
+              }
+            }
+          },
+          status: 'completed',
+          switchData: {
+            paymentMethod: {
+              title: 'Mastercard super card',
+              type: 'card',
+              brand: 'mastercard',
+              endsWith: '4444'
+            }
+          }
+        }
+      });
+    });
+
+    it('should include fail reason when status is failed', () => {
+      const result = getSwitchStatusUpdateEvent(switchStatusFailed, commonData);
+
+      expect(result).toEqual({
+        ...commonData,
+        [TransferEventDataName.ACTION]: UserEvents.ON_TASK_STATUS_UPDATE,
+        [TransferEventDataName.SWITCH_STATUS]: 'failed',
+        [TransferEventDataName.TRANSACT_SWITCH_STATUS_UPDATE]: {
+          product: 'switch',
+          status: 'failed',
+          failReason: 'Insufficient balance',
+          company: {
+            id: '65298dfc2c00c70008a87746',
+            name: 'AT&T',
+            branding: {
+              color: '#00A1DC',
+              logo: {
+                url: 'https://example.com/logo.png',
+                backgroundColor: '#FFFFFF'
+              }
+            }
+          }
+        },
+        [TransferEventDataName.SWITCH_FAIL_REASON]: 'Insufficient balance'
+      });
+    });
+
+    it('should not include fail reason when status is not failed', () => {
+      const result = getSwitchStatusUpdateEvent(switchStatusSuccess, commonData);
+      expect(result[TransferEventDataName.SWITCH_FAIL_REASON]).toBeUndefined();
     });
   });
 });

@@ -8,6 +8,7 @@ import { resetData } from '../../../src/redux/slices/authenticationSlice';
 import MAErrorView from '../../../src/containers/MAErrorView';
 import { type RootState } from '../../../src/redux/store';
 import { TransferActionCodes } from '../../../src/constants';
+import * as transferEventHandlers from '../../../src/events/transferEventHandlers';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -26,6 +27,16 @@ jest.mock('react-redux', () => {
     useSelector: jest.fn()
   };
 });
+
+jest.mock('../../../src/events/transferEventHandlers', () => ({
+  getTransferProductType: jest.fn(() => 'mockProduct'),
+  isPDSFlowActive: jest.fn(() => true),
+  isBPSFlowActive: jest.fn(() => false),
+  useTransferEventResponse: () => ({
+    getResponseForClose: jest.fn(() => ({ transfer: 'close' })),
+    getResponseForError: jest.fn(() => ({ transfer: 'error' }))
+  })
+}));
 
 const mockEventHandler = {
   onInitializeConnectTransfer: jest.fn(),
@@ -268,6 +279,144 @@ describe('MAErrorView', () => {
     expect(screen.getByText(t('ErrorTitle'))).toBeTruthy();
     expect(
       screen.getByText(`${t('ErrorSubtitle')} (${TransferActionCodes.API_OR_ATOMIC_ERROR})`)
+    ).toBeTruthy();
+  });
+
+  it('get errorCode for isInvalidUrl', () => {
+    const modifiedStore = {
+      ...mockStoreData,
+      user: {
+        error: {
+          response: {
+            data: {
+              code: '500',
+              user_message: 'Error message'
+            }
+          }
+        }
+      }
+    };
+
+    store = configureStore({
+      reducer: {
+        event: () => modifiedStore.event,
+        errorTranslation: () => modifiedStore.errorTranslation,
+        user: () => modifiedStore.user
+      }
+    });
+
+    render(
+      <Provider store={store}>
+        <MAErrorView isExperienceError={false} isInvalidUrl={true} />
+      </Provider>
+    );
+
+    const exitButton = screen.getByText(t('Exit'));
+    fireEvent.press(exitButton);
+
+    expect(screen.getByText(t('ErrorTitle'))).toBeTruthy();
+    expect(
+      screen.getByText('Invalid URL, Please use the valid URL to proceed. (401)')
+    ).toBeTruthy();
+  });
+
+  it('get errorCode for api timeout', () => {
+    const modifiedStore = {
+      ...mockStoreData,
+      user: {
+        error: {
+          code: '1440'
+        }
+      }
+    };
+
+    store = configureStore({
+      reducer: {
+        event: () => modifiedStore.event,
+        errorTranslation: () => modifiedStore.errorTranslation,
+        user: () => modifiedStore.user
+      }
+    });
+
+    render(
+      <Provider store={store}>
+        <MAErrorView isExperienceError={false} isInvalidUrl={false} />
+      </Provider>
+    );
+
+    expect(
+      screen.getByText(`${t('ErrorSubtitle')} (${TransferActionCodes.API_OR_ATOMIC_ERROR})`)
+    ).toBeTruthy();
+  });
+
+  it('send audit service event data', () => {
+    const modifiedStore = {
+      ...mockStoreData,
+      user: {
+        data: {
+          auditServiceDetails: { token: 'mockToken' }
+        }
+      }
+    };
+
+    store = configureStore({
+      reducer: {
+        event: () => modifiedStore.event,
+        errorTranslation: () => modifiedStore.errorTranslation,
+        user: () => modifiedStore.user
+      }
+    });
+
+    render(
+      <Provider store={store}>
+        <MAErrorView isExperienceError={true} isInvalidUrl={false} />
+      </Provider>
+    );
+
+    expect(screen.getByText('Invalid connection link')).toBeTruthy();
+    expect(screen.getByText('Invalid Experience (-1)')).toBeTruthy();
+  });
+
+  it('get error text for BPS flow', () => {
+    jest.spyOn(transferEventHandlers, 'isPDSFlowActive').mockReturnValue(false);
+    jest.spyOn(transferEventHandlers, 'isBPSFlowActive').mockReturnValue(true);
+    jest.spyOn(transferEventHandlers, 'getTransferProductType').mockReturnValue('switch');
+    const modifiedStore = {
+      ...mockStoreData,
+      user: {
+        data: {
+          auditServiceDetails: { token: 'mockToken' }
+        },
+        error: {
+          response: {
+            data: {
+              code: '500',
+              user_message: 'Error message'
+            }
+          }
+        }
+      }
+    };
+
+    store = configureStore({
+      reducer: {
+        event: () => modifiedStore.event,
+        errorTranslation: () => modifiedStore.errorTranslation,
+        user: () => modifiedStore.user
+      }
+    });
+
+    render(
+      <Provider store={store}>
+        <MAErrorView isExperienceError={false} isInvalidUrl={false} />
+      </Provider>
+    );
+
+    expect(screen.getByText(t('ErrorTitle'))).toBeTruthy();
+    expect(
+      screen.getByText(
+        'We weren’t able to connect to your payroll provider. Please try again. (500)'
+      )
     ).toBeTruthy();
   });
 });

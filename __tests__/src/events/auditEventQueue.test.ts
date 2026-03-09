@@ -22,6 +22,12 @@ jest.mock('../../../src/events/auditEventsMapper', () => ({
   })
 }));
 
+jest.mock('../../../src/events/transferEventHandlers', () => ({
+  getTransferProductType: jest.fn(() => 'mockProduct'),
+  isPDSFlowActive: jest.fn(() => true),
+  isBPSFlowActive: jest.fn(() => false)
+}));
+
 const data = {
   eventType: 'transferDepositSwitch',
   eventName: 'SelectPayrollProvider',

@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Connect Transfer React Native SDK allows you to embed MastercardOpenBanking Connect Transfer anywhere you want within your own mobile applications.
+The Connect Transfer React Native SDK allows you to embed Mastercard Open Finance Connect Transfer anywhere you want within your own mobile applications.
 
 For details of how to integrate Connect Transfer using the Connect Transfer SDKs see the following:
 

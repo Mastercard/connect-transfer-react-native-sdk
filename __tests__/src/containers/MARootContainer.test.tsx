@@ -32,6 +32,8 @@ jest.mock('i18next', () => ({
 
 jest.mock('../../../src/events/transferEventHandlers', () => ({
   getTransferProductType: jest.fn(() => 'mockProduct'),
+  isPDSFlowActive: jest.fn(() => true),
+  isBPSFlowActive: jest.fn(() => false),
   useTransferEventResponse: () => ({
     getResponseForInitializeTransfer: jest.fn(() => ({ transfer: 'initialize' })),
     getResponseForClose: jest.fn(() => ({ transfer: 'close' }))
@@ -85,11 +87,13 @@ describe('MARootContainer', () => {
           queryParamsObject: {},
           data: {
             data: {
+              product: 'deposit',
               experience: {
                 id: 'test',
                 transferModule: { moduleType: 'PDS', enabled: true },
                 customizations: { skipLandingPage: false }
-              }
+              },
+              userToken: 'mockUserToken'
             }
           },
           ...customState.user
@@ -163,7 +167,9 @@ describe('MARootContainer', () => {
             experience: {
               transferModule: { moduleType: 'PDS', enabled: true },
               customizations: { skipLandingPage: true }
-            }
+            },
+            userToken: 'mockUserToken',
+            product: 'deposit'
           }
         }
       }
