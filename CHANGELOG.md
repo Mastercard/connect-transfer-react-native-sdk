@@ -5,6 +5,7 @@
 Changed:
 
 - Added support for Bill Pay Switch feature.
+- Upgraded React Native stack to 0.84.1 for the SDK workspace and demo app.
 
 ### 1.0.0 (August 7, 2025)
 

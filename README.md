@@ -29,4 +29,4 @@ The Connect Transfer React Native SDK has the following peerDependencies:
 
 ## React Native Sample App
 
-This repository contains a sample React Native project that is integrated with the Connect Transfer React Native SDK. This sample project is named ConnectTransferDemoApp. Ensure that you have the necessary setup for React Native version 0.75.2 to successfully run and explore this demo application.
+This repository contains a sample React Native project that is integrated with the Connect Transfer React Native SDK. This sample project is named ConnectTransferDemoApp. Ensure that you have the necessary setup for React Native version 0.84.1 to successfully run and explore this demo application.

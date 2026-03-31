@@ -22,7 +22,15 @@
 - (NSURL *)bundleURL
 {
 #if DEBUG
-  return [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index"];
+  RCTBundleURLProvider *bundleProvider = [RCTBundleURLProvider sharedSettings];
+  bundleProvider.jsLocation = @"127.0.0.1";
+  NSURL *devBundleURL = [bundleProvider jsBundleURLForBundleRoot:@"index"];
+  if (devBundleURL != nil) {
+    return devBundleURL;
+  }
+
+  // Fallback to default Metro URL when provider settings are unavailable.
+  return [NSURL URLWithString:@"http://127.0.0.1:8081/index.bundle?platform=ios&dev=true&minify=false"];
 #else
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
