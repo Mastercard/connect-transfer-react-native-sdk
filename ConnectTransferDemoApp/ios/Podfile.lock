@@ -1829,7 +1829,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - RNInAppBrowser (3.7.0):
+  - RNInAppBrowser (3.7.1):
     - React-Core
   - RNReanimated (4.3.0):
     - hermes-engine
@@ -1905,7 +1905,7 @@ PODS:
     - ReactNativeDependencies
     - RNWorklets
     - Yoga
-  - RNWorklets (0.8.0):
+  - RNWorklets (0.8.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1927,10 +1927,10 @@ PODS:
     - ReactCommon/turbomodule/bridging
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
-    - RNWorklets/apple (= 0.8.0)
-    - RNWorklets/common (= 0.8.0)
+    - RNWorklets/apple (= 0.8.1)
+    - RNWorklets/common (= 0.8.1)
     - Yoga
-  - RNWorklets/apple (0.8.0):
+  - RNWorklets/apple (0.8.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -1953,7 +1953,7 @@ PODS:
     - ReactCommon/turbomodule/core
     - ReactNativeDependencies
     - Yoga
-  - RNWorklets/common (0.8.0):
+  - RNWorklets/common (0.8.1):
     - hermes-engine
     - RCTRequired
     - RCTTypeSafety
@@ -2221,7 +2221,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   atomicfi-transact-react-native: 7fc7da0a48fcadb5440d22fab6d368760dd9387e
   FBLazyVector: e97c19a5a442429d1988f182a1940fb08df514da
-  hermes-engine: 4a27ad2918a1fbc785cd54b8dd9b0852ac223d9a
+  hermes-engine: cb46d3426cd912a0658605a3d061cf111a9e1bfb
   RCTDeprecation: af44b104091a34482596cd9bd7e8d90c4e9b4bd7
   RCTRequired: bb77b070f75f53398ce43c0aaaa58337cebe2bf6
   RCTSwiftUI: afc0a0a635860da1040a0b894bfd529da06d7810
@@ -2230,7 +2230,7 @@ SPEC CHECKSUMS:
   React: 1ba7d364ade7d883a1ec055bfc3606f35fdee17b
   React-callinvoker: bc2a26f8d84fb01f003fc6de6c9337b64715f95b
   React-Core: bdaa87b276ca31877632a982ecf7c36f8c826414
-  React-Core-prebuilt: 26dff5afb3742496d66fdfdb1aaaa2abbcc531b9
+  React-Core-prebuilt: cbbfd9a15f7944f893cb39bcbd4036e7352fd73a
   React-CoreModules: b24989f62d56390ae08ca4f65e6f38fe6802de42
   React-cxxreact: 1a2dfcbc18a6b610664dba152adf327f063a0d12
   React-debug: 755200a6e7f5e6e0a40ff8d215493d43cce285fc
@@ -2291,12 +2291,12 @@ SPEC CHECKSUMS:
   ReactAppDependencyProvider: 26bbf1e26768d08dd965a2b5e372e53f67b21fee
   ReactCodegen: 4fa1b291ad275013e39212f2463c46480fb53afe
   ReactCommon: 309419492d417c4cbb87af06f67735afa40ecb9d
-  ReactNativeDependencies: 3e27ea0973c8e083cf7b233e2b1bcf891381c096
+  ReactNativeDependencies: f157a1598e928e63d7a59c4c93793b5a60fb310d
   RNGestureHandler: ce50a1cb02a0eb3914c6d7b4741a6f57ed82f6eb
-  RNInAppBrowser: e36d6935517101ccba0e875bac8ad7b0cb655364
+  RNInAppBrowser: b53e6f6072c931115bc22ac9dc9510ac2cbea62d
   RNReanimated: d570323905a3ee01616fc504a9327e7d7c48b1a5
-  RNWorklets: 8e0ae85447ea69bdadcdd6d6d18c77d8528741a1
-  Yoga: c0b3f2c7e8d3e327e450223a2414ca3fa296b9a2
+  RNWorklets: 0d4c7664dfbb168bb4edf5906a0b7c11701677b8
+  Yoga: 7c1c3b93e408ac46c7ed64b5641ca7161747378d
 
 PODFILE CHECKSUM: 48eb53e7aa48c6ac894c3d18b8fade27ee69a1c4
 

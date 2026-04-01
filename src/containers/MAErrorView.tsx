@@ -26,7 +26,7 @@ const MAErrorView: React.FC<MAErrorViewProps> = ({
 }) => {
   const dispatch: AppDispatch = useDispatch();
 
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const { t } = useTranslation();
 

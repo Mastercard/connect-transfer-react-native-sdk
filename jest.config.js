@@ -28,6 +28,7 @@ module.exports = {
       '|react-redux' +
       '|react-native-reanimated' +
       '|react-native-gesture-handler' +
+      '|react-native-worklets' +
       '|@react-native-community' +
       '|react-native-url-polyfill' +
       '|@reduxjs/toolkit' +
