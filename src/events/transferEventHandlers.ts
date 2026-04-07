@@ -323,6 +323,13 @@ export const getCommonUserEventMapping = (interactionResponse: any, commonData: 
         [TransferEventDataName.EXPIRED]: true
       };
 
+    case AtomicEvents.VIEWED_ZERO_SEARCH_RESULTS_FROM_SEARCH_BY_COMPANY_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.ZERO_SEARCH_RESULT_IN_SEARCH_COMPANY,
+        [TransferEventDataName.SEARCH_TERM]: value?.searchQuery
+      };
+
     default:
       break;
   }

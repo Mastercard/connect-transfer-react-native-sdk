@@ -41,6 +41,7 @@ const mapEventData = (eventParams: any): Record<string, any> => {
 
     case UserEvents.SEARCH_PAYROLL_PROVIDER: // PDS Event
     case UserEvents.SEARCH_PAYLINK_COMPANIES: // BPS Event
+    case UserEvents.ZERO_SEARCH_RESULT_IN_SEARCH_COMPANY: // Common Event
       return {
         ...COMMON_FIELDS,
         searchTerms: eventData.searchTerm
