@@ -13,10 +13,16 @@ For details of how to integrate Connect Transfer using the Connect Transfer SDKs
 The Connect Transfer React Native SDK supports following Android and iOS versions.
 
 - Android:
-  - Android 6.0 (Marshmallow) or later, Android SDK level 23 or later
-  - inSdkVersion 21 or later
+  - Android 7.0 (Nougat) or later
+  - Android SDK level 24 or later
 - iOS:
-  - iOS 14 or later
+  - iOS 15.1 or later
+
+## iOS Requirements
+
+- CocoaPods (>= 1.13)
+
+### Peer Dependencies
 
 The Connect Transfer React Native SDK has the following peerDependencies:
 
