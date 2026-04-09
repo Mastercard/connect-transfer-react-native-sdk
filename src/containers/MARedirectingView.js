@@ -1,4 +1,4 @@
-import { SafeAreaView, Text, Image, View } from 'react-native';
+import { Text, Image, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import MASecuredBy from '../components/MASecuredBy';
@@ -11,7 +11,7 @@ const MARedirectingView = () => {
   const { t } = useTranslation();
 
   return (
-    <SafeAreaView style={styles.safeAreaView} testID="safe-area-view">
+    <View style={styles.container} testID="MARedirectingView">
       <View style={styles.centerContainer}>
         <View style={styles.redirectTextWithIcon}>
           <Image
@@ -26,7 +26,7 @@ const MARedirectingView = () => {
       </View>
       <MASecuredBy />
       <MALaunchConnectTransfer />
-    </SafeAreaView>
+    </View>
   );
 };
 

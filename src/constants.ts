@@ -104,7 +104,10 @@ export enum UserEvents {
   USER_AUTHENTICATED = 'UserAuthenticated',
   RETURN_TO_CUSTOMER = 'ReturnToCustomer',
   ON_AUTH_STATUS_UPDATE = 'onAuthStatusUpdate',
-  ON_TASK_STATUS_UPDATE = 'onTaskStatusUpdate'
+  ON_TASK_STATUS_UPDATE = 'onTaskStatusUpdate',
+
+  // Common Events
+  ZERO_SEARCH_RESULT_IN_SEARCH_COMPANY = 'ZeroSearchResultInSearchCompany'
 }
 
 export enum TransferActionCodes {
@@ -139,6 +142,7 @@ export enum AtomicEvents {
   VIEWED_TASK_COMPLETED_PAGE = 'Viewed Task Completed Page',
   VIEWED_ACCESS_UNAUTHORIZED_PAGE = 'Viewed Access Unauthorized Page',
   VIEWED_EXPIRED_TOKEN_PAGE = 'Viewed Expired Token Page',
+  VIEWED_ZERO_SEARCH_RESULTS_FROM_SEARCH_BY_COMPANY_PAGE = 'Viewed Zero Search Results From Search By Company Page',
 
   // PDS Only Events
   SELECTED_COMPANY_FROM_SEARCH_BY_FRANCHISE_PAGE = 'Selected Company From Search By Franchise Page',
