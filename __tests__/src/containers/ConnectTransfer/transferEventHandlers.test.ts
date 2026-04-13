@@ -10,6 +10,7 @@ import {
   TransferEventDataName
 } from '../../../../src/constants';
 import {
+  extractEventPayload,
   getTransferProductType,
   useTransferEventCommonData,
   useTransferEventResponse,
@@ -71,6 +72,23 @@ describe('transferEventHandlers', () => {
     expect(getTransferProductScope('switch')).toBe(Scope.PAYLINK);
   });
 
+  it('extractEventPayload returns the status object when present', () => {
+    expect(extractEventPayload({ status: { step: 'authenticated' } })).toEqual({
+      step: 'authenticated'
+    });
+  });
+
+  it('extractEventPayload returns an empty object when status is an array', () => {
+    expect(extractEventPayload({ status: ['unexpected'] })).toEqual({});
+  });
+
+  it('extractEventPayload returns the original response when status is not an object', () => {
+    expect(extractEventPayload({ status: 'done', foo: 'bar' })).toEqual({
+      status: 'done',
+      foo: 'bar'
+    });
+  });
+
   it('useTransferEventCommonData returns expected values with experience', () => {
     const result = useTransferEventCommonData();
     expect(result).toMatchObject({
@@ -92,12 +110,29 @@ describe('transferEventHandlers', () => {
     expect(result.experience).toBeUndefined();
   });
 
+  it('useTransferEventCommonData returns an empty object when required ids are missing', () => {
+    (jest.mocked(useSelector) as unknown as jest.Mock).mockImplementation(callback =>
+      callback({ user: { queryParamsObject: {} } })
+    );
+
+    expect(useTransferEventCommonData()).toEqual({});
+  });
+
+  it('useTransferEventCommonData returns an empty object when ids are absent but query params exist', () => {
+    (jest.mocked(useSelector) as unknown as jest.Mock).mockImplementation(callback =>
+      callback({ user: { queryParamsObject: { type: 'deposit' } } })
+    );
+
+    expect(useTransferEventCommonData()).toEqual({});
+  });
+
   describe('useTransferEventResponse', () => {
     it('returns correct response from all response creators', () => {
       const {
         getResponseForInitializeTransfer,
         getResponseForTermsAndConditionsAccepted,
         getResponseForInitializeDepositSwitch,
+        getResponseForError,
         getResponseForClose,
         getResponseForFinish
       } = useTransferEventResponse();
@@ -118,6 +153,12 @@ describe('transferEventHandlers', () => {
       expect(getResponseForInitializeDepositSwitch('switch')).toMatchObject({
         action: UserEvents.INITIALIZE_BILLPAY_SWITCH,
         product: 'switch'
+      });
+
+      expect(getResponseForError('999')).toMatchObject({
+        action: TransferActionEvents.ERROR,
+        reason: RedirectReason.ERROR,
+        code: '999'
       });
 
       expect(getResponseForClose(RedirectReason.EXIT)).toMatchObject({
@@ -141,6 +182,32 @@ describe('transferEventHandlers', () => {
         reason: RedirectReason.COMPLETE,
         code: TransferActionCodes.SUCCESS,
         extra: 'data'
+      });
+    });
+
+    it('returns undefined from response helpers when common data is empty', () => {
+      (jest.mocked(useSelector) as unknown as jest.Mock).mockImplementation(callback =>
+        callback({ user: { queryParamsObject: {} } })
+      );
+
+      const {
+        getResponseForInitializeTransfer,
+        getResponseForTermsAndConditionsAccepted,
+        getResponseForInitializeDepositSwitch,
+        getResponseForClose,
+        getResponseForFinish,
+        getResponseForError
+      } = useTransferEventResponse();
+
+      expect(getResponseForInitializeTransfer()).toBeUndefined();
+      expect(getResponseForTermsAndConditionsAccepted()).toBeUndefined();
+      expect(getResponseForInitializeDepositSwitch('deposit')).toBeUndefined();
+      expect(getResponseForClose(RedirectReason.EXIT)).toBeUndefined();
+      expect(getResponseForFinish({ taskId: '1' })).toBeUndefined();
+      expect(getResponseForError()).toMatchObject({
+        action: TransferActionEvents.ERROR,
+        reason: RedirectReason.ERROR,
+        code: TransferActionCodes.API_OR_ATOMIC_ERROR
       });
     });
   });
@@ -280,6 +347,21 @@ describe('transferEventHandlers', () => {
       expect(result.action).toBe(UserEvents.SUBMIT_ALLOCATION);
     });
 
+    it('handles CLICKED_DISTRIBUTION_TYPE_FROM_SELECT_FROM_DEPOSIT_OPTIONS_PAGE', () => {
+      const result = getCommonUserEventMapping(
+        {
+          name: AtomicEvents.CLICKED_DISTRIBUTION_TYPE_FROM_SELECT_FROM_DEPOSIT_OPTIONS_PAGE,
+          value: { depositOption: 'checking' }
+        },
+        commonData
+      );
+
+      expect(result).toMatchObject({
+        action: UserEvents.CHANGE_DEFAULT_ALLOCATION,
+        depositOption: 'checking'
+      });
+    });
+
     it('handles VIEWED_TASK_COMPLETED_PAGE', () => {
       const result = getCommonUserEventMapping(
         { name: AtomicEvents.VIEWED_TASK_COMPLETED_PAGE, value: { state: 'done' } },
@@ -323,6 +405,21 @@ describe('transferEventHandlers', () => {
       );
 
       expect(result).toBeUndefined();
+    });
+
+    it('handles VIEWED_ZERO_SEARCH_RESULTS_FROM_SEARCH_BY_COMPANY_PAGE', () => {
+      const result = getCommonUserEventMapping(
+        {
+          name: AtomicEvents.VIEWED_ZERO_SEARCH_RESULTS_FROM_SEARCH_BY_COMPANY_PAGE,
+          value: { searchQuery: 'No Results Inc' }
+        },
+        commonData
+      );
+
+      expect(result).toMatchObject({
+        action: UserEvents.ZERO_SEARCH_RESULT_IN_SEARCH_COMPANY,
+        searchTerm: 'No Results Inc'
+      });
     });
   });
 
@@ -476,6 +573,20 @@ describe('transferEventHandlers', () => {
         }
       });
     });
+
+    it('defaults auth status to authenticated when missing', () => {
+      const result = getAuthStatusUpdateEvent(
+        {
+          company: {
+            _id: 'company-2',
+            name: 'Fallback Co'
+          }
+        },
+        commonData
+      );
+
+      expect(result.oauthStatus).toBe('authenticated');
+    });
   });
 
   describe('getSwitchStatusUpdateEvent', () => {
@@ -584,6 +695,98 @@ describe('transferEventHandlers', () => {
     it('should not include fail reason when status is not failed', () => {
       const result = getSwitchStatusUpdateEvent(switchStatusSuccess, commonData);
       expect(result[TransferEventDataName.SWITCH_FAIL_REASON]).toBeUndefined();
+    });
+
+    it('should map bank payment details, deposit data, and managed-by company', () => {
+      const result = getSwitchStatusUpdateEvent(
+        {
+          taskId: 'switch-task-1',
+          product: 'deposit',
+          company: {
+            _id: 'company-1',
+            name: 'Payroll Co'
+          },
+          switchData: {
+            paymentMethod: {
+              _id: 'payment-1',
+              title: 'Checking Account',
+              type: 'bank',
+              brand: 'ach',
+              routingNumber: '021000021',
+              accountType: 'checking',
+              lastFourAccountNumber: '1234'
+            }
+          },
+          depositData: {
+            accountType: 'savings',
+            distributionAmount: 50,
+            distributionType: 'percentage',
+            lastFour: '9876',
+            routingNumber: '011000015',
+            title: 'Primary Deposit'
+          },
+          managedBy: {
+            company: {
+              _id: 'manager-1',
+              name: 'Manager Co'
+            }
+          }
+        },
+        commonData
+      );
+
+      expect(result[TransferEventDataName.TRANSACT_SWITCH_STATUS_UPDATE]).toMatchObject({
+        switchId: 'switch-task-1',
+        product: 'deposit',
+        switchData: {
+          paymentMethod: {
+            id: 'payment-1',
+            title: 'Checking Account',
+            type: 'bank',
+            brand: 'ach',
+            bankIdentifier: '021000021',
+            accountType: 'checking',
+            accountNumberEndsWith: '1234'
+          }
+        },
+        depositData: {
+          accountType: 'savings',
+          distributionAmount: 50,
+          distributionType: 'percentage',
+          lastFour: '9876',
+          routingNumber: '011000015',
+          title: 'Primary Deposit'
+        },
+        managedBy: {
+          company: {
+            id: 'manager-1',
+            name: 'Manager Co'
+          }
+        }
+      });
+    });
+
+    it('defaults payment method type to bank when the type is missing', () => {
+      const result = getSwitchStatusUpdateEvent(
+        {
+          taskId: 'switch-task-2',
+          product: 'deposit',
+          company: {
+            _id: 'company-3',
+            name: 'Payroll Co'
+          },
+          switchData: {
+            paymentMethod: {
+              id: 'payment-2',
+              title: 'Fallback Payment',
+              brand: 'ach'
+            }
+          }
+        },
+        commonData
+      );
+
+      expect(result.transactSwitchStatusUpdate.switchData.paymentMethod.type).toBe('bank');
     });
   });
 });

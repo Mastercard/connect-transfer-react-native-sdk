@@ -1,5 +1,4 @@
-
 {
   "extends": "./tsconfig",
-  "exclude": ["example", "ConnectTransferDemoApp"]
+  "exclude": ["__tests__", "coverage", "example", "ConnectTransferDemoApp", "lib"]
 }

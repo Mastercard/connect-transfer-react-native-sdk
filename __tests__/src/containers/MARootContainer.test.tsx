@@ -12,6 +12,10 @@ import { authenticateUser } from '../../../src/services/api/authenticate';
 import { errorTranslation } from '../../../src/services/api/errorTranslation';
 import { extractUrlData } from '../../../src/utility/utils';
 import { type ConnectTransferEventHandler } from '../../../src/index';
+import { ListenerType, RedirectReason, TransferActionEvents } from '../../../src/constants';
+import * as transferEventHandlers from '../../../src/events/transferEventHandlers';
+
+const mockSendAuditData = jest.fn();
 
 jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),
@@ -59,6 +63,14 @@ jest.mock('../../../src/components/MALoader', () => {
   const { Text } = require('react-native');
   return () => <Text>MockLoader</Text>;
 });
+
+jest.mock('../../../src/events/auditEventQueue', () => ({
+  eventQueue: {
+    destroy: jest.fn(),
+    reset: jest.fn()
+  },
+  useSendAuditData: () => mockSendAuditData
+}));
 
 describe('MARootContainer', () => {
   const mockDispatch = jest.fn();
@@ -193,6 +205,34 @@ describe('MARootContainer', () => {
     });
     expect(getByText('MockLoader')).toBeTruthy();
   });
+
+  it('sends an END audit event when the modal closes and an audit token exists', () => {
+    const { getByTestId } = renderComponent({
+      user: {
+        data: {
+          auditServiceDetails: {
+            token: 'audit-token'
+          },
+          data: {
+            product: 'deposit',
+            experience: {
+              id: 'test',
+              transferModule: { moduleType: 'PDS', enabled: true },
+              customizations: { skipLandingPage: false }
+            },
+            userToken: 'mockUserToken'
+          }
+        }
+      }
+    });
+
+    fireEvent(getByTestId('test-modal'), 'onRequestClose');
+
+    expect(mockSendAuditData).toHaveBeenCalledWith(TransferActionEvents.END, {
+      reason: RedirectReason.EXIT,
+      listenerType: ListenerType.CLOSE
+    });
+  });
 });
 
 describe('Helper functions', () => {
@@ -212,6 +252,19 @@ describe('Helper functions', () => {
     expect(isSkipLandingPageEnabled({})).toBe(false);
   });
 
+  it('isSkipLandingPageEnabled returns true for BPS modules too', () => {
+    const result = isSkipLandingPageEnabled({
+      data: {
+        experience: {
+          transferModule: { moduleType: 'BPS', enabled: true },
+          customizations: { skipLandingPage: true }
+        }
+      }
+    });
+
+    expect(result).toBe(true);
+  });
+
   it('isExperienceError returns true for invalid experience', () => {
     expect(isExperienceError({ data: { experience: { id: 'test' } } })).toBe(true);
   });
@@ -221,5 +274,30 @@ describe('Helper functions', () => {
       data: { experience: { id: 'test', transferModule: { moduleType: 'PDS', enabled: true } } }
     });
     expect(result).toBe(false);
+  });
+
+  it('isExperienceError returns true for BPS products with the wrong module type', () => {
+    (transferEventHandlers.isPDSFlowActive as jest.Mock).mockReturnValueOnce(false);
+    (transferEventHandlers.isBPSFlowActive as jest.Mock).mockReturnValueOnce(true);
+
+    const result = isExperienceError({
+      data: {
+        product: 'switch',
+        experience: {
+          id: 'test',
+          transferModule: { moduleType: 'PDS', enabled: true }
+        }
+      }
+    });
+
+    expect(result).toBe(true);
+  });
+
+  it('uses selector fallbacks when user and event state are missing', () => {
+    (useSelector as unknown as jest.Mock).mockImplementation(callback => callback({}));
+
+    expect(() =>
+      render(<MARootContainer connectTransferUrl="https://mockurl.com" eventHandlers={{} as any} />)
+    ).not.toThrow();
   });
 });

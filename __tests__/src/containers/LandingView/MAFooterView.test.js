@@ -73,4 +73,24 @@ describe('MAFooterView', () => {
     expect(getURL).toHaveBeenCalledWith('en', 'privacy');
     expect(openLink).toHaveBeenCalledWith('mock-url');
   });
+
+  it('applies the Android footer link offset from the style module', () => {
+    jest.isolateModules(() => {
+      const ReactNative = require('react-native');
+      const originalOS = ReactNative.Platform.OS;
+      const originalSelect = ReactNative.Platform.select;
+
+      ReactNative.Platform.OS = 'android';
+      ReactNative.Platform.select = spec => spec.android;
+
+      const {
+        MAFooterViewStyle
+      } = require('../../../../src/containers/LandingView/MALandingViewStyles');
+
+      expect(MAFooterViewStyle.footerLink.marginBottom).toBe(-3);
+
+      ReactNative.Platform.OS = originalOS;
+      ReactNative.Platform.select = originalSelect;
+    });
+  });
 });

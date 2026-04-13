@@ -1,15 +1,7 @@
-import { Platform, StatusBar, StyleSheet } from 'react-native';
-
-const topInset = Platform.OS === 'ios' ? 60 : 0;
-const bottomInset = Platform.OS === 'ios' ? 35 : 0;
+import { StyleSheet } from 'react-native';
 
 export const MARootContainerStyle = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    paddingTop: topInset,
-    paddingBottom: bottomInset
-  },
+  container: { flex: 1, backgroundColor: '#FFF' },
   loader: { flex: 1, justifyContent: 'center' }
 });
 

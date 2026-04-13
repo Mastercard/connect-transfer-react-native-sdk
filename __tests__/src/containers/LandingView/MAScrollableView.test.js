@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 
 import MAScrollableView from '../../../../src/containers/LandingView/MAScrollableView';
 
@@ -63,5 +64,17 @@ describe('MAScrollableView', () => {
 
     // Permission text
     expect(getByText('Finicity only uses data with your permission')).toBeTruthy();
+  });
+
+  it('handles a missing transfer type without crashing', () => {
+    useSelector.mockImplementationOnce(fn =>
+      fn({
+        user: {
+          queryParamsObject: {}
+        }
+      })
+    );
+
+    expect(() => render(<MAScrollableView />)).not.toThrow();
   });
 });

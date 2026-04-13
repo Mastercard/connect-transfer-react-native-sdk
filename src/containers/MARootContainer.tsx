@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Modal, View } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import i18next from 'i18next';
 
@@ -131,7 +132,11 @@ const MARootContainer: React.FC<ConnectTransferProps> = ({ connectTransferUrl, e
       testID="test-modal"
       onRequestClose={closeModal}
     >
-      <View style={styles.container}>{renderConditionalViews()}</View>
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+          {renderConditionalViews()}
+        </SafeAreaView>
+      </SafeAreaProvider>
     </Modal>
   );
 };

@@ -342,4 +342,20 @@ describe('MALaunchConnectTransfer', () => {
       transactConfig.onTaskStatusUpdate({ value: { status: 'COMPLETED' } });
     }).not.toThrow();
   });
+
+  it('uses selector fallbacks when user and event state are missing', () => {
+    (useSelector as unknown as jest.Mock).mockImplementation(selector => selector({}));
+
+    render(<MALaunchConnectTransfer />);
+
+    expect(Atomic.transact).toHaveBeenCalledWith(
+      expect.objectContaining({
+        config: expect.objectContaining({
+          publicToken: undefined,
+          language: undefined,
+          customer: { name: '' }
+        })
+      })
+    );
+  });
 });

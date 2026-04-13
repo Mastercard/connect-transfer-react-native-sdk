@@ -1,5 +1,22 @@
 import 'react-native-gesture-handler/jestSetup';
 
+jest.mock('react-native-safe-area-context', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+
+  return {
+    SafeAreaProvider: ({ children }) => children,
+    SafeAreaConsumer: ({ children }) => children({ top: 0, right: 0, bottom: 0, left: 0 }),
+    SafeAreaView: ({ children, ...props }) => React.createElement(View, props, children),
+    useSafeAreaInsets: () => ({ top: 0, right: 0, bottom: 0, left: 0 }),
+    useSafeAreaFrame: () => ({ x: 0, y: 0, width: 0, height: 0 }),
+    initialWindowMetrics: {
+      frame: { x: 0, y: 0, width: 0, height: 0 },
+      insets: { top: 0, right: 0, bottom: 0, left: 0 }
+    }
+  };
+});
+
 jest.mock('react-native-gesture-handler', () => ({
   GestureHandlerRootView: ({ children }) => children,
   PanGestureHandler: ({ children }) => children,

@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import {
   ConnectTransfer,
   type ConnectTransferEventHandler
@@ -56,42 +57,42 @@ const App = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
-      >
-        <ScrollView
-          contentContainerStyle={styles.scrollContainer}
-          keyboardShouldPersistTaps="handled"
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
         >
-          <View style={styles.card}>
-            <Text style={styles.title}>Connect Transfer Demo App</Text>
-            <Text style={styles.subtitle}>Paste the Generate URL below</Text>
-
-            <TextInput
-              ref={urlInputRef}
-              style={styles.input}
-              placeholder="https://test.xyz/generate-url"
-              placeholderTextColor="#999"
-              onChangeText={handleUrl}
-            />
-
-            <TouchableOpacity
-              disabled={!pressable}
-              style={[styles.button, { backgroundColor: pressable ? '#007BFF' : '#CCC' }]}
-              onPress={onPressHandler}
-            >
-              <Text style={styles.buttonText}>Launch Connect Transfer</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-        {isConnectTransferEnabled && (
-          <ConnectTransfer connectTransferUrl={url} eventHandlers={eventHandlers} />
-        )}
-      </KeyboardAvoidingView>
-    </View>
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
+          >
+            <View style={styles.card}>
+              <Text style={styles.title}>Connect Transfer Demo App</Text>
+              <Text style={styles.subtitle}>Paste the Generate URL below</Text>
+              <TextInput
+                ref={urlInputRef}
+                style={styles.input}
+                placeholder="https://test.xyz/generate-url"
+                placeholderTextColor="#999"
+                onChangeText={handleUrl}
+              />
+              <TouchableOpacity
+                disabled={!pressable}
+                style={[styles.button, { backgroundColor: pressable ? '#007BFF' : '#CCC' }]}
+                onPress={onPressHandler}
+              >
+                <Text style={styles.buttonText}>Launch Connect Transfer</Text>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+          {isConnectTransferEnabled && (
+            <ConnectTransfer connectTransferUrl={url} eventHandlers={eventHandlers} />
+          )}
+        </KeyboardAvoidingView>
+      </SafeAreaView>
+    </SafeAreaProvider>
   );
 };
 
