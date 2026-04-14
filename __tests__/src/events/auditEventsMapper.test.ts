@@ -65,11 +65,27 @@ describe('auditEventsMapper', () => {
     [UserEvents.INITIALIZE_DEPOSIT_SWITCH, {}],
     [UserEvents.SEARCH_PAYROLL_PROVIDER, { searchTerm: 'test' }],
     [UserEvents.SELECT_PAYROLL_PROVIDER, { payrollProvider: 'provider123' }],
+    [UserEvents.SELECT_PAYLINK_COMPANIES, { billPayProvider: 'provider789' }],
+    [UserEvents.VIEWED_LOGIN_PAGE, { billPayProvider: 'provider999' }],
     [UserEvents.SELECTED_COMPANY_THROUGH_FRANCHISE_PAGE, { company: 'companyA' }],
     [UserEvents.SELECTED_COMPANY_THROUGH_PAYROLL_PROVIDER, { company: 'companyB' }],
     [UserEvents.SUBMIT_CREDENTIALS, { inputType: 'text' }],
     [UserEvents.CHANGE_DEFAULT_ALLOCATION, { depositOption: 'SAVINGS', depositAllocation: 500 }],
     [UserEvents.SUBMIT_ALLOCATION, { depositOption: 'CHECKING', depositAllocation: 1000 }],
+    [UserEvents.CHANGED_PAYMENT, { paymentMethodType: 'card' }],
+    [UserEvents.USER_AUTHENTICATED, { billPayUserAuthenticated: true }],
+    [
+      UserEvents.ON_AUTH_STATUS_UPDATE,
+      { oauthStatus: 'authenticated', transactAuthStatusUpdate: { status: 'authenticated' } }
+    ],
+    [
+      UserEvents.ON_TASK_STATUS_UPDATE,
+      {
+        switchId: 'switch-123',
+        switchStatus: 'completed',
+        transactSwitchStatusUpdate: { status: 'completed' }
+      }
+    ],
     ['UNKNOWN_EVENT_NAME', {}]
   ])('should handle eventName: %s', (eventName, eventData) => {
     const { result } = setup();

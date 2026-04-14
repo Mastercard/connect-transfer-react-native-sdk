@@ -38,7 +38,7 @@ const MAAttributedText = ({ text, styledTexts, textStyle, component = null }) =>
             </Text>
           );
 
-          if (styledObj.text === t('PrivacyNoticeText') && component) {
+          if (styledObj.text === t('LandingPage.PrivacyNotice') && component) {
             return (
               <Pressable
                 key={key}

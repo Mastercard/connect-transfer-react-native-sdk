@@ -33,15 +33,15 @@ describe('MARedirectingView', () => {
   it('should render correctly', () => {
     const { getByText, getByTestId } = render(<MARedirectingView />);
 
-    expect(getByText(t('RedirectingText'))).toBeTruthy();
+    expect(getByText(t('Redirecting'))).toBeTruthy();
     expect(getByTestId('tick-image')).toBeTruthy();
     expect(getByTestId('loader-box')).toBeTruthy();
     expect(getByTestId('securedby')).toBeTruthy();
   });
 
-  it('should render the SafeAreaView correctly', () => {
+  it('should render the MARedirectingView correctly', () => {
     const { getByTestId } = render(<MARedirectingView />);
-    const safeAreaView = getByTestId('safe-area-view');
-    expect(safeAreaView).toBeTruthy();
+    const redirectingView = getByTestId('MARedirectingView');
+    expect(redirectingView).toBeTruthy();
   });
 });

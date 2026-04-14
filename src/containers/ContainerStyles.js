@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 export const MARootContainerStyle = StyleSheet.create({
-  safeAreaView: { flex: 1, backgroundColor: '#FFF' },
+  container: { flex: 1, backgroundColor: '#FFF' },
   loader: { flex: 1, justifyContent: 'center' }
 });
 
 export const MARedirectingViewStyle = StyleSheet.create({
-  safeAreaView: {
+  container: {
     flex: 1,
     backgroundColor: 'white',
     justifyContent: 'center',
@@ -38,11 +38,8 @@ export const MARedirectingViewStyle = StyleSheet.create({
 export const MAErrorViewStyles = StyleSheet.create({
   errorView: {
     flex: 1,
+    backgroundColor: 'white',
     marginHorizontal: 24
-  },
-  safeAreaView: {
-    flex: 1,
-    backgroundColor: 'white'
   },
   titleText: {
     marginTop: 30,

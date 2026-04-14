@@ -72,4 +72,24 @@ describe('ConnectTransfer', () => {
     );
     expect(UNSAFE_getByType(GestureHandlerRootView)).toBeTruthy();
   });
+
+  it('should provide default event handlers when none are passed', () => {
+    render(<ConnectTransfer connectTransferUrl={connectTransferUrl} />);
+
+    const props = (MARootContainer as jest.Mock).mock.calls.at(-1)?.[0];
+
+    expect(typeof props.eventHandlers.onInitializeConnectTransfer).toBe('function');
+    expect(typeof props.eventHandlers.onTermsAndConditionsAccepted).toBe('function');
+    expect(typeof props.eventHandlers.onLaunchTransferSwitch).toBe('function');
+    expect(typeof props.eventHandlers.onUserEvent).toBe('function');
+    expect(typeof props.eventHandlers.onTransferEnd).toBe('function');
+    expect(typeof props.eventHandlers.onErrorEvent).toBe('function');
+
+    expect(() => props.eventHandlers.onInitializeConnectTransfer({})).not.toThrow();
+    expect(() => props.eventHandlers.onTermsAndConditionsAccepted({})).not.toThrow();
+    expect(() => props.eventHandlers.onLaunchTransferSwitch({})).not.toThrow();
+    expect(() => props.eventHandlers.onUserEvent({})).not.toThrow();
+    expect(() => props.eventHandlers.onTransferEnd({})).not.toThrow();
+    expect(() => props.eventHandlers.onErrorEvent({})).not.toThrow();
+  });
 });

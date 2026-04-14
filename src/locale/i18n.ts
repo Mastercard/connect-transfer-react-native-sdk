@@ -17,7 +17,7 @@ i18next
     interpolation: {
       escapeValue: false // Set to false to render translation values as-is without escaping
     },
-    compatibilityJSON: 'v3' // Use v3 compatibility mode
+    compatibilityJSON: 'v4' // Use v4 compatibility mode
   });
 
 export default i18next;

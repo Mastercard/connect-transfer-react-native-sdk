@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -9,6 +10,19 @@ jest.mock('react-redux', () => ({
   useDispatch: jest.fn(),
   useSelector: jest.fn()
 }));
+
+const mockBottomSheetMethods = {
+  expand: jest.fn(),
+  close: jest.fn()
+};
+
+jest.mock('@gorhom/bottom-sheet', () => {
+  const React = require('react');
+  return React.forwardRef((_props: any, ref: any) => {
+    React.useImperativeHandle(ref, () => mockBottomSheetMethods);
+    return null;
+  });
+});
 
 jest.mock('../../../../src/components/MACrossDismiss', () => {
   const { TouchableOpacity, Text } = require('react-native');
@@ -35,11 +49,17 @@ jest.mock('../../../../src/containers/LandingView/MAFooterView', () => {
 
 jest.mock('../../../../src/components/MAExitBottomSheet', () => {
   const { TouchableOpacity, Text } = require('react-native'); // Inside the mock
-  return ({ onClose }: { onClose: () => void }) => (
-    <TouchableOpacity onPress={onClose}>
-      <Text>Exit Bottom Sheet</Text>
-    </TouchableOpacity>
-  );
+  return ({ onClose, bottomSheetRef }: { onClose: () => void; bottomSheetRef: any }) => {
+    if (bottomSheetRef) {
+      bottomSheetRef.current = mockBottomSheetMethods;
+    }
+
+    return (
+      <TouchableOpacity onPress={onClose}>
+        <Text>Exit Bottom Sheet</Text>
+      </TouchableOpacity>
+    );
+  };
 });
 
 jest.mock('../../../../src/services/api/termsAndPolicies', () => ({
@@ -132,5 +152,31 @@ describe('MALandingView', () => {
     expect(closeButton).not.toBeNull();
     fireEvent.press(closeButton!);
     expect(queryByText('Exit Bottom Sheet')).toBeNull();
+  });
+
+  it('calls bottom sheet expand and close handlers through the ref', () => {
+    const { getByText } = render(<MALandingView onNextPress={jest.fn()} />);
+
+    fireEvent.press(getByText('Cross'));
+    fireEvent.press(getByText('Cross'));
+    fireEvent.press(getByText('Exit Bottom Sheet'));
+
+    expect(mockBottomSheetMethods.expand).toHaveBeenCalled();
+    expect(mockBottomSheetMethods.close).toHaveBeenCalled();
+  });
+
+  it('does not throw when the event handler is missing', () => {
+    (useSelector as unknown as jest.Mock).mockImplementation(callback =>
+      callback({
+        user: {
+          data: { data: { metadata: { applicationName: 'TestApp' } } },
+          queryParamsObject: { type: 'transferDepositSwitch' }
+        }
+      })
+    );
+
+    const { getByText } = render(<MALandingView onNextPress={jest.fn()} />);
+
+    expect(() => fireEvent.press(getByText('Next'))).not.toThrow();
   });
 });

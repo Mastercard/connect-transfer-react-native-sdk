@@ -1,6 +1,12 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { API_KEYS, WEBPAGE_API_KEYS, HEADERS, DEFAULT_LANGUAGE_EN } from '../../constants';
+import {
+  API_KEYS,
+  WEBPAGE_API_KEYS,
+  HEADERS,
+  DEFAULT_LANGUAGE_EN,
+  TransferSwitchType
+} from '../../constants';
 
 const FINICITY_BASE_URL = 'https://www.finicity.com/';
 const CONNECT_BASE_URL = 'https://connect2.finicity.com';
@@ -17,11 +23,15 @@ export const generateRoute = (key, state) => {
     queryParamsObject
   } = state?.user || {};
   const { endpoint = '' } = data?.auditServiceDetails || {};
-  const { partnerId = '', customerId = '' } = queryParamsObject || {};
+  const { partnerId = '', customerId = '', type = '' } = queryParamsObject || {};
 
   switch (key) {
     case API_KEYS.authenticateUser:
-      return `${baseURL}/server/authenticate/${API_VERSION}/transfer/deposit-switch${queryParams}`;
+      if (type === TransferSwitchType.DEPOSIT_SWITCH) {
+        return `${baseURL}/server/authenticate/${API_VERSION}/transfer/deposit-switch${queryParams}`;
+      } else if (type === TransferSwitchType.BILL_PAY_SWITCH) {
+        return `${baseURL}/server/authenticate/${API_VERSION}/transfer/bill-pay-switch${queryParams}`;
+      }
 
     case API_KEYS.errorTranslation:
       return `${baseURL}/transfer/assets/i18n/errors/${language}.json`;

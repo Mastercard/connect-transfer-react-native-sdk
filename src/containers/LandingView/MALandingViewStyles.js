@@ -78,7 +78,6 @@ export const MAScrollableViewStyle = StyleSheet.create({
 });
 
 export const MAFooterViewStyle = StyleSheet.create({
-  safeAreaView: { flex: 1, backgroundColor: 'white' },
   linkIcon: {
     width: 16,
     height: 16,

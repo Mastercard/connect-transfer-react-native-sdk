@@ -7,7 +7,17 @@ import mockStoreData from '../../mockStore.json';
 import { resetData } from '../../../src/redux/slices/authenticationSlice';
 import MAErrorView from '../../../src/containers/MAErrorView';
 import { type RootState } from '../../../src/redux/store';
-import { TransferActionCodes } from '../../../src/constants';
+import {
+  ListenerType,
+  RedirectReason,
+  TransferActionCodes,
+  TransferActionEvents
+} from '../../../src/constants';
+import * as transferEventHandlers from '../../../src/events/transferEventHandlers';
+
+const mockGetResponseForClose = jest.fn(() => ({ transfer: 'close' }));
+const mockGetResponseForError = jest.fn(() => ({ transfer: 'error' }));
+const mockSendAuditData = jest.fn();
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -26,6 +36,23 @@ jest.mock('react-redux', () => {
     useSelector: jest.fn()
   };
 });
+
+jest.mock('../../../src/events/transferEventHandlers', () => ({
+  getTransferProductType: jest.fn(() => 'mockProduct'),
+  isPDSFlowActive: jest.fn(() => true),
+  isBPSFlowActive: jest.fn(() => false),
+  useTransferEventResponse: () => ({
+    getResponseForClose: mockGetResponseForClose,
+    getResponseForError: mockGetResponseForError
+  })
+}));
+
+jest.mock('../../../src/events/auditEventQueue', () => ({
+  eventQueue: {
+    destroy: jest.fn()
+  },
+  useSendAuditData: () => mockSendAuditData
+}));
 
 const mockEventHandler = {
   onInitializeConnectTransfer: jest.fn(),
@@ -56,50 +83,52 @@ describe('MAErrorView', () => {
     });
 
     (useDispatch as unknown as jest.Mock).mockReturnValue(dispatch);
+    (useSelector as unknown as jest.Mock).mockImplementation(
+      (selectorFn: (state: RootState) => any) =>
+        selectorFn({
+          event: {
+            eventHandler: {
+              onInitializeConnectTransfer: jest.fn(),
+              onLaunchTransferSwitch: jest.fn(),
+              onTermsAndConditionsAccepted: jest.fn(),
+              onTransferEnd: jest.fn(),
+              onUserEvent: jest.fn(),
+              onErrorEvent: jest.fn()
+            }
+          },
+          errorTranslation: {
+            loading: false,
+            data: null,
+            error: null
+          },
+          user: {
+            modalVisible: false,
+            url: '',
+            baseURL: '',
+            queryParams: '',
+            queryParamsObject: {},
+            language: 'en',
+            loading: false,
+            data: null,
+            error: null
+          },
+          termsAndPolicies: {
+            loading: false,
+            data: null,
+            error: null
+          },
+          complete: {
+            loading: false,
+            data: null,
+            error: null
+          },
+          auditEvents: { loading: false, data: null, error: null }
+        })
+    );
+    mockSendAuditData.mockClear();
+    mockGetResponseForClose.mockClear();
+    mockGetResponseForError.mockClear();
   });
-
-  (useSelector as unknown as jest.Mock).mockImplementation(
-    (selectorFn: (state: RootState) => any) =>
-      selectorFn({
-        event: {
-          eventHandler: {
-            onInitializeConnectTransfer: jest.fn(),
-            onLaunchTransferSwitch: jest.fn(),
-            onTermsAndConditionsAccepted: jest.fn(),
-            onTransferEnd: jest.fn(),
-            onUserEvent: jest.fn(),
-            onErrorEvent: jest.fn()
-          }
-        },
-        errorTranslation: {
-          loading: false,
-          data: null,
-          error: null
-        },
-        user: {
-          modalVisible: false,
-          url: '',
-          baseURL: '',
-          queryParams: '',
-          queryParamsObject: {},
-          language: 'en',
-          loading: false,
-          data: null,
-          error: null
-        },
-        termsAndPolicies: {
-          loading: false,
-          data: null,
-          error: null
-        },
-        complete: {
-          loading: false,
-          data: null,
-          error: null
-        },
-        auditEvents: { loading: false, data: null, error: null }
-      })
-  );
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -269,5 +298,284 @@ describe('MAErrorView', () => {
     expect(
       screen.getByText(`${t('ErrorSubtitle')} (${TransferActionCodes.API_OR_ATOMIC_ERROR})`)
     ).toBeTruthy();
+  });
+
+  it('get errorCode for isInvalidUrl', () => {
+    const modifiedStore = {
+      ...mockStoreData,
+      user: {
+        error: {
+          response: {
+            data: {
+              code: '500',
+              user_message: 'Error message'
+            }
+          }
+        }
+      }
+    };
+
+    store = configureStore({
+      reducer: {
+        event: () => modifiedStore.event,
+        errorTranslation: () => modifiedStore.errorTranslation,
+        user: () => modifiedStore.user
+      }
+    });
+
+    render(
+      <Provider store={store}>
+        <MAErrorView isExperienceError={false} isInvalidUrl={true} />
+      </Provider>
+    );
+
+    const exitButton = screen.getByText(t('Exit'));
+    fireEvent.press(exitButton);
+
+    expect(screen.getByText(t('ErrorTitle'))).toBeTruthy();
+    expect(
+      screen.getByText('Invalid URL, Please use the valid URL to proceed. (401)')
+    ).toBeTruthy();
+  });
+
+  it('get errorCode for api timeout', () => {
+    (useSelector as unknown as jest.Mock).mockImplementation(
+      (selectorFn: (state: RootState) => any) =>
+        selectorFn({
+          event: {
+            eventHandler: mockEventHandler
+          },
+          errorTranslation: {
+            loading: false,
+            data: null,
+            error: null
+          },
+          user: {
+            modalVisible: false,
+            url: '',
+            baseURL: '',
+            queryParams: '',
+            queryParamsObject: {},
+            language: 'en',
+            loading: false,
+            data: {
+              data: {
+                product: 'deposit'
+              }
+            },
+            error: {
+              code: TransferActionCodes.API_TIMEOUT,
+              response: {
+                data: {}
+              }
+            }
+          },
+          termsAndPolicies: {
+            loading: false,
+            data: null,
+            error: null
+          },
+          complete: {
+            loading: false,
+            data: null,
+            error: null
+          },
+          auditEvents: { loading: false, data: null, error: null }
+        })
+    );
+
+    render(
+      <Provider store={store}>
+        <MAErrorView isExperienceError={false} isInvalidUrl={false} />
+      </Provider>
+    );
+
+    expect(
+      screen.getByText(`${t('ServerTimeoutErrorSubtitle')} (${TransferActionCodes.API_TIMEOUT})`)
+    ).toBeTruthy();
+  });
+
+  it('send audit service event data', () => {
+    (useSelector as unknown as jest.Mock).mockImplementation(
+      (selectorFn: (state: RootState) => any) =>
+        selectorFn({
+          event: {
+            eventHandler: mockEventHandler
+          },
+          errorTranslation: {
+            loading: false,
+            data: null,
+            error: null
+          },
+          user: {
+            modalVisible: false,
+            url: '',
+            baseURL: '',
+            queryParams: '',
+            queryParamsObject: {},
+            language: 'en',
+            loading: false,
+            data: {
+              auditServiceDetails: { token: 'mockToken' },
+              data: {
+                product: 'deposit'
+              }
+            },
+            error: {
+              code: TransferActionCodes.API_TIMEOUT,
+              response: {
+                data: {}
+              }
+            }
+          },
+          termsAndPolicies: {
+            loading: false,
+            data: null,
+            error: null
+          },
+          complete: {
+            loading: false,
+            data: null,
+            error: null
+          },
+          auditEvents: { loading: false, data: null, error: null }
+        })
+    );
+
+    render(
+      <Provider store={store}>
+        <MAErrorView isExperienceError={false} isInvalidUrl={false} />
+      </Provider>
+    );
+
+    fireEvent.press(screen.getByText(t('Exit')));
+
+    expect(mockSendAuditData).toHaveBeenCalledWith(TransferActionEvents.END, {
+      code: TransferActionCodes.API_TIMEOUT,
+      reason: RedirectReason.ERROR,
+      listenerType: ListenerType.CLOSE
+    });
+  });
+
+  it('renders translated API error text when code and user message are present', () => {
+    (useSelector as unknown as jest.Mock).mockImplementation(
+      (selectorFn: (state: RootState) => any) =>
+        selectorFn({
+          event: {
+            eventHandler: mockEventHandler
+          },
+          errorTranslation: {
+            loading: false,
+            data: {
+              translatedMessage: 'Translated API Error'
+            },
+            error: null
+          },
+          user: {
+            modalVisible: false,
+            url: '',
+            baseURL: '',
+            queryParams: '',
+            queryParamsObject: {},
+            language: 'en',
+            loading: false,
+            data: {
+              data: {
+                product: 'deposit'
+              }
+            },
+            error: {
+              response: {
+                data: {
+                  code: '409',
+                  user_message: 'translatedMessage'
+                }
+              }
+            }
+          },
+          termsAndPolicies: {
+            loading: false,
+            data: null,
+            error: null
+          },
+          complete: {
+            loading: false,
+            data: null,
+            error: null
+          },
+          auditEvents: { loading: false, data: null, error: null }
+        })
+    );
+
+    render(
+      <Provider store={store}>
+        <MAErrorView />
+      </Provider>
+    );
+
+    expect(screen.getByText('Translated API Error (409)')).toBeTruthy();
+  });
+
+  it('get error text for BPS flow', () => {
+    jest.spyOn(transferEventHandlers, 'isPDSFlowActive').mockReturnValue(false);
+    jest.spyOn(transferEventHandlers, 'isBPSFlowActive').mockReturnValue(true);
+    jest.spyOn(transferEventHandlers, 'getTransferProductType').mockReturnValue('switch');
+    const modifiedStore = {
+      ...mockStoreData,
+      user: {
+        data: {
+          auditServiceDetails: { token: 'mockToken' }
+        },
+        error: {
+          response: {
+            data: {
+              code: '500',
+              user_message: 'Error message'
+            }
+          }
+        }
+      }
+    };
+
+    store = configureStore({
+      reducer: {
+        event: () => modifiedStore.event,
+        errorTranslation: () => modifiedStore.errorTranslation,
+        user: () => modifiedStore.user
+      }
+    });
+
+    render(
+      <Provider store={store}>
+        <MAErrorView isExperienceError={false} isInvalidUrl={false} />
+      </Provider>
+    );
+
+    expect(screen.getByText(t('ErrorTitle'))).toBeTruthy();
+    expect(
+      screen.getByText(
+        'We weren’t able to connect to your payroll provider. Please try again. (500)'
+      )
+    ).toBeTruthy();
+  });
+
+  it('uses selector fallbacks when event and errorTranslation state are missing', () => {
+    (useSelector as unknown as jest.Mock).mockImplementation(
+      (selectorFn: (state: RootState) => any) =>
+        selectorFn({
+          user: {
+            error: null,
+            data: null
+          }
+        })
+    );
+
+    render(
+      <Provider store={store}>
+        <MAErrorView />
+      </Provider>
+    );
+
+    expect(screen.getByText(t('ErrorTitle'))).toBeTruthy();
   });
 });

@@ -40,6 +40,7 @@ export enum TransferEventDataName {
   CUSTOMER_ID = 'customerId',
   PARTNER_ID = 'partnerId',
   TIMESTAMP = 'timestamp',
+  ORIGIN = 'origin',
   TTL = 'ttl',
   TYPE = 'type',
   EXPERIENCE = 'experience',
@@ -49,14 +50,27 @@ export enum TransferEventDataName {
   ACTION = 'action',
   SEARCH_TERM = 'searchTerm',
   PAYROLL_PROVIDER = 'payrollProvider',
-  COMPANY = 'company',
+  BILL_PAY_PROVIDER = 'billPayProvider',
+  BILL_PAY_USER_AUTHENTICATED = 'billPayUserAuthenticated',
+  PAYMENT_METHOD_TYPE = 'paymentMethodType',
   INPUT_TYPE = 'inputType',
   BUTTON_NAME = 'buttonName',
   DEPOSIT_OPTION = 'depositOption',
   DEPOSIT_ALLOCATION = 'depositAllocation',
   STATUS = 'status',
   EXPIRED = 'expired',
-  PRODUCT = 'product'
+  PRODUCT = 'product',
+  SWITCH_ID = 'switchId',
+  TASK_WORKFLOW_ID = 'taskWorkflowId',
+  COMPANY = 'company',
+  IDENTIFIER = 'identifier',
+  PAYROLL = 'payroll',
+  SWITCH_STATUS = 'switchStatus',
+  TRANSACT_SWITCH_STATUS_UPDATE = 'transactSwitchStatusUpdate',
+  SWITCH_FAIL_REASON = 'switchFailReason',
+  TRANSACT_AUTH_STATUS_UPDATE = 'transactAuthStatusUpdate',
+  TRANSACT_DATA_REQUEST = 'transactDataRequest',
+  OAUTH_STATUS = 'oauthStatus'
 }
 
 export enum TransferActionEvents {
@@ -67,6 +81,7 @@ export enum TransferActionEvents {
 }
 
 export enum UserEvents {
+  // PDS Only Events
   INITIALIZE_DEPOSIT_SWITCH = 'InitializeDepositSwitch',
   SEARCH_PAYROLL_PROVIDER = 'SearchPayrollProvider',
   SELECT_PAYROLL_PROVIDER = 'SelectPayrollProvider',
@@ -77,7 +92,22 @@ export enum UserEvents {
   TASK_COMPLETED = 'TaskCompleted',
   UNAUTHORIZED = 'Unauthorized',
   SELECTED_COMPANY_THROUGH_FRANCHISE_PAGE = 'SelectedCompanyThroughFranchisePage',
-  SELECTED_COMPANY_THROUGH_PAYROLL_PROVIDER = 'SelectedCompanyThroughPayrollProvider'
+  SELECTED_COMPANY_THROUGH_PAYROLL_PROVIDER = 'SelectedCompanyThroughPayrollProvider',
+
+  // BPS Only Events
+  INITIALIZE_BILLPAY_SWITCH = 'InitializeBillPaySwitch',
+  VIEW_SEARCH_PAYLINK_COMPANIES = 'ViewSearchPaylinkCompanies',
+  SEARCH_PAYLINK_COMPANIES = 'SearchPaylinkCompanies',
+  SELECT_PAYLINK_COMPANIES = 'SelectPaylinkCompanies',
+  CHANGED_PAYMENT = 'ChangedPayment',
+  VIEWED_LOGIN_PAGE = 'ViewedLoginPage',
+  USER_AUTHENTICATED = 'UserAuthenticated',
+  RETURN_TO_CUSTOMER = 'ReturnToCustomer',
+  ON_AUTH_STATUS_UPDATE = 'onAuthStatusUpdate',
+  ON_TASK_STATUS_UPDATE = 'onTaskStatusUpdate',
+
+  // Common Events
+  ZERO_SEARCH_RESULT_IN_SEARCH_COMPANY = 'ZeroSearchResultInSearchCompany'
 }
 
 export enum TransferActionCodes {
@@ -99,6 +129,7 @@ export enum RedirectReason {
 }
 
 export enum AtomicEvents {
+  // Common Events
   INITIALIZED_TRANSACT = 'Initialized Transact',
   SEARCH_BY_COMPANY = 'Search By Company',
   SELECTED_COMPANY_FROM_SEARCH_BY_COMPANY_PAGE = 'Selected Company From Search By Company Page',
@@ -111,13 +142,30 @@ export enum AtomicEvents {
   VIEWED_TASK_COMPLETED_PAGE = 'Viewed Task Completed Page',
   VIEWED_ACCESS_UNAUTHORIZED_PAGE = 'Viewed Access Unauthorized Page',
   VIEWED_EXPIRED_TOKEN_PAGE = 'Viewed Expired Token Page',
+  VIEWED_ZERO_SEARCH_RESULTS_FROM_SEARCH_BY_COMPANY_PAGE = 'Viewed Zero Search Results From Search By Company Page',
+
+  // PDS Only Events
   SELECTED_COMPANY_FROM_SEARCH_BY_FRANCHISE_PAGE = 'Selected Company From Search By Franchise Page',
   SELECTED_COMPANY_FROM_TYPEAHEAD_SEARCH_BY_CONFIGURABLE_CONNECTOR_PAGE = 'Selected Company From Typeahead Search By Configurable Connector Page',
-  CLICKED_DISTRIBUTION_TYPE_FROM_SELECT_FROM_DEPOSIT_OPTIONS_PAGE = 'Clicked Distribution Type From Select From Deposit Options Page'
+  CLICKED_DISTRIBUTION_TYPE_FROM_SELECT_FROM_DEPOSIT_OPTIONS_PAGE = 'Clicked Distribution Type From Select From Deposit Options Page',
+
+  // BPS Only Events
+  VIEWED_SEARCH_BY_COMPANY_PAGE = 'Viewed Search By Company Page',
+  SEARCH_PAYLINK_COMPANIES = 'Search Companies',
+  CHANGED_PAYMENT_METHOD = 'Changed Payment Method',
+  VIEWED_LOGIN_PAGE = 'Viewed Login Page',
+  NATIVE_SDK_USER_AUTHENTICATED = 'Native SDK User Authenticated',
+  CLICKED_RETURN_TO_CUSTOMER_FROM_SELECTIONS_PAGE = 'Clicked Return To Customer From Selections Page'
 }
 
 export enum TransferModuleType {
-  PDS = 'PDS'
+  PDS = 'PDS',
+  BPS = 'BPS'
+}
+
+export enum TransferSwitchType {
+  DEPOSIT_SWITCH = 'transferDepositSwitch',
+  BILL_PAY_SWITCH = 'transferBillPaySwitch'
 }
 
 export enum ListenerType {

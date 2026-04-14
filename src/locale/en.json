@@ -1,5 +1,6 @@
 {
   "ErrorSubtitle": "We weren’t able to connect to your data.",
+  "ErrorSubtitleBPS": "We weren’t able to connect to your payroll provider. Please try again.",
   "ErrorTitle": "Looks like there was an issue",
   "ExperienceErrorSubtitle": "Invalid Experience",
   "ExperienceErrorTitle": "Invalid connection link",
@@ -9,23 +10,38 @@
   "Exit": "Exit",
   "ExitPopUpSubtitle": "If you exit, you return back to {{applicationName}} and your financial data won’t be connected or saved.",
   "ExitPopUpTitle": "Are you sure you want to exit?",
-  "FinicityMastercardCompanyText": "Finicity, a Mastercard company",
-  "FinicityPermissionText": "Finicity only uses data with your permission",
-  "LandingPageInstructionFirstStepText": "Search for your employer or payroll provider",
-  "LandingPageInstructionSecondStepText": "Log in to your payroll provider",
-  "LandingPageInstructionThirdStepText": "Confirm your new direct deposit allocation",
-  "LandingPageStepInstructionText": "You’ll need to",
-  "LandingPageSubtitle": "Allow Finicity, a Mastercard company to direct you to Atomic to securely connect to your payroll provider and manage changes to your direct deposit.",
-  "Atomic": "Atomic",
-  "LandingPageTermsAndConditionsInfoText": "By pressing Next, you agree to Finicity’s Terms of Use and Privacy Notice",
-  "LandingPageTitle": "Let’s manage your direct deposit",
-  "NextText": "Next",
-  "NoStay": "No, stay",
-  "PrivacyNoticeText": "Privacy Notice",
-  "RedirectingText": "Redirecting...",
+  "LandingPage": {
+    "transferDepositSwitch": {
+      "Title": "Let’s manage your direct deposit",
+      "SubTitle": "Allow Finicity, a Mastercard company to direct you to Atomic to securely connect to your payroll provider and manage changes to your direct deposit.",
+      "Steps": [
+        "Search for your employer or payroll provider",
+        "Log in to your payroll provider",
+        "Confirm your new direct deposit allocation"
+      ]
+    },
+    "transferBillPaySwitch": {
+      "Title": "Let’s manage your bill payments",
+      "SubTitle": "Allow Finicity, a Mastercard Company to direct you to Atomic to securely connect to your merchant(s) and update your payment method on file.",
+      "Steps": [
+        "Select one or more recurring payments",
+        "Sign in to your accounts and link your card or bank account to each payment",
+        "You’re all done!"
+      ]
+    },
+    "FinicityMastercardCompany": "Finicity, a Mastercard company",
+    "FinicityPermission": "Finicity only uses data with your permission",
+    "StepInstruction": "You’ll need to",
+    "Atomic": "Atomic",
+    "TermsAndConditionsInfo": "By pressing Next, you agree to Finicity’s Terms of Use and Privacy Notice",
+    "Next": "Next",
+    "PrivacyNotice": "Privacy Notice",
+    "TermsAndConditions": "Terms of Use"
+  },
+  "Redirecting": "Redirecting...",
   "ReturnToPartner": "Return to {{partnerName}}",
-  "SecuredByText": "Secured by",
-  "TermsAndConditionsText": "Terms of Use",
+  "SecuredBy": "Secured by",
   "TryAgain": "Try again",
-  "YesExit": "Yes, exit"
+  "YesExit": "Yes, exit",
+  "NoStay": "No, stay"
 }

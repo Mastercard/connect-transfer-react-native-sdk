@@ -7,9 +7,15 @@ import { getURL, openLink } from '../../../../src/utility/utils';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: key => {
+    t: (key, options) => {
       const en = require('../../../../src/locale/en.json');
-      return en[key] || key;
+      // Support nested keys like LandingPage.transferBillPaySwitch.Title
+      const value = key.split('.').reduce((obj, k) => (obj ? obj[k] : undefined), en);
+      // Support returnObjects for steps array
+      if (options?.returnObjects) {
+        return value;
+      }
+      return value ?? key;
     }
   })
 }));
@@ -35,11 +41,13 @@ describe('MAFooterView', () => {
   it('should render correctly', () => {
     const { getByText, getByTestId } = render(<MAFooterView onNextPress={mockOnNextPress} />);
 
-    expect(getByText(t('TermsAndConditionsText'))).toBeTruthy();
-    expect(getByText(t('PrivacyNoticeText'))).toBeTruthy();
+    expect(getByText('Terms of Use')).toBeTruthy();
+    expect(getByText('Privacy Notice')).toBeTruthy();
 
     expect(getByTestId('link-icon')).toBeTruthy();
-    expect(getByText(t('LandingPageTermsAndConditionsInfoText'))).toBeTruthy();
+    expect(
+      getByText('By pressing Next, you agree to Finicity’s Terms of Use and Privacy Notice')
+    ).toBeTruthy();
   });
 
   it('should call onPress when Next button is pressed', () => {
@@ -52,7 +60,7 @@ describe('MAFooterView', () => {
   it('should open the correct URL when Terms and Conditions link is pressed', () => {
     const { getByText } = render(<MAFooterView onNextPress={mockOnNextPress} />);
 
-    fireEvent.press(getByText(t('TermsAndConditionsText')));
+    fireEvent.press(getByText('Terms of Use'));
 
     expect(getURL).toHaveBeenCalledWith('en', 'termsOfUse');
     expect(openLink).toHaveBeenCalledWith('mock-url');
@@ -61,8 +69,28 @@ describe('MAFooterView', () => {
   it('should open the correct URL when Privacy Notice link is pressed', () => {
     const { getByText } = render(<MAFooterView onNextPress={mockOnNextPress} />);
 
-    fireEvent.press(getByText(t('PrivacyNoticeText')));
+    fireEvent.press(getByText('Privacy Notice'));
     expect(getURL).toHaveBeenCalledWith('en', 'privacy');
     expect(openLink).toHaveBeenCalledWith('mock-url');
+  });
+
+  it('applies the Android footer link offset from the style module', () => {
+    jest.isolateModules(() => {
+      const ReactNative = require('react-native');
+      const originalOS = ReactNative.Platform.OS;
+      const originalSelect = ReactNative.Platform.select;
+
+      ReactNative.Platform.OS = 'android';
+      ReactNative.Platform.select = spec => spec.android;
+
+      const {
+        MAFooterViewStyle
+      } = require('../../../../src/containers/LandingView/MALandingViewStyles');
+
+      expect(MAFooterViewStyle.footerLink.marginBottom).toBe(-3);
+
+      ReactNative.Platform.OS = originalOS;
+      ReactNative.Platform.select = originalSelect;
+    });
   });
 });

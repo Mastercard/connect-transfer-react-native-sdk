@@ -1,7 +1,7 @@
 import api from '../../../../src/services/apiClient';
 import { authenticateUser } from '../../../../src/services/api/authenticate';
 import { generateRoute, requestHeaders } from '../../../../src/services/api/routes';
-import { METHODS, API_KEYS } from '../../../../src/constants';
+import { METHODS, API_KEYS, TIMEOUT, TransferActionCodes } from '../../../../src/constants';
 
 jest.mock('../../../../src/services/apiClient');
 jest.mock('../../../../src/services/api/routes');
@@ -65,5 +65,38 @@ describe('authenticate', () => {
     expect(result.type).toBe(`${API_KEYS.authenticateUser}/rejected`);
     expect(result.payload).toBe(mockError);
     expect(result.meta.rejectedWithValue).toBe(true);
+  });
+
+  it('should abort and return API timeout when the request is canceled by timeout', async () => {
+    jest.useFakeTimers();
+
+    let rejectRequest;
+    api.mockImplementation(
+      () =>
+        new Promise((_, reject) => {
+          rejectRequest = reject;
+        })
+    );
+    generateRoute.mockReturnValue('mock-url');
+    requestHeaders.mockReturnValue({ Authorization: 'Bearer token' });
+
+    const thunk = authenticateUser(API_KEYS.authenticateUser);
+    const resultPromise = thunk(mockDispatch, mockGetState, undefined);
+
+    jest.advanceTimersByTime(TIMEOUT);
+
+    expect(api.mock.calls[0][0].signal.aborted).toBe(true);
+
+    rejectRequest({
+      toJSON: () => ({ code: 'ERR_CANCELED' })
+    });
+
+    const result = await resultPromise;
+
+    expect(result.type).toBe(`${API_KEYS.authenticateUser}/rejected`);
+    expect(result.payload).toEqual({ code: TransferActionCodes.API_TIMEOUT });
+    expect(result.meta.rejectedWithValue).toBe(true);
+
+    jest.useRealTimers();
   });
 });

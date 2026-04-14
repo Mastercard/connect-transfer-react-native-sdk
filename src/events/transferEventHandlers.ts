@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Product } from '@atomicfi/transact-react-native';
+import { Product, Scope } from '@atomicfi/transact-react-native';
 
 import { type RootState } from '../redux/store';
 import {
@@ -11,13 +11,33 @@ import {
   UserEvents
 } from '../constants';
 
+export const isPDSFlowActive = (product: string) => product === Product.DEPOSIT;
+
+export const isBPSFlowActive = (product: string) => product === Product.SWITCH;
+
 // @ts-ignore
-export const getTransferProductType = product => {
-  if (product === 'deposit') {
-    return Product.DEPOSIT;
+export const getTransferProductType = product =>
+  product === Product.DEPOSIT || product === Product.SWITCH ? product : null;
+
+// @ts-ignore
+export const getTransferProductScope = product => {
+  if (isBPSFlowActive(product)) {
+    return Scope.PAYLINK;
+  }
+  return Scope.USERLINK;
+};
+
+export const extractEventPayload = (response: any) => {
+  const status = response?.status;
+
+  if (response && typeof status === 'object' && status !== null) {
+    if (Array.isArray(status)) {
+      return {};
+    }
+    return status;
   }
 
-  return null;
+  return response;
 };
 
 export const useTransferEventCommonData = (): Record<string, string | undefined> => {
@@ -71,14 +91,16 @@ export const useTransferEventResponse = () => {
   };
 
   const getResponseForInitializeDepositSwitch = (
-    productType?: string
+    product: string
   ): Record<string, any> | undefined => {
     if (isEmpty) return;
 
     return {
       ...commonData,
-      [TransferEventDataName.ACTION]: UserEvents.INITIALIZE_DEPOSIT_SWITCH,
-      ...(productType && { [TransferEventDataName.PRODUCT]: productType })
+      [TransferEventDataName.ACTION]: isBPSFlowActive(product)
+        ? UserEvents.INITIALIZE_BILLPAY_SWITCH
+        : UserEvents.INITIALIZE_DEPOSIT_SWITCH,
+      ...(product && { [TransferEventDataName.PRODUCT]: product })
     };
   };
 
@@ -139,13 +161,6 @@ export const getUserEventMappingForPDS = (interactionResponse: any, commonData: 
   const commonResponse = commonData;
 
   switch (eventName) {
-    case AtomicEvents.SEARCH_BY_COMPANY:
-      return {
-        ...commonResponse,
-        [TransferEventDataName.ACTION]: UserEvents.SEARCH_PAYROLL_PROVIDER,
-        [TransferEventDataName.SEARCH_TERM]: value?.query
-      };
-
     case AtomicEvents.SELECTED_COMPANY_FROM_SEARCH_BY_COMPANY_PAGE:
       return {
         ...commonResponse,
@@ -172,11 +187,78 @@ export const getUserEventMappingForPDS = (interactionResponse: any, commonData: 
   }
 };
 
+export const getUserEventMappingForBPS = (interactionResponse: any, commonData: any): any => {
+  const { name: eventName, value } = interactionResponse;
+  const commonResponse = commonData;
+
+  switch (eventName) {
+    case AtomicEvents.VIEWED_SEARCH_BY_COMPANY_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.VIEW_SEARCH_PAYLINK_COMPANIES
+      };
+
+    case AtomicEvents.SEARCH_PAYLINK_COMPANIES:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.SEARCH_PAYLINK_COMPANIES,
+        [TransferEventDataName.SEARCH_TERM]: value?.query
+      };
+
+    case AtomicEvents.SELECTED_COMPANY_FROM_SEARCH_BY_COMPANY_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.SELECT_PAYLINK_COMPANIES,
+        [TransferEventDataName.BILL_PAY_PROVIDER]: value?.company
+      };
+
+    case AtomicEvents.VIEWED_LOGIN_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.VIEWED_LOGIN_PAGE,
+        [TransferEventDataName.BILL_PAY_PROVIDER]: value?.company
+      };
+
+    case AtomicEvents.NATIVE_SDK_USER_AUTHENTICATED:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.USER_AUTHENTICATED,
+        [TransferEventDataName.BILL_PAY_USER_AUTHENTICATED]: value?.payroll
+      };
+
+    case AtomicEvents.CHANGED_PAYMENT_METHOD:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.CHANGED_PAYMENT,
+        [TransferEventDataName.PAYMENT_METHOD_TYPE]: value?.payroll
+      };
+
+    case AtomicEvents.CLICKED_RETURN_TO_CUSTOMER_FROM_SELECTIONS_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.RETURN_TO_CUSTOMER,
+        [TransferEventDataName.BILL_PAY_PROVIDER]: value?.company
+      };
+
+    default:
+      return getCommonUserEventMapping(interactionResponse, commonData);
+  }
+};
+
 export const getCommonUserEventMapping = (interactionResponse: any, commonData: any): any => {
   const { name: eventName, value } = interactionResponse;
   const commonResponse = commonData;
 
   switch (eventName) {
+    case AtomicEvents.SEARCH_BY_COMPANY:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: isBPSFlowActive(value?.product)
+          ? UserEvents.SEARCH_PAYLINK_COMPANIES
+          : UserEvents.SEARCH_PAYROLL_PROVIDER,
+        [TransferEventDataName.SEARCH_TERM]: value?.query
+      };
+
     case AtomicEvents.CLICKED_CONTINUE_FROM_FORM_ON_LOGIN_PAGE:
     case AtomicEvents.CLICKED_CONTINUE_FROM_FORM_ON_INTERRUPT_PAGE:
       return {
@@ -241,7 +323,137 @@ export const getCommonUserEventMapping = (interactionResponse: any, commonData: 
         [TransferEventDataName.EXPIRED]: true
       };
 
+    case AtomicEvents.VIEWED_ZERO_SEARCH_RESULTS_FROM_SEARCH_BY_COMPANY_PAGE:
+      return {
+        ...commonResponse,
+        [TransferEventDataName.ACTION]: UserEvents.ZERO_SEARCH_RESULT_IN_SEARCH_COMPANY,
+        [TransferEventDataName.SEARCH_TERM]: value?.searchQuery
+      };
+
     default:
       break;
   }
+};
+
+export const mapTransactCompany = (company: any) => {
+  return {
+    id: company._id,
+    name: company.name,
+    ...(company.branding && {
+      branding: {
+        color: company.branding.color,
+        logo: {
+          url: company.branding.logo.url,
+          ...(company.branding.logo.backgroundColor && {
+            backgroundColor: company.branding.logo.backgroundColor
+          })
+        }
+      }
+    })
+  };
+};
+
+export const mapTransactAuthStatusUpdate = (authStatus: any) => {
+  return {
+    company: mapTransactCompany(authStatus.company),
+    status: authStatus.status || 'authenticated'
+  };
+};
+
+export const getAuthStatusUpdateEvent = (authStatus: any, commonData: any) => {
+  const commonResponse = { ...commonData };
+  const transactAuthStatusUpdate = mapTransactAuthStatusUpdate(authStatus);
+
+  commonResponse[TransferEventDataName.ACTION] = UserEvents.ON_AUTH_STATUS_UPDATE;
+  commonResponse[TransferEventDataName.OAUTH_STATUS] = transactAuthStatusUpdate.status;
+  commonResponse[TransferEventDataName.TRANSACT_AUTH_STATUS_UPDATE] = transactAuthStatusUpdate;
+  return commonResponse;
+};
+
+const mapPaymentMethod = (paymentMethod: any) => {
+  const isCard = paymentMethod.type === 'card';
+
+  return {
+    id: paymentMethod._id ?? paymentMethod.id,
+    title: paymentMethod.title,
+    type: paymentMethod.type || 'bank',
+    brand: paymentMethod.brand,
+    ...(paymentMethod.routingNumber && {
+      bankIdentifier: paymentMethod.routingNumber
+    }),
+    ...(paymentMethod.accountType && {
+      accountType: paymentMethod.accountType
+    }),
+    ...(isCard &&
+      paymentMethod.lastFour && {
+        endsWith: paymentMethod.lastFour
+      }),
+    ...(!isCard &&
+      paymentMethod.lastFourAccountNumber && {
+        accountNumberEndsWith: paymentMethod.lastFourAccountNumber
+      })
+  };
+};
+
+export const mapTransactSwitchStatusUpdate = (switchStatus: any) => {
+  return {
+    switchId: switchStatus.taskId,
+    product: switchStatus.product,
+    company: mapTransactCompany(switchStatus.company),
+    status: switchStatus.status || 'completed',
+    ...(switchStatus.failReason && {
+      failReason: switchStatus.failReason
+    }),
+    ...(switchStatus.switchData && {
+      switchData: {
+        paymentMethod:
+          switchStatus.switchData.paymentMethod &&
+          mapPaymentMethod(switchStatus.switchData.paymentMethod)
+      }
+    }),
+    ...(switchStatus.depositData && {
+      depositData: {
+        ...(switchStatus.depositData.accountType && {
+          accountType: switchStatus.depositData.accountType
+        }),
+        ...(switchStatus.depositData.distributionAmount && {
+          distributionAmount: switchStatus.depositData.distributionAmount
+        }),
+        ...(switchStatus.depositData.distributionType && {
+          distributionType: switchStatus.depositData.distributionType
+        }),
+        ...(switchStatus.depositData.lastFour && {
+          lastFour: switchStatus.depositData.lastFour
+        }),
+        ...(switchStatus.depositData.routingNumber && {
+          routingNumber: switchStatus.depositData.routingNumber
+        }),
+        ...(switchStatus.depositData.title && {
+          title: switchStatus.depositData.title
+        })
+      }
+    }),
+    ...(switchStatus.managedBy && {
+      managedBy: {
+        company: mapTransactCompany(switchStatus.managedBy.company)
+      }
+    })
+  };
+};
+
+export const getSwitchStatusUpdateEvent = (switchStatus: any, commonData: any) => {
+  const commonResponse = { ...commonData };
+  const transactSwitchStatusUpdate = mapTransactSwitchStatusUpdate(switchStatus);
+
+  commonResponse[TransferEventDataName.ACTION] = UserEvents.ON_TASK_STATUS_UPDATE;
+  commonResponse[TransferEventDataName.SWITCH_ID] = transactSwitchStatusUpdate.switchId;
+  commonResponse[TransferEventDataName.SWITCH_STATUS] = transactSwitchStatusUpdate.status;
+  commonResponse[TransferEventDataName.TRANSACT_SWITCH_STATUS_UPDATE] = transactSwitchStatusUpdate;
+
+  if (transactSwitchStatusUpdate.status === 'failed') {
+    commonResponse[TransferEventDataName.SWITCH_FAIL_REASON] =
+      transactSwitchStatusUpdate.failReason;
+  }
+
+  return commonResponse;
 };
